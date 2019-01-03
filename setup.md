@@ -311,9 +311,9 @@ We will be using **Anaconda Navigator** to install all the python packages we wi
 lesson.
 
 
-### Download <a href="https://raw.githubusercontent.com/annefou//gh-pages/files/dp_environment.yml">dp_environment.yml</a> to your local computer
+### Download <a href="https://raw.githubusercontent.com/UiOHive/deep-learning_intro/gh-pages/files/dp_environment.yml">dp_environment.yml</a> to your local computer
 
-- Right click on the following link  <a href="https://raw.githubusercontent.com/annefou/gh-pages/files/dp_environment.yml">dp_environment.yml</a> and "save as link" it to your local computer
+- Right click on the following link  <a href="https://raw.githubusercontent.com/UiOHive/deep-learning_intro/gh-pages/files/dp_environment.yml">dp_environment.yml</a> and "save as link" it to your local computer
 - Make sure you know where you saved it! (Check your "Downloads" folder).
 
 ### Start Anaconda navigator
@@ -354,7 +354,7 @@ desktop and/or main-menu shortcuts that run the command anaconda-navigator.
 
 For more information on how to start Anaconda Navigator look [here](https://docs.continuum.io/anaconda/navigator/getting-started).
 
-### Create a new conda environment "jupyter_dashboards_workshop"
+### Create a new conda environment "deeplearning"
 
 #### From the command line (Mac OSX and Linux)
 
