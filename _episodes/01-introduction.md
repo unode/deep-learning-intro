@@ -3,14 +3,27 @@ title: "Introduction"
 teaching: 0
 exercises: 0
 questions:
-- "Key question (FIXME)"
+- "What is deep learning?"
+- "What is a neural network?"
+- "How to start deep learning with PyTorch?"
 objectives:
-- "First learning objective. (FIXME)"
+- "Understand what is deep learning"
+- "Learn about simple neural network"
+- "Get started with PyTorch"
 keypoints:
-- "First key point. Brief Answer to questions. (FIXME)"
+- "deep learning"
+- "neural network"
+- "PyTorch"
 ---
 
-A short introduction on [deep learning](https://cicero.xyz/v3/remark/0.14.0/github.com/UiOHive/deep-learning_intro/gh-pages/intro.md/#1)
+# What, Why and How?
+
+A short introduction on [deep learning](https://cicero.xyz/v3/remark/0.14.0/github.com/UiOHive/deep-learning_intro/gh-pages/intro.md/#1).
+
+# A simple neural network
+
+# Start with PyTorch
+
 
 {% include links.md %}
 
