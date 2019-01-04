@@ -4,14 +4,17 @@ teaching: 0
 exercises: 0
 questions:
 - "What is deep learning?"
+- "What is a computational graph?"
 - "What is a neural network?"
 - "How to start deep learning with Python?"
 objectives:
 - "Understand what is deep learning"
 - "Learn about simple neural network"
 - "Create a simple neural network in Python"
+- "Be aware of the various deep learning frameworks"
 keypoints:
 - "deep learning"
+- "computational graph"
 - "neural network"
 ---
 
@@ -19,13 +22,24 @@ keypoints:
 
 A short introduction on [deep learning](https://cicero.xyz/v3/remark/0.14.0/github.com/UiOHive/deep-learning_intro/gh-pages/intro.md/#1).
 
-# From a neuron to neural network
+> ## Keep it in mind
+> 
+> <img src="../fig/Why-Deep-Learning.png" style="width: 550px;"/>
+>
+> <p style="font-size:12px"><i>source</i>: <a href="https://www.slideshare.net/ExtractConf">Andrew Ng</a>, all rights reserved.</p>
+>
+{: .callout}
+
+
+# From a neuron to neural networks
 
 # Computational graph
 
 # Create your first neural network in Python
 
 # Overall code layout
+
+# Deep learning frameworks
 
 {% include links.md %}
 

@@ -103,7 +103,7 @@ Go to [www.menti.com](https://www.menti.com/) and use the code **64 74 68**
 
 <img src="fig/Why-Deep-Learning.png" style="width: 550px;"/>
 
-<p style="font-size:12px"><i>source</i>: [Andrew Ng](https://www.slideshare.net/ExtractConf), all rights reserved.
+<p style="font-size:12px"><i>source</i>: <a href="https://www.slideshare.net/ExtractConf">Andrew Ng</a>, all rights reserved.</p>
 
 
 ---
