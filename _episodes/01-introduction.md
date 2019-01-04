@@ -88,6 +88,7 @@ for i in range(epoch):
 print('actual :\n', y, '\n')
 print('predicted output :\n', output)
 ~~~
+{: .language-python}
 
 # Overall code layout
 
