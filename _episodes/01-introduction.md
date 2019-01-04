@@ -11,7 +11,6 @@ objectives:
 - "Understand what is deep learning"
 - "Learn about simple neural network"
 - "Create a simple neural network in Python"
-- "Be aware of the various deep learning frameworks"
 keypoints:
 - "deep learning"
 - "computational graph"
@@ -39,7 +38,6 @@ A short introduction on [deep learning](https://cicero.xyz/v3/remark/0.14.0/gith
 
 # Overall code layout
 
-# Deep learning frameworks
 
 {% include links.md %}
 
