@@ -14,8 +14,9 @@ keypoints:
 
 # Deep learning frameworks
 
-It is worth taking the time to look inside and understand underlying concepts of neural networks but
-as we can see writing neural networks with Python using [numpy](http://www.numpy.org/) is a bit cumbersome... 
+It was worth taking some time to look inside and understand underlying concepts of neural 
+networks but as we have experienced, writing neural networks with Python using 
+[numpy](http://www.numpy.org/) is a bit cumbersome, especially when hidden layers are involved. 
 
 For your research work, you will be mostly likely using high-level frameworks like Keras, TensorFlow 
 or PyTorch. They will allow us to build very complex models quickly. 
