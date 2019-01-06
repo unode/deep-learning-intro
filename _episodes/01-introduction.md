@@ -270,7 +270,7 @@ We now need to give our neural network the ability to "learn" by choosing a lear
 
 If we compare to their biological counterpart neural networks 
 learn by example. To give a concrete example, we can consider a child that learns to 
-recognize dogs from examples of dogs.
+recognize dogs from examples of "what a dog is" (typically pictures, drawings, movies, real dogs, etc.).
 
 ## Machine learning algorithms
 
@@ -284,29 +284,29 @@ We can broadly classify deep learning algorithms in 3 categories:
 
 - Each example in the training dataset needs to have a tag (right answer). 
 
-- Training process continues until the models achieves a desired level of accuracy on the training data.
+- The training process continues until the model achieves a desired level of accuracy on the training data.
 
 #### Usage
 
-- classification problems
-- regression problems
+- Classification problems
+- Regression problems
  
 ### Unsupervised Learning
 
 - No target/outcome variable to predict/estimate.
-- data will be divided in clusters by similarity
+- Data will be divided into clusters by similarity
 	
 
 #### Usage
 
-- clustering
-- reducing data dimensionality to compress the data while maintaining its structure and usefulness
+- Clustering
+- Reducing data dimensionality to compress the data while maintaining its structure and usefulness
 
 > ## Tips
 >
 > - It’s not always easy show how well an unsupervised learning algorithm is performing. 
 > "*Performance*" is often subjective and domain-specific.
-> - semi-supervised learning is used when your dataset is not entirely labeled (it is often very
+> - Semi-supervised learning is used when a dataset is not entirely labeled (it is often very
 > "expensive" to label large amount of data).
 >
 {: .callout}
@@ -319,21 +319,21 @@ We can broadly classify deep learning algorithms in 3 categories:
 
 #### Usage
 
-- game playing
-- control problems (robotics, navigation, etc.)
+- Game playing
+- Control problems (robotics, navigation, etc.)
 
 # Supervised neural networks
 
 Most common neural networks use supervised learning rules that modify the weights of the connections 
-according to the input patterns that it is presented with.
+according to the input patterns that they are presented with.
 
 
 When a neural network is initially presented with a "pattern" it makes a random
- 'guess' as to what it might be. It then sees how far its answer was from the actual one 
+ "guess" as to what it might be. It then "sees" how far its answer was from the actual one 
  and makes an appropriate adjustment to its connection weights. 
 
 
-The learning process occurs with each cycle or 'epoch' 
+The learning process occurs with each cycle or "epoch" 
 (i.e. each time the network is presented with a new input pattern) through a forward 
 activation flow of outputs, and the backwards error propagation of weight adjustments. 
 
