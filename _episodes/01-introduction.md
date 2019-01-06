@@ -172,12 +172,13 @@ We summarize the most common activation functions in the figure below:
 > > title='Rectified Linear'
 > > plot_activation(x,y,title,(1,2))
 > > 
-> > #  function
-> > y=np.tanh(x)
-> > title='tanH'
+> > # Parametric Rectified Linear Unit function
+> > alpha=0.5
+> > y = (x<0)*alpha*x + (x>=0)*x
+> > title='PReLU'
 > > plot_activation(x,y,title,(2,0))
 > > 
-> > #  Exponential Linear Unit function
+> > # Exponential Linear Unit function
 > > alpha=1
 > > y = x*(x>=0) + (alpha*(np.exp(x)-1))*(x<0)
 > > title='ELU'
