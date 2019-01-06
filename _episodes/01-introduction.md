@@ -469,9 +469,9 @@ import numpy as np
 
 def train(x, y, eta, epochs):
 
-	# initialize weights to 0
-	weights = np.zeros(1 + x.shape[1])
-	errors = []
+    # initialize weights to 0
+    weights = np.zeros(1 + x.shape[1])
+    errors = []
     for i in range(epochs):
         error = 0
         for xi, target in zip(x, y):
