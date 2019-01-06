@@ -562,7 +562,7 @@ y = np.where(y == 'Iris-setosa', -1, 1)
 # Features (sepal length and petal length)
 x = df.iloc[0:100, [0,2]].values
 ~~~
-{:. .language-python}
+{: .language-python}
 
 And finally, we are ready to apply our neural network to our dataset!
 
@@ -588,7 +588,7 @@ plt.xlabel('Iterations')
 plt.ylabel('Misclassifications')
 plt.show()
 ~~~
-{: .langage-python}
+{: .language-python}
 
 
 <img src="../fig/single_layer_perceptron1.png" style="width: 350px;"/>
