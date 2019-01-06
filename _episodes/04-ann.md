@@ -70,6 +70,15 @@ class ANN(torch.nn.Module):
 ~~~
 {: .language-python}
 
+~~~
+network = ANN()
+optimiser = torch.optim.Adam(network.parameters(), lr=learning_rate,
+                      weight_decay=0.005) 
+scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimiser,mode='min')
+criterion = torch.nn.CrossEntropyLoss()         
+
+~~~
+{: .language-python}
 
 # Train your neural network
 ~~~
@@ -128,6 +137,11 @@ def test():
 {: .language-python}
 # Run train and test for network
 ~~~
+train_losses = []
+train_counter = []
+test_losses = []
+training_losses=[]
+test_counter = [i*len(train_loader.dataset) for i in range(n_epochs + 1)]
 n_epochs = 10
 test()
 for epoch in range(n_epochs):
