@@ -747,8 +747,8 @@ def inputs(x, weights):
 def activation(x, weights):
     return inputs(x, weights)
 
-def predict(self, X):
-    return np.where(activation(x) >= 0.0, 1, -1)
+def predict(x, weights):
+    return np.where(activation(x, weights) >= 0.0, 1, -1)
 
 ~~~
 {: .language-python}
@@ -756,7 +756,7 @@ def predict(self, X):
 This algorithm strongly depends on the learning rate and it often necessary to try different
 values to find a good learning rate for optimal convergence.
 
-So let's plotting the cost for two different learning rates *0.01* and *0.0001*:
+So let's plot the cost for two different learning rates *0.01* and *0.0001*:
 
 ~~~
 epochs=10
@@ -800,7 +800,7 @@ The two plots illustrate problems related to the gradient descent:
 
 ### Standardization of input data
 
-It is easier to find an appropriate learning rate if the input values are on the same scale. 
+It is (generally) easier to find an appropriate learning rate if the input values are on the same scale. 
 In addition, it often leads to faster convergence and can prevent the weights from becoming 
 too small (numerical stability).
 
@@ -841,10 +841,8 @@ x_std[:,1] = (x[:,1] - x[:,1].mean()) / x[:,1].std()
 Now that our inputs are normalized, let's run our neural network:
 
 ~~~
-eta = 0.01
-
-# make 15 iterations
-epochs = 15
+epochs=15
+eta=0.01
 
 # initialize weights to 0
 weights = np.zeros(1 + x.shape[1])
@@ -852,22 +850,23 @@ costs = []
 
 [weights, costs] = train(x_std, y,  eta, epochs)
 
-print('Weights: %s' % weights)
-plt.scatter(df.iloc[0:100, 0].values,df.iloc[0:100, 2].values, c=y)
-plt.title('Perceptron')
-plt.xlabel('sepal length [cm]')
-plt.ylabel('petal length [cm]')
-plt.show()
-
 plt.plot(range(1, len(costs)+1), costs, marker='o')
 plt.xlabel('Iterations')
 plt.ylabel('Sum-squared-error')
 plt.show()
 
+
+plt.scatter(x[:,0],x[:,1], c=predict(x_std, weights))
+plt.title('Perceptron')
+plt.xlabel('sepal length [cm]')
+plt.ylabel('petal length [cm]')
+plt.show()
+
 ~~~
 {: .language-python}
 
-<img src="../fig/single_layer_backpropagation.png" style="width: 550px;"/>
+<img src="../fig/single_layer_backpropagation1.png" style="width: 550px;"/>
+<img src="../fig/single_layer_backpropagation2.png" style="width: 550px;"/>
 
 
 ## Multi-layered neural network
