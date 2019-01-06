@@ -70,8 +70,12 @@ class ANN(torch.nn.Module):
 ~~~
 {: .language-python}
 
+First, the network class is initialised. Then, we choose an optimiser and a learning rate for the optimisation. In order to update our learning rate, we can use a scheduler to reduce the learning rate. The *ReduceLROnPlateau* reduces the learning rate when a chosen metric has stopped improving after some epochs. In *mode='min'*, the lr will be reduced when the quantity monitored has stopped decreasing.
+The criterion usually used for training a classification problem is the Cross Entropy loss.  
+
 ~~~
 network = ANN()
+learning_rate = 0.0001
 optimiser = torch.optim.Adam(network.parameters(), lr=learning_rate,
                       weight_decay=0.005) 
 scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimiser,mode='min')
