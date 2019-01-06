@@ -43,7 +43,7 @@ Neural networks consist of neurons that are highly interconnected.
 
 A neuron is a unit which takes n entries and produce one unique output:
 
-- Inputs can  comes from other neurons or data input. 
+- Inputs can  come from other neurons or data input. 
 The data can be binary, integers or real (floating point) values. If a symbolic
 or nominal variable occurs, this must first be encoded with a set of
 binary variables. For instance, a nominal variable of three alternatives
