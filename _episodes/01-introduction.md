@@ -521,7 +521,7 @@ you can find large number of freely available datasets at [UCI Machine Learning 
 
 For our example, we will load the [Iris dataset](https://archive.ics.uci.edu/ml/datasets/iris)
  from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/index.php) and 
- only focus on the two flower species *[Setosa](https://en.wikipedia.org/wiki/Iris_setosa)* and *[Versicolor](https://fr.wikipedia.org/wiki/Iris_versicolore)*. 
+ only focus on the two flower species *[Setosa](https://en.wikipedia.org/wiki/Iris_setosa)* and *[Versicolor](https://en.wikipedia.org/wiki/Iris_versicolore)*. 
 
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Kosaciec_szczecinkowaty_Iris_setosa.jpg/800px-Kosaciec_szczecinkowaty_Iris_setosa.jpg" style="width: 200px;"/>
