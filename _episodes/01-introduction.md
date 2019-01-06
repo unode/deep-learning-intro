@@ -500,8 +500,8 @@ To apply our algorithm, we need to get a labeled dataset with 2 categories only 
 <span style="color:red">**Cleaning and preparing data is a critical first step in any deep learning project.**</span>
 
 
-Understanding what contains your dataset and what can be achieved with it are one of the most important
-task and should **never be neglected**.
+Understanding what contains your dataset and what can be achieved with it are two of the most important
+tasks which should **never be neglected**.
 
 - Examining the Dataset
 - Narrowing down your columns (inputs)
@@ -509,8 +509,8 @@ task and should **never be neglected**.
 - Preparing the features for deep learning (filtering, handling of missing values, normalization) 
 
 During the first part of this tutorial, we will be using datasets that have been already prepared for
-deep learning. For learning purposes, we strongly suggest to use fully validated ("sample") datasets; 
-you can find large number of freely available datasets at [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/index.php). 
+deep learning. For practicing purposes, we strongly suggest to use fully validated ("sample") datasets; 
+you can find a large number of freely available datasets at [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/index.php). 
 
 
 # Overall code layout
