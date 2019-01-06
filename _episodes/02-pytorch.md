@@ -370,20 +370,236 @@ Learn more about autograd with [PyTorch documentation](https://pytorch.org/tutor
 
 ## Creating a simple Neural network with PyTorch
 
-To create a neural network with PyTorch, you have to use the [Pytorch neural network class]().
+To create a neural network with PyTorch, you have to use the 
+[Pytorch neural network class](https://pytorch.org/docs/stable/nn.html) and
+create a new class based on [torch.nn.Module](https://pytorch.org/docs/stable/nn.html) 
+which is the base class for all PyTorch neural networks.
 
-### The neural network class
+> ## Note
+>
+> - Don't be afraid by the terminology!
+> - Even though the word "class" may be new to you, if you are a python programmer
+> you most likely used classes (without even knowing it).
+> - Let's go back to our iris dataset:
+> ~~~
+> import pandas as pd
+> df = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data', header=None)
+> print(type(df))
+> ~~~
+> {: .language-python}
+> 
+> In the example above, we read our iris dataset and stored it in a variable `df`.
+> The type of `df` is `pandas.core.frame.DataFrame`. 
+> Looking at the pandas [DataFrame](https://pandas.pydata.org/pandas-docs/version/0.23.4/generated/pandas.DataFrame.html)
+> documentation, we can get the list of attributes for a DataFrame and the list of methods
+> we can use for a DataFrame.
+> For instance, we can use `describe` to get a summary of our data:
+>
+> ~~~
+> df.describe()
+> ~~~
+> {: .language-python}
+>  Or you can sort your data depending on the column 1:
+>
+> ~~~
+> df.sort_values(by=1)
+> ~~~
+> {: .language-python}
+>
+> Here you are! Without knowing it you used python classes!
+>
+{: .callout}
+
+### The neural network class `torch.nn.Module`
 
 Neural networks can be constructed using the `torch.nn` package.
 `nn` depends on autograd to define models and differentiate them. 
 An `nn.Module` contains layers, and a method `forward(input)` that returns the `output`.
 
 To define a neural network with PyTorch, you would need to define a new class inherited from 
-`nn.Module`:
+`nn.Module`. 
+
+
+Let's take a very simple example i.e. we will create a perceptron with one single linear 
+neuron and one single output. The activation function is the identity activation function.
+
+<img src="../fig/pytorch_perceptron.png" style="width: 650px;"/>
+
+We will define a new class called perceptron (1 single linear neuron)
+
+~~~
+import torch
+
+class Perceptron(torch.nn.Module):
+    def __init__(self):
+	    # We initialize using the base 
+		# class initialization
+		# super() lets you avoid referring to the base class explicitly.
+        super().__init__()
+		# we define a layer using Linear model
+		# as we will apply a linear transformation to our inputs
+		# the first parameter is the number of neurons in the input layer
+		# and the second parameter is the number of outputs (here 1).
+        self.fl = torch.nn.Linear(1,1)
+	
+    def forward(self, x):
+        x = self.fl(x)
+        return x
+~~~
+{: .language-python}
+
+
+> ## Help: what do you mean by *inherited*?
+>
+> <img src="https://staff.fnwi.uva.nl/a.j.p.heck/Courses/JAVAcourse/ch3/character.gif" style="width: 350px;"/>
+> 
+> *Character class* is a **base class** and *Letter class* and *Digit class* inherited from
+> this base class. 
+>
+{: .callout}
+
+What we have done so far is to "describe" the layout of our neural network. Now, we can
+define a variable of type Perception:
+
+~~~
+neural_network = Perceptron()
+print(neural_network)
+~~~
+{: .language-python}
+
+~~~
+Perceptron(
+  (fl): Linear(in_features=1, out_features=1, bias = True)
+)
+~~~ 
+{: .output}
+
+We can also ask for information about the Perceptron parameters:
+~~~
+print(list(neural_network.parameters()))
+~~~
+{: .language-python}
+
+~~~
+Parameter containing:
+tensor([[0.3606]], requires_grad = True), Parameter containing:
+tensor([-0.3389], requires_grad=True)
+~~~ 
+{: .output}
+
+It means, *w0* is set to *-0.3389* (bias value) and *w1* = 0.3606.
+
+So if we run our neural network in *forward* mode, we should compute:
+
+~~~
+a1*w1 + w0
+~~~
+{: .language-latex}
+
+Let's create a new Perceptron variable using our newly created class:
+~~~
+neural_network = Perceptron()
+~~~
+{: .language-python}
+
+And a single input value:
+
+~~~
+input = torch.randn(1, requires_grad=True)
+print(input)
+~~~
+{: .language-python}
+
+~~~
+tensor([-1.7248], requires_grad=True)
+~~~
+{: .output}
+
+Then we can use this input through the unlearned network:
+
+~~~
+out = neural_network(input)
+print(out)
+~~~
+{: .language-python}
+
+~~~
+tensor([-0.9608], requires_grad=True)
+~~~
+{: .output}
+
+And it is correct because we get:
+
+~~~
+a1*w1 + w0 = 0.3606 * (-1.7248) + (-0.3389) = -0.96086288
+~~~
+{: .language-latex}
 
 ### Training the network
 
+To train our network, we will define a cost function and use a gradient descent method similar
+to what we have done previously:
+ 
+~~~
+cost_function = torch.nn.MSELoss()
+   
+perceptron_optimizer = torch.optim.SGD(neural_network.parameters(), lr=0.01)
+~~~
+{: .language-python}
+
+`torch.nn.MSELoss()` creates a criterion that measures the mean squared error 
+(squared L2 norm) between each element in the input x and target y. You can use other cost
+functions either by defining a new function yourself or by using one of the predefined.
+
+**SGD** stands for *[Stochastic Gradient Descent](https://en.wikipedia.org/wiki/Stochastic_gradient_descent)* 
+and is the de-facto gradient descent method in PyTorch. However, other methods are available too.
+
+See PyTorch documentation [here](https://pytorch.org/docs/stable/optim.html).
+
+Then we can train our neural network. For training our neural network, we need to define
+input data. Let's take a very simple function y = 3*x:
+
+~~~
+inputs = [(1.,3.), (2.,6.), (3.,9.), (4.,12.), (5.,15.), (6.,18.)]
+for epoch in range(100):
+    for i, data in enumerate(inputs):
+        X, Y = iter(data)
+        X = torch.tensor([X], requires_grad=True)
+		# output does not need to have requires_grad=True
+        Y = torch.tensor([Y], requires_grad=False)
+		# Initialize optimizer
+        perceptron_optimizer.zero_grad()
+        outputs = neural_network(X)
+        cost = cost_function(outputs, Y)
+        cost.backward()
+        perceptron_optimizer.step()
+        if (i % 10 == 0):
+            print("Epoch {} - loss: {}".format(epoch, loss.item()))
+
+~~~
+{: .language-python}
+
 ### Testing the network
 
+~~~
+import numpy as np
+
+data = torch.zeros(6,1)
+for i in range(6):
+    plt.plot(i+1,(i+1)*3,marker='o', color='b')
+    data[i] = float(i+1.)
+#predict values
+Y=neural_network(data)
+plt.plot(range(1,7),Y.detach().numpy())
+print(Y)
+~~~
+{: .language-python}
+
+> ## Challenge
+> 
+> - Test your neural network with inputs values that were not used during the training.
+> - Does it work?
+>
+{: .challenge}
 {% include links.md %}
 
