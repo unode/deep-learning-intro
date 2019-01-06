@@ -377,12 +377,12 @@ unit step function:
 > > import matplotlib.pyplot as plt
 > > %matplotlib inline
 > > 
+> > x = np.arange(-5, 5, 0.01)
 > > theta = 0
 > > # modified unit step function
 > > y =(x>=theta)*1 -1*(x<theta)
 > > title='Modified unit step function'
 > > plt.figure(figsize=(10,10))
-> > x = np.arange(-5, 5, 0.01)
 > > plt.plot(x,y)
 > > plt.xlabel('Input')
 > > plt.title(title)
