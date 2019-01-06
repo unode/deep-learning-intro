@@ -125,7 +125,7 @@ We summarize the most common activation functions in the figure below:
 > > %matplotlib inline
 > > 
 > > 
-> > plt.figure(figsize=(10,10))
+> > plt.figure(figsize=(20,10))
 > > 
 > > def plot_activation(x,y,title, position):  
 > >     ax = plt.subplot2grid((3, 3), position)                    
@@ -135,10 +135,7 @@ We summarize the most common activation functions in the figure below:
 > >     else:
 > >         ax.set_xticklabels([])
 > >     ax.set_title(title)
-> >     if position[1]==0:
-> >         ax.set_ylabel('Output');
-> >     else:
-> >         ax.set_yticklabels([])
+> >     ax.set_ylabel('Output');
 > >                           
 > > x = np.arange(-5, 5, 0.01)
 > > 
