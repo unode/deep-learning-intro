@@ -50,6 +50,9 @@ test_loader = torch.utils.data.DataLoader(
 ~~~
 {: .language-python}
 # Define your network
+
+In PyTorch, the neural networks are built as classes. The last layer should have an output dimension equal to the number of classes in the classification problem. The first layer has an input size equal to the dimension of the input. 
+In the forward function, the input is passed through the layers and the output is returned.
 ~~~
 class ANN(torch.nn.Module):
     def __init__(self):
@@ -85,6 +88,7 @@ criterion = torch.nn.CrossEntropyLoss()
 {: .language-python}
 
 # Train your neural network
+In the training phase, the weights and biases are calculated. The loss is calculated with the criterion and backpropagated to change the models parameters.
 ~~~
 def train(epoch):
     network.train()
@@ -151,6 +155,17 @@ test()
 for epoch in range(n_epochs):
     train(epoch)
     test()
+~~~
+{: .language-python}
+
+To check the final parameters of the model in each layer, we should call the network parameters. Here the weights in the first layer are presented.
+~~~
+network.fc1.weight
+~~~
+{: .language-python}
+And the biases:
+~~~
+network.fc1.bias
 ~~~
 {: .language-python}
 
