@@ -17,6 +17,8 @@ keypoints:
 # Prepare your Data
 
 ## Training data versus Test data
+
+
 splitting 
 ~~~
 
@@ -25,7 +27,7 @@ splitting
 
 ## Normalisation
 
-The learning problem for neural networks is sensitive to input scaling (2009, Hastie et.al.). Scaling the inputs determines the effective scaling of the weights and can have a large effect on the quality of the final solution. There are two usual ways: min-max scaling and standardisation. It is mostly recommended to standardise the inputs to have mean zero and standard deviation one. Then, all inputs are treated equally in the regularisation process.
+The learning problem for neural networks is sensitive to input scaling (Hastie et.al., 2009). Scaling the inputs determines the effective scaling of the weights and can have a large effect on the quality of the final solution. There are two usual ways: min-max scaling and standardisation. It is mostly recommended to standardise the inputs to have mean zero and standard deviation one. Then, all inputs are treated equally in the regularisation process.
 Scikit-learn has a function to standardise. 
 ~~~
 from sklearn import preprocessing
@@ -77,7 +79,9 @@ test_loader = torch.utils.data.DataLoader(
 In PyTorch, the neural networks are built as classes. The last layer should have an output dimension equal to the number of classes in the classification problem. The first layer has an input size equal to the dimension of the input. 
 In the forward function, the input is passed through the layers and the output is returned.
 
-Number of hidden layers
+Generally it is better to have too many hidden units in a neural network. With too few hidden units, the model might not be flexible enough to represent the nonlinearities in the data; with too many, the extra weights can tend to zero if appropiate regularisation if used. The use of multiple hidden layers allows for the construction of hierarchical features at different levels of resolution (Hastie et.al., 2009).
+
+
 
 ~~~
 class ANN(torch.nn.Module):
@@ -99,8 +103,10 @@ class ANN(torch.nn.Module):
 ~~~
 {: .language-python}
 
-First, the network class is initialised. Then, we choose an optimiser and a learning rate for the optimisation. In order to update our learning rate, we can use a scheduler to reduce the learning rate. The *ReduceLROnPlateau* reduces the learning rate when a chosen metric has stopped improving after some epochs. In *mode='min'*, the lr will be reduced when the quantity monitored has stopped decreasing.
-The criterion usually used for training a classification problem is the Cross Entropy loss.  
+First, the network class is initialised. Then, we choose an optimiser and a learning rate for the optimisation. In order to update our learning rate, we can use a scheduler to reduce the learning rate. The `torch.optim.lr_scheduler.ReduceLROnPlateau` reduces the learning rate when a chosen metric has stopped improving after some epochs. In `mode='min'`, the learning rate will be reduced when the quantity monitored has stopped decreasing.
+The criterion usually used for training a classification problem is the Cross Entropy loss `torch.nn.CrossEntropyLoss()`.  
+
+Due to the high amount of parameters in such models, overfitting can be an issue. In order to avoid overfitting, a penalty term is added to the error function multiplied by a tuning parameter, the so-called *weight decay*, which is greater or equal than zero. Larger values of the weight decay will shrink the weights toward zero. 
 
 ~~~
 network = ANN()
@@ -114,7 +120,7 @@ criterion = torch.nn.CrossEntropyLoss()
 {: .language-python}
 
 # Train your neural network
-In the training phase, the weights and biases are calculated. The loss is calculated with the criterion and backpropagated to change the models parameters.
+In the training phase, the weights and biases are calculated. The loss is calculated with the criterion and backpropagated to change the parameters.
 ~~~
 def train(epoch):
     network.train()
@@ -197,8 +203,6 @@ network.fc1.bias
 
 
 # References
-
 Hastie, T., Tibshirani, R., Friedman, J. , The Elements of Statistical Learning, Springer, 2009.
-
 {% include links.md %}
 
