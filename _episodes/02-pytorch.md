@@ -548,7 +548,7 @@ perceptron_optimizer = torch.optim.SGD(neural_network.parameters(), lr=0.01)
 {: .language-python}
 
 `torch.nn.MSELoss()` creates a criterion that measures the mean squared error 
-(squared L2 norm) between each element in the input x and target y. You can use other cost
+(squared L2 norm) between each element in the modeled and targeted y. You can use other cost
 functions either by defining a new function yourself or by using one of the predefined.
 
 **SGD** stands for *[Stochastic Gradient Descent](https://en.wikipedia.org/wiki/Stochastic_gradient_descent)* 
