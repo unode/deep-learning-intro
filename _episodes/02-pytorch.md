@@ -361,7 +361,7 @@ you all the gradients computed automatically. Use `.grad` attribute to get the g
 x = torch.rand(2,3,requires_grad=True)
 y = x*x + 5
 out = y.sum()
-out.backwards()
+out.backward()
 print(x.grad)
 ~~~
 {: .language-python}
