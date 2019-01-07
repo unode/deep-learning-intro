@@ -24,6 +24,10 @@ The digits have been size-normalized and centered in a fixed-size image:
 It is a good database for people who want to try learning techniques and pattern recognition methods on real-world data while spending minimal efforts on preprocessing and formatting.
 
 
+## Training data versus Test data
+
+After downloading or collecting our data, we wish to split the dataset into a training and test set. The training set is to be used to build the model and calculate its parameters. A very common way of splitting the dataset is with `sklearn.model_selection.train_test_split`, in which the dataset is the first input and size of the training set/test set is specified.
+
 
 ## Normalisation
 
