@@ -7,7 +7,34 @@ objectives:
 keypoints:
 ---
 
+Let's start with a dummy dataset (radonmly generated data) and see how to build a neural network
+with PyTorch.
+
+# Input data
+
+~~~
+N = 64
+D_in = 1000
+
+# Create random Tensors to hold inputs and outputs
+x = torch.randn(N, D_in)
+y = torch.randn(N, D_out)
+~~~
+{: .language-python}
+
+We have 64 samples and each sample contains 1000 columns.
+
+The goal is now to find a curve that describes best your dataset with neural network.
+
 # Neural network class definition
+
+Our multi-layered neural network will have one hidden layer (it is still not deep learning!) so in total 3 layers:
+- one input layer
+- one hidden layer
+- one output layer
+
+We still use Linear model for each layer and we take a ReLU (Rectified Linear Unit) Activation Function
+to be applied one the hidden layer:
 
 ~~~
 import torch
@@ -17,28 +44,20 @@ class Model(torch.nn.Module):
         self.l1 = torch.nn.Linear(D_in, H)
         self.relu = torch.nn.ReLU()
         self.l2=torch.nn.Linear(H, D_out)
-        
+
     def forward(self, X):
         return self.l2(self.relu(self.l1(X)))
 ~~~
 {: .language-python}
 
-# Input Data
-
-~~~
-# N is batch size; D_in is input dimension;
-# H is hidden dimension; D_out is output dimension.
-N, D_in, H, D_out = 64, 1000, 100, 10
-
-# Create random Tensors to hold inputs and outputs
-x = torch.randn(N, D_in)
-y = torch.randn(N, D_out)
-~~~
-{: .language-python}
 
 # Training
 
 ~~~
+# Define 100 neurons in the hidden layer
+H = 100
+# and 10 neurons in the output layer
+D_out = 10
 model = Model(D_in, H, D_out)
 
 loss_fn = torch.nn.MSELoss(reduction='sum')
@@ -81,5 +100,14 @@ print(y_last - y)
 
 ~~~
 {: .language-python}
-{% include links.md %}
 
+> ## Challenge
+>
+> Change your neural network and your dataset:
+> - try different values for the learning rate
+> - add more samples and generate a training and testing dataset
+> - Add a new hidden layer
+>
+{: .challenge}
+
+{% include links.md %}
