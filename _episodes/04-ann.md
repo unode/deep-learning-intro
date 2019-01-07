@@ -87,10 +87,10 @@ Generally it is better to have too many hidden units in a neural network. With t
 class ANN(torch.nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.fc1 = torch.nn.Linear(28*28, 300)   #input size
-        self.fc2 = torch.nn.Linear(300,300)
-        self.fc3 = torch.nn.Linear(300,300)
-        self.fc4 = torch.nn.Linear(300, 10)
+        self.fc1 = torch.nn.Linear(28*28, 30)   #(input size, hidden size)
+        self.fc2 = torch.nn.Linear(30,30)
+        self.fc3 = torch.nn.Linear(30,30)
+        self.fc4 = torch.nn.Linear(30, 10)      #(hidden size, output size)
 
     def forward(self, x):
         x = x.view(x.size(0), -1)   # the size -1 is inferred from other dimensions (28*28)
