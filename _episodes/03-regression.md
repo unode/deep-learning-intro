@@ -4,7 +4,7 @@ teaching: 0
 exercises: 0
 questions:
 - "How using PyTorch for multi-layered neural network?"
-- "Which neural network for regression?
+- "Which neural network for regression?"
 objectives:
 - "Learn how to build multi-layered neural network with PyTorch"
 keypoints:
