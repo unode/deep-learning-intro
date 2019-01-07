@@ -25,19 +25,11 @@ It is a good database for people who want to try learning techniques and pattern
 
 
 
-## Training data versus Test data
-
-
-splitting 
-~~~
-
-~~~
-{: .language-python}
-
 ## Normalisation
 
 The learning problem for neural networks is sensitive to input scaling (Hastie et.al., 2009). Scaling the inputs determines the effective scaling of the weights and can have a large effect on the quality of the final solution. There are two usual ways: min-max scaling and standardisation. It is mostly recommended to standardise the inputs to have mean zero and standard deviation one. Then, all inputs are treated equally in the regularisation process.
 Scikit-learn has a function to standardise. 
+
 ~~~
 from sklearn import preprocessing
 import numpy as np
@@ -50,19 +42,35 @@ print( X_scaled.std(axis=0))
 {: .language-python}
 
 
+We will see later that we can also use pyTorch for normalizing our data.
 
+## Training data versus Test data
+
+To validate our model, it is good practice to split the sample dataset in two:
+
+- training dataset
+- test dataset
+
+There are different technique to split a dataset from the simplest (taking the first half as the training dataset and the second half as the testing dataset) to the most sophisticated. High-level machine learning libraries usually offer ready-made functions to split training and test datasets. 
+
+The MNIST database is already providing us with one training dataset and one test dataset. Therefore there is no need to split our input data.
 
 # Load your data
 
-Let's use the MNIST dataset and download it with PyTorch. We define sizes of the training and test batches. Loading this dataset from torchvision, it is possible to normalise it with the *torchvision.transforms.Normalize* by giving the mean (0.1307) and the standard deviation (0.3081) of the dataset. 
+Let's download the MNIST dataset with PyTorch. We define sizes of the training and test batches. Loading this dataset from torchvision, it is possible to normalise it with the *torchvision.transforms.Normalize* by giving the mean (0.1307) and the standard deviation (0.3081) of the dataset. 
 It is necessary to set a seed when dealing with random numbers.
+
+- Download and load the MNIST training dataset with PyTorch:
+
 ~~~
 import torch
 import torchvision
+
+import torch.nn
+
 torch.random.manual_seed(1)
 
 batch_size_train = 64
-batch_size_test = 1000
 
 train_loader = torch.utils.data.DataLoader(torchvision.datasets.MNIST(root='./data/', train=True, download=True,
                              transform=torchvision.transforms.Compose([
@@ -72,6 +80,28 @@ train_loader = torch.utils.data.DataLoader(torchvision.datasets.MNIST(root='./da
                              ])),
   batch_size=batch_size_train, shuffle=True)
 
+print(train_loader.dataset)  
+~~~
+{: .language-python}
+
+~~~
+Dataset MNIST
+    Number of datapoints: 60000
+    Split: train
+    Root Location: ./data/
+    Transforms (if any): Compose(
+                             ToTensor()
+                             Normalize(mean=(0.1307,), std=(0.3081,))
+                         )
+    Target Transforms (if any): None
+~~~
+{: .output}
+
+
+- Download and load the MNIST test dataset with PyTorch:
+
+~~~
+batch_size_test = 1000
 test_loader = torch.utils.data.DataLoader(
   torchvision.datasets.MNIST('./data/', train=False, download=True,
                              transform=torchvision.transforms.Compose([
@@ -81,8 +111,25 @@ test_loader = torch.utils.data.DataLoader(
                              ])),
   batch_size=batch_size_test, shuffle=True)
   
+print(test_loader.dataset)  
 ~~~
 {: .language-python}
+
+
+~~~
+Dataset MNIST
+    Number of datapoints: 10000
+    Split: test
+    Root Location: ./data/
+    Transforms (if any): Compose(
+                             ToTensor()
+                             Normalize(mean=(0.1307,), std=(0.3081,))
+                         )
+    Target Transforms (if any): None  
+~~~
+{: .output}
+
+
 # Define your network
 
 In PyTorch, the neural networks are built as classes. The last layer should have an output dimension equal to the number of classes in the classification problem. The first layer has an input size equal to the dimension of the input. 
@@ -91,24 +138,65 @@ In the forward function, the input is passed through the layers and the output i
 Generally it is better to have too many hidden units in a neural network. With too few hidden units, the model might not be flexible enough to represent the nonlinearities in the data; with too many, the extra weights can tend to zero if appropiate regularisation if used. The use of multiple hidden layers allows for the construction of hierarchical features at different levels of resolution (Hastie et.al., 2009).
 
 
+In the training phase, the weights and biases are calculated. The loss is calculated with the criterion and backpropagated to change the parameters.
+
 
 ~~~
 class ANN(torch.nn.Module):
     def __init__(self):
-        super(ANN, self).__init__()
-        self.fc1 = torch.nn.Linear(28*28, 30)   #(input size, hidden size)
-        self.fc2 = torch.nn.Linear(30,30)
-        self.fc3 = torch.nn.Linear(30,30)
-        self.fc4 = torch.nn.Linear(30, 10)      #(hidden size, output size)
+        super().__init__()
+        self.fc1 = torch.nn.Linear(28*28, 30)   #input size
+        self.fc2 = torch.nn.Linear(30, 30)
+        self.fc3 = torch.nn.Linear(30, 30)
+        self.fc4 = torch.nn.Linear(30, 10)
 
     def forward(self, x):
         x = x.view(x.size(0), -1)   # the size -1 is inferred from other dimensions (28*28)
         x = torch.sigmoid(self.fc1(x))
-        x = torch.nn.functional.dropout(x, training=self.training)
         x = torch.sigmoid(self.fc2(x))
         x = torch.sigmoid(self.fc3(x))
         x = self.fc4(x)
-        return x          
+        return x     
+    
+    def training_phase(self, epoch, train_loader):
+        self.train()
+        train_loss = 0
+        train_corrects = 0
+        for batch_idx, (data, target) in enumerate(train_loader):
+            optimiser.zero_grad()
+            output = self(data)
+            _, preds = torch.max(output.data, 1)
+            loss = criterion(output, target)
+            loss.backward()
+            optimiser.step()
+            train_loss += loss.item()
+            train_corrects += torch.sum(preds == target.data) 
+
+        epoch_acc= train_corrects.double() / len(train_loader.dataset)
+        print('Epoch {} , Average training loss is {:.6f} and accuracy is {}/{} {:.0f}%'.format((epoch+1),
+                        train_loss/len(train_loader),train_corrects.double(),
+                                        len(train_loader.dataset),epoch_acc*100.))
+        
+    def testing_phase(self, test_loader):
+        self.eval()
+        test_loss = 0
+        test_corrects = 0
+        total= 0
+        with torch.no_grad():
+            for batch_idx,(data, target) in enumerate(test_loader):
+                output = network(data)
+                _, preds = torch.max(output.data, 1)
+                test_loss += criterion(output, target).item()
+                total += target.size(0)
+                test_corrects += torch.sum(preds == target.data) 
+        
+            epoch_acc= test_corrects.double() / len(test_loader.dataset)
+            test_loss /= len(test_loader)
+       
+            print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+                test_loss, test_corrects, len(test_loader.dataset),
+                100. * epoch_acc))
+            scheduler.step(test_loss)   
 ~~~
 {: .language-python}
 
@@ -123,78 +211,19 @@ learning_rate = 0.0001
 optimiser = torch.optim.Adam(network.parameters(), lr=learning_rate,
                       weight_decay=0.005) 
 scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimiser,mode='min')
-criterion = torch.nn.CrossEntropyLoss()         
-
+criterion = torch.nn.CrossEntropyLoss() 
 ~~~
 {: .language-python}
 
-# Train your neural network
-In the training phase, the weights and biases are calculated. The loss is calculated with the criterion and backpropagated to change the parameters.
-~~~
-def train(epoch):
-    network.train()
-    training_loss = 0
-    train_corrects = 0
-    for batch_idx, (data, target) in enumerate(train_loader):
-        optimiser.zero_grad()
-        output = network(data)
-        _, preds = torch.max(output.data, 1)
-        loss = criterion(output, target)
-        loss.backward()
-        optimiser.step()
-        training_loss += loss.item()
-        train_corrects += torch.sum(preds == target.data) 
 
-        train_losses.append(loss.item())
-        train_counter.append((batch_idx*batch_size_train) + ((epoch-1)*len(train_loader.dataset)))
-        
-    torch.save(network.state_dict(), 'model.pth')
-    torch.save(optimiser.state_dict(), 'optimiser.pth')
-  
-    epoch_acc= train_corrects.double() / len(train_loader.dataset)
-    training_losses.append(training_loss/len(train_loader.dataset))
-    print('Epoch {} , Average training loss is {:.6f} and accuracy is {}/{} {:.0f}%'.format((epoch+1),
-                        training_loss/len(train_loader),train_corrects.double(),
-                                        len(train_loader.dataset),epoch_acc*100.))
-~~~
-{: .language-python}
-
-# Test your neural network
-~~~
-def test():
-    network.eval()
-    test_loss = 0
-    test_corrects = 0
-    total= 0
-    with torch.no_grad():
-        for batch_idx,(data, target) in enumerate(test_loader):
-            output = network(data)
-            _, preds = torch.max(output.data, 1)
-            test_loss += criterion(output, target).item()
-            total += target.size(0)
-            test_corrects += torch.sum(preds == target.data) 
-        
-        epoch_acc= test_corrects.double() / len(test_loader.dataset)
-        test_loss /= len(test_loader)
-        test_losses.append(test_loss)
-       
-        print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
-            test_loss, test_corrects, len(test_loader.dataset),
-            100. * epoch_acc))
-        scheduler.step(test_loss)
-~~~
-{: .language-python}
 # Run train and test for network
 ~~~
-train_losses = []
-train_counter = []
-test_losses = []
+n_epochs = 15
 test_counter = [i*len(train_loader.dataset) for i in range(n_epochs + 1)]
-n_epochs = 10
-test()
+network.testing_phase(test_loader)
 for epoch in range(n_epochs):
-    train(epoch)
-    test()
+    network.training_phase(epoch, train_loader)
+    network.testing_phase(test_loader)
 ~~~
 {: .language-python}
 
@@ -210,7 +239,32 @@ network.fc1.bias
 ~~~
 {: .language-python}
 
+We can also make a few plots:
 
+~~~
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+examples = enumerate(train_loader)
+batch_idx, (example_data, example_targets) = next(examples)
+example_data.shape
+
+with torch.no_grad():
+    example_network = network(example_data)   
+    _, example_pred = torch.max(example_network.data, 1)
+
+fig = plt.figure()
+for i in range(6):
+  plt.subplot(2,3,i+1)
+  plt.tight_layout()
+  plt.imshow(example_data[i][0], cmap='gray', interpolation='none')
+  plt.title("Target: " + str(example_targets[i]) + "\n network: " + str(example_pred.numpy()[i]) )
+  plt.xticks([])
+  plt.yticks([])
+~~~
+{: .language-python}
+
+<img src="../fig/numbers.png" style="width: 550px;"/>
 
 # References
 Hastie, T., Tibshirani, R., Friedman, J. , The Elements of Statistical Learning, Springer, 2009.
