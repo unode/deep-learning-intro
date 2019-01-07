@@ -119,6 +119,8 @@ plt.savefig('Model_validation')
 ~~~
 {: .language-python}
 
+<img src="../fig/Model_validation.png"/>
+
 > ## Challenge
 >
 > Change your neural network and your dataset:
