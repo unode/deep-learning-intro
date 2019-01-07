@@ -16,6 +16,15 @@ keypoints:
 
 # Prepare your Data
 
+Let's use the [MNIST dataset](http://yann.lecun.com/exdb/mnist/), a database of handwritten digits.
+The digits have been size-normalized and centered in a fixed-size image:
+
+<img src="../fig/MNIST.png" style="width: 400px;"/>
+
+It is a good database for people who want to try learning techniques and pattern recognition methods on real-world data while spending minimal efforts on preprocessing and formatting.
+
+
+
 ## Training data versus Test data
 
 
