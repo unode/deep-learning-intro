@@ -574,7 +574,7 @@ for epoch in range(100):
         cost.backward()
         perceptron_optimizer.step()
         if (i % 10 == 0):
-            print("Epoch {} - loss: {}".format(epoch, loss.item()))
+            print("Epoch {} - loss: {}".format(epoch, cost.item()))
 
 ~~~
 {: .language-python}
