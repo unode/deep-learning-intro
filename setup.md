@@ -19,7 +19,6 @@ title: Setup
 - [Install Python Anaconda](#install-python-anaconda)
 - [Install Anaconda Navigator](#install-anaconda-navigator)
 - [Install PyTorch and other python packages for the workshop](#additional-python-packages-for-the-workshop)
-- [Obtain lesson datasets and code](#obtain-lesson-materials)
 
 
 
@@ -402,34 +401,5 @@ When clicking on "New" (right hand side) as shown on the Figure below:
 {: .callout}
 
 
-### Obtain lesson materials
-
-1. Download [deep-learning-data.zip](https://zenodo.org/???).
-2. Create a folder called `resbaz-deeplearning` on your Desktop.
-3. Move downloaded files into this newly created folder.
-4. Unzip the files.
-
-You should now see two new folders called `data` and `code` in your `resbaz-deeplearning` directory 
-on your Desktop.
-
-&nbsp; <!-- vertical spacer -->
-
-### Navigate to the `data` folder
-
-If you're using a Unix shell application, such as Terminal app in macOS, Console or Terminal in
-Linux, or [Git Bash](https://gitforwindows.org/) on Windows, execute the following command:
-
-~~~
-$ cd ~/Desktop/resbaz-deeplearning/data
-~~~
-{: .source}
-
-On Windows, you can use its native Command Prompt program.  The easiest way to start it up is by
-pressing <kbd>Windows Logo Key</kbd>+<kbd>R</kbd>, entering `cmd`, and hitting <kbd>Enter</kbd>. In
-the Command Prompt, use the following command to navigate to the `data` folder:
-~~~
-$ cd /D %userprofile%\Desktop\resbaz-deeplearning\data
-~~~
-{: .source}
 
 {% include links.md %}
