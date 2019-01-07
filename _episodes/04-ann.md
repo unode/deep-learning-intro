@@ -284,6 +284,13 @@ for i in range(6):
 # References
 Hastie, T., Tibshirani, R., Friedman, J. , The Elements of Statistical Learning, Springer, 2009.
 
+> ## Challenge
+>
+> - What do you think about the performance of our neural network? Is it acceptable?
+> - Suggest changes to improve the overall performance (for instance, increase the number of epochs, the learning rate, the number of hidden cells, etc.
+> Does it help to add a new hidden layer?
+>
+{: .language-python}
 
 {% include links.md %}
 
