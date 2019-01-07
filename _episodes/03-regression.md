@@ -108,6 +108,14 @@ for t in range(500):
 y_last = model(x)
 print(y_last - y)
 
+import matplotlib.pyplot as plt
+%matplotlib inline
+plt.figure(figsize=(5,5))
+plt.plot(y.detach().numpy(), y_last.detach().numpy(), 'o')
+plt.xlabel('Targeted y', fontsize=16)
+plt.ylabel('Modeled y', fontsize=16)
+plt.savefig('Model_validation')
+
 ~~~
 {: .language-python}
 
