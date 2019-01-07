@@ -30,7 +30,6 @@ It is a good database for people who want to try learning techniques and pattern
 After downloading or collecting our data, we wish to split the dataset into a training and a test set. The training set is to be used to build the model and calculate its parameters. A very common way of splitting the dataset is with `sklearn.model_selection.train_test_split`, in which the dataset is the first input and the size of the training set/test set is specified.
 ~~~
 import numpy as np
-import numpy as np
 import sklearn
 np.random.seed(1)
 X, y = sklearn.datasets.fetch_openml('mnist_784', version=1, return_X_y=True)
