@@ -197,6 +197,8 @@ network.fc1.bias
 
 
 # References
+
 Hastie, T., Tibshirani, R., Friedman, J. , The Elements of Statistical Learning, Springer, 2009.
+
 {% include links.md %}
 
