@@ -194,6 +194,7 @@ To check the final parameters of the model in each layer, we should call the net
 network.fc1.weight
 ~~~
 {: .language-python}
+
 And the biases:
 ~~~
 network.fc1.bias
@@ -204,5 +205,7 @@ network.fc1.bias
 
 # References
 Hastie, T., Tibshirani, R., Friedman, J. , The Elements of Statistical Learning, Springer, 2009.
+
+
 {% include links.md %}
 
