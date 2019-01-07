@@ -17,12 +17,19 @@ with PyTorch.
 # Input data
 
 ~~~
+import torch
+
+# 64 samples
 N = 64
+# 1000 neurons in the input layer
 D_in = 1000
+# and 10 neurons in the output layer
+D_out = 10
 
 # Create random Tensors to hold inputs and outputs
 x = torch.randn(N, D_in)
 y = torch.randn(N, D_out)
+
 ~~~
 {: .language-python}
 
@@ -60,8 +67,7 @@ class Model(torch.nn.Module):
 ~~~
 # Define 100 neurons in the hidden layer
 H = 100
-# and 10 neurons in the output layer
-D_out = 10
+
 model = Model(D_in, H, D_out)
 
 loss_fn = torch.nn.MSELoss(reduction='sum')
