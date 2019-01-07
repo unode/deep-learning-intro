@@ -3,8 +3,12 @@ title: "Regression with PyTorch"
 teaching: 0
 exercises: 0
 questions:
+- "How using PyTorch for multi-layered neural network?"
+- "Which neural network for regression?
 objectives:
+- "Learn how to build multi-layered neural network with PyTorch"
 keypoints:
+- "multi-layered neural network"
 ---
 
 Let's start with a dummy dataset (radonmly generated data) and see how to build a neural network
