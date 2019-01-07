@@ -583,6 +583,8 @@ for epoch in range(100):
 
 ~~~
 import numpy as np
+import matplotlib.pyplot as plt
+plt.figure(figsize=(10,10))
 
 data = torch.zeros(6,1)
 for i in range(6):
