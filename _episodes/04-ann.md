@@ -83,6 +83,22 @@ test_loader = torch.utils.data.DataLoader(
   
 ~~~
 {: .language-python}
+
+Let's see how the data looks like and plot some images from our dataset.
+~~~
+import matplotlib.pyplot as plt
+%matplotlib inline
+examples = enumerate(train_loader)
+batch_idx, (example_data, example_targets) = next(examples)
+image = example_data[1][0]
+mean = 0.1307
+std = 0.3081
+image = ((mean * image) + std)
+plt.imshow(image,cmap='gray')
+plt.title("Target: {}".format(example_targets[1]));
+~~~
+{: .language-python}
+
 # Define your network
 
 In PyTorch, the neural networks are built as classes. The last layer should have an output dimension equal to the number of classes in the classification problem. The first layer has an input size equal to the dimension of the input. 
