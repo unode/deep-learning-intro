@@ -17,11 +17,34 @@ keypoints:
 # Prepare your Data
 
 ## Training data versus Test data
+splitting 
+~~~
 
-## Normalization
+~~~
+{: .language-python}
+
+## Normalisation
+
+The learning problem for neural networks is sensitive to input scaling (2009, Hastie et.al.). Scaling the inputs determines the effective scaling of the weights and can have a large effect on the quality of the final solution. There are two usual ways: min-max scaling and standardisation. It is mostly recommended to standardise the inputs to have mean zero and standard deviation one. Then, all inputs are treated equally in the regularisation process.
+Scikit-learn has a function to standardise. 
+~~~
+from sklearn import preprocessing
+import numpy as np
+X_train = np.array([[ 1., -1.,  2.], [ 2.,  0.,  0.],[ 0.,  1., -1.]])
+X_scaled = preprocessing.scale(X_train)
+print(X_scaled)
+print(X_scaled.mean(axis=0))
+print( X_scaled.std(axis=0))
+~~~
+{: .language-python}
+
+
+
 
 # Load your data
-Let's use the MNIST dataset and download it with PyTorch. We define sizes of the training and test batches. 
+
+Let's use the MNIST dataset and download it with PyTorch. We define sizes of the training and test batches. Loading this dataset from torchvision, it is possible to normalise it with the *torchvision.transforms.Normalize* by giving the mean (0.1307) and the standard deviation (0.3081) of the dataset. 
+It is necessary to set a seed when dealing with random numbers.
 ~~~
 import torch
 import torchvision
@@ -53,6 +76,9 @@ test_loader = torch.utils.data.DataLoader(
 
 In PyTorch, the neural networks are built as classes. The last layer should have an output dimension equal to the number of classes in the classification problem. The first layer has an input size equal to the dimension of the input. 
 In the forward function, the input is passed through the layers and the output is returned.
+
+Number of hidden layers
+
 ~~~
 class ANN(torch.nn.Module):
     def __init__(self):
@@ -148,7 +174,6 @@ def test():
 train_losses = []
 train_counter = []
 test_losses = []
-training_losses=[]
 test_counter = [i*len(train_loader.dataset) for i in range(n_epochs + 1)]
 n_epochs = 10
 test()
@@ -169,5 +194,9 @@ network.fc1.bias
 ~~~
 {: .language-python}
 
+
+
+# References
+Hastie, T., Tibshirani, R., Friedman, J. , The Elements of Statistical Learning, Springer, 2009.
 {% include links.md %}
 
