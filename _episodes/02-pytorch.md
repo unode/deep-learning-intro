@@ -496,13 +496,7 @@ a1*w1 + w0
 ~~~
 {: .language-latex}
 
-Let's create a new Perceptron variable using our newly created class:
-~~~
-neural_network = Perceptron()
-~~~
-{: .language-python}
-
-And a single input value:
+Let's create a single input value:
 
 ~~~
 input = torch.randn(1, requires_grad=True)
