@@ -198,7 +198,7 @@ We summarize the most common activation functions in the figure below:
 >
 {: .challenge}
 
-As you can observe, the activation functions we have shown return values between [0,1].
+As you can observe, some activation functions we have shown return values between [0,1]. 
 As our outputs can take values outside this range, we usually add what is called a *bias*:
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=$output&space;=&space;\text{f}&space;(\sum_{i=1}^N&space;\text{a}_i&space;*&space;\text{w}_i&space;)&space;&plus;&space;b)$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?$output&space;=&space;\text{f}&space;(\sum_{i=1}^N&space;\text{a}_i&space;*&space;\text{w}_i&space;)&space;&plus;&space;b)$" title="$output = \text{f} (\sum_{i=1}^N \text{a}_i * \text{w}_i ) + b)$" /></a>
