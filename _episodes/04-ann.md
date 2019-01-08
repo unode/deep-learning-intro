@@ -189,7 +189,7 @@ class ANN(torch.nn.Module):
         train_corrects = 0
         for batch_idx, (data, target) in enumerate(train_loader):
             optimiser.zero_grad()
-            output = self(data)
+            output = self.forward(data)
             _, preds = torch.max(output.data, 1)
             loss = criterion(output, target)
             loss.backward()
@@ -209,7 +209,7 @@ class ANN(torch.nn.Module):
         total= 0
         with torch.no_grad():
             for batch_idx,(data, target) in enumerate(test_loader):
-                output = network(data)
+                output = self.forward(data)
                 _, preds = torch.max(output.data, 1)
                 test_loss += criterion(output, target).item()
                 total += target.size(0)
