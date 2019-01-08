@@ -8,6 +8,14 @@ title: Setup
   you will need access to the software described below.
   In addition, you will need an up-to-date web browser.
   You will need a PC with 64-bit CPU, since PyTorch is a package only available for 64-bit.
+  To check this, open a bash shell, type 
+  
+  ~~~
+  uname -m
+  ~~~
+  {: .language-bash}
+  
+  If your system is 64-bit the answer should be `x86_64`. 
 </p>
 <p>
   We maintain a list of common issues that occur during installation as a reference for instructors
