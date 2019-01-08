@@ -7,6 +7,7 @@ title: Setup
   To participate in the workshop,
   you will need access to the software described below.
   In addition, you will need an up-to-date web browser.
+  You will need a PC with 64-bit CPU, since PyTorch is a package only available for 64-bit.
 </p>
 <p>
   We maintain a list of common issues that occur during installation as a reference for instructors
