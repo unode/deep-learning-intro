@@ -316,6 +316,7 @@ for i in range(6):
 >
 > - What do you think about the performance of our neural network? Is it acceptable?
 > - Suggest changes to improve the overall performance (for instance, increase the number of epochs, the learning rate, the number of hidden cells, etc.
+> - Can you manage to tune your neural network to overfit your data?
 > Does it help to add a new hidden layer?
 >
 {: .language-python}
