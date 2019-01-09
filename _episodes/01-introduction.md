@@ -8,7 +8,7 @@ questions:
 - "What is a neural network?"
 - "How to start deep learning with Python?"
 objectives:
-- "Understand what is deep learning"
+- "Understand what deep learning is"
 - "Learn about simple neural network"
 - "Create a simple neural network in Python"
 keypoints:
