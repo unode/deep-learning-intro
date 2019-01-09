@@ -228,6 +228,12 @@ def training_phase(ann, epoch, train_loader):
 ~~~
 {: .language-python}
 
+`torch.max` is a PyTorch function that returns two outputs:
+- the maximum value of the tensor passed in parameter
+- the index of the maximum value of the tensor
+
+In our case, the index corresponds to our class i.e. the digit number.
+
 # Testing phase algorithm
 
 ~~~
