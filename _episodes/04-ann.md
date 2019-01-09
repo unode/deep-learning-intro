@@ -107,23 +107,21 @@ Dataset MNIST
 ~~~
 {: .output}
 
-To get the first image from the torchvision object:
+To extract the 778th image from the torchvision MNIST data:
 
 ~~~
-train_loader.dataset.train_data.numpy()[0]
-~~~
-{: .language-python}
-
-The the shape of this image is 28 x 28:
-
-~~~
-# we check the shape of our first image (index 0 is for the first image):
-
-train_loader.dataset.train_data.numpy()[0].shape
+train_loader.dataset.train_data.numpy()[777]
 ~~~
 {: .language-python}
 
-Let's plot the 777th image in our dataset:
+The  shape of this image is 28 x 28:
+
+~~~
+train_loader.dataset.train_data.numpy()[777].shape
+~~~
+{: .language-python}
+
+Let's plot the 778th image in our dataset:
 
 ~~~
 import matplotlib.pyplot as plt
