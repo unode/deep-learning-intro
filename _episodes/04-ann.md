@@ -182,48 +182,10 @@ class ANN(torch.nn.Module):
         x = torch.sigmoid(self.fc3(x))
         x = self.fc4(x)
         return x     
-    
-    def training_phase(self, epoch, train_loader):
-        self.train()
-        train_loss = 0
-        train_corrects = 0
-        for batch_idx, (data, target) in enumerate(train_loader):
-            optimiser.zero_grad()
-            output = self.forward(data)
-            _, preds = torch.max(output.data, 1)
-            loss = criterion(output, target)
-            loss.backward()
-            optimiser.step()
-            train_loss += loss.item()
-            train_corrects += torch.sum(preds == target.data) 
-
-        epoch_acc= train_corrects.double() / len(train_loader.dataset)
-        print('Epoch {} , Average training loss is {:.6f} and accuracy is {}/{} {:.0f}%'.format((epoch+1),
-                        train_loss/len(train_loader),train_corrects.double(),
-                                        len(train_loader.dataset),epoch_acc*100.))
-        
-    def testing_phase(self, test_loader):
-        self.eval()
-        test_loss = 0
-        test_corrects = 0
-        total= 0
-        with torch.no_grad():
-            for batch_idx,(data, target) in enumerate(test_loader):
-                output = self.forward(data)
-                _, preds = torch.max(output.data, 1)
-                test_loss += criterion(output, target).item()
-                total += target.size(0)
-                test_corrects += torch.sum(preds == target.data) 
-        
-            epoch_acc= test_corrects.double() / len(test_loader.dataset)
-            test_loss /= len(test_loader)
-       
-            print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
-                test_loss, test_corrects, len(test_loader.dataset),
-                100. * epoch_acc))
-            scheduler.step(test_loss)   
 ~~~
 {: .language-python}
+
+# Define cost function and optimizer
 
 First, the network class is initialised. Then, we choose an optimiser and a learning rate for the optimisation. In order to update our learning rate, we can use a scheduler to reduce the learning rate. The `torch.optim.lr_scheduler.ReduceLROnPlateau` reduces the learning rate when a chosen metric has stopped improving after some epochs. In `mode='min'`, the learning rate will be reduced when the quantity monitored has stopped decreasing.
 The criterion usually used for training a classification problem is the Cross Entropy loss `torch.nn.CrossEntropyLoss()`.  
@@ -240,15 +202,67 @@ criterion = torch.nn.CrossEntropyLoss()
 ~~~
 {: .language-python}
 
+# Training phase algorithm
+
+~~~
+def training_phase(ann, epoch, train_loader):
+        ann.train()
+        train_loss = 0
+        train_corrects = 0
+        for batch_idx, (data, target) in enumerate(train_loader):
+            optimiser.zero_grad()
+            output = ann.forward(data)
+            _, preds = torch.max(output.data, 1)
+            loss = criterion(output, target)
+            loss.backward()
+            optimiser.step()
+            train_loss += loss.item()
+            train_corrects += torch.sum(preds == target.data) 
+
+        epoch_acc= train_corrects.double() / len(train_loader.dataset)
+        print('Epoch {} , Average training loss is {:.6f} and accuracy is {}/{} {:.0f}%'.format((epoch+1),
+                        train_loss/len(train_loader),train_corrects.double(),
+                                        len(train_loader.dataset),epoch_acc*100.))
+        
+  
+~~~
+{: .language-python}
+
+# Testing phase algorithm
+
+~~~
+def testing_phase(ann, test_loader):
+        ann.eval()
+        test_loss = 0
+        test_corrects = 0
+        total= 0
+        with torch.no_grad():
+            for batch_idx,(data, target) in enumerate(test_loader):
+                output = ann.forward(data)
+                _, preds = torch.max(output.data, 1)
+                test_loss += criterion(output, target).item()
+                total += target.size(0)
+                test_corrects += torch.sum(preds == target.data) 
+        
+            epoch_acc= test_corrects.double() / len(test_loader.dataset)
+            test_loss /= len(test_loader)
+       
+            print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+                test_loss, test_corrects, len(test_loader.dataset),
+                100. * epoch_acc))
+            scheduler.step(test_loss) 
+~~~
+{: .language-python}
 
 # Run train and test for network
+
 ~~~
 n_epochs = 15
 test_counter = [i*len(train_loader.dataset) for i in range(n_epochs + 1)]
-network.testing_phase(test_loader)
+testing_phase(network, test_loader)
 for epoch in range(n_epochs):
-    network.training_phase(epoch, train_loader)
-    network.testing_phase(test_loader)
+    training_phase(network, epoch, train_loader)
+    testing_phase(network, test_loader)
 ~~~
 {: .language-python}
 
