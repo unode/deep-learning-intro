@@ -134,6 +134,9 @@ plt.title("Target: {}".format(label));
 ~~~
 {: .language-python}
 
+
+<img src="../fig/firstnumber.png" style="width: 400px;"/>
+
 - Download and load the MNIST test dataset with PyTorch:
 
 ~~~
