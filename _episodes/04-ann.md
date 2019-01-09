@@ -123,6 +123,7 @@ train_loader.dataset.train_data.numpy()[0].shape
 
 Let's plot our first number:
 
+~~~
 import matplotlib.pyplot as plt
 %matplotlib inline
 # index 0 is there because we look at the first image
@@ -130,6 +131,8 @@ image = train_loader.dataset.train_data.numpy()[0]
 label = train_loader.dataset.train_labels.numpy()[0]
 plt.imshow(image,cmap='gray')
 plt.title("Target: {}".format(label));
+~~~
+{: .language-python}
 
 - Download and load the MNIST test dataset with PyTorch:
 
@@ -147,7 +150,6 @@ test_loader = torch.utils.data.DataLoader(
 print(test_loader.dataset)  
 ~~~
 {: .language-python}
-
 
 
 ~~~
