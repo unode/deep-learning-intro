@@ -305,8 +305,6 @@ for i in range(6):
 
 <img src="../fig/numbers.png" style="width: 550px;"/>
 
-# References
-Hastie, T., Tibshirani, R., Friedman, J. , The Elements of Statistical Learning, Springer, 2009.
 
 > ## Challenge
 >
@@ -315,6 +313,60 @@ Hastie, T., Tibshirani, R., Friedman, J. , The Elements of Statistical Learning,
 > Does it help to add a new hidden layer?
 >
 {: .language-python}
+
+# How to save/load your neural network?
+
+## Saving your neural network state
+
+The learning phase is often long (computationally intensive) and once your neural network has finished its training phase, you would like to save its state and run it in"forward" mode only. 
+
+To save the network parameters (weights and biases):
+
+~~~
+torch.save(network.state_dict(), 'model.pth')
+~~~
+{: .language-python}
+
+You can also save the state of your optimizer:
+
+~~~
+torch.save(optimiser.state_dict(), 'optimiser.pth')
+~~~
+{: .language-python}
+
+## Load neural network state
+
+You can now use your neural network in some kind of "operational mode" where the learning phase will never be run again:
+
+~~~
+
+class ANN(torch.nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.fc1 = torch.nn.Linear(28*28, 30)   #input size
+        self.fc2 = torch.nn.Linear(30, 30)
+        self.fc3 = torch.nn.Linear(30, 30)
+        self.fc4 = torch.nn.Linear(30, 10)
+
+    def forward(self, x):
+        x = x.view(x.size(0), -1)   # the size -1 is inferred from other dimensions (28*28)
+        x = torch.sigmoid(self.fc1(x))
+        x = torch.sigmoid(self.fc2(x))
+        x = torch.sigmoid(self.fc3(x))
+        x = self.fc4(x)
+        return x     
+        
+model = ANN()
+model.load_state_dict(torch.load('model.pth'))
+model.eval()
+~~~
+{: .language-python}
+
+See more [here](https://pytorch.org/tutorials/beginner/saving_loading_models.html#what-is-a-state-dict).
+
+# References
+Hastie, T., Tibshirani, R., Friedman, J. , The Elements of Statistical Learning, Springer, 2009.
+
 
 {% include links.md %}
 
