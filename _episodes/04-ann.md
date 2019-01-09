@@ -107,6 +107,29 @@ Dataset MNIST
 ~~~
 {: .output}
 
+To get the first image from the torchvision object:
+
+~~~
+train_loader.dataset.train_data.numpy()[0]
+~~~
+{: .language-python}
+
+The the shape of this image is 28 x 28:
+
+~~~
+train_loader.dataset.train_data.numpy()[0].shape
+~~~
+{: .language-python}
+
+Let's plot our first number:
+
+import matplotlib.pyplot as plt
+%matplotlib inline
+# index 0 is there because we look at the first image
+image = train_loader.dataset.train_data.numpy()[0]
+label = train_loader.dataset.train_labels.numpy()[0]
+plt.imshow(image,cmap='gray')
+plt.title("Target: {}".format(label));
 
 - Download and load the MNIST test dataset with PyTorch:
 
