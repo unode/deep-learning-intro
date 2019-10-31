@@ -55,7 +55,7 @@ So why choosing [pyTorch](https://pytorch.org)?
 		- Result :
 			- whatever the problem, there is a package.
 			- new generic bricks are often very rapidly implemented by the community and are easy to pull
-	- Imperative (vs declarative); more info at [Deep learning programming style](https://mxnet.incubator.apache.org/architecture/program_model.html).
+	- Imperative (vs declarative); more info at [Deep learning programming style](https://mxnet.apache.org/api/architecture/program_model).
 	- Typical use case : write a new layer, with GPU implementation :
 		a. Implement for CPU nn
 		b. Implement for GPU cunn
