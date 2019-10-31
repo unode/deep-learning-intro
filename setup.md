@@ -309,7 +309,7 @@ $ anaconda-navigator
 <br>
 
 > ## Credits
-> This installation tutorial is taken from [Software Carpentry](http://swcarpentry.github.io/workshop-template/#setup)
+> This installation tutorial is taken from [Software Carpentry](http://carpentries.github.io/workshop-template/#setup)
 {: .callout}
 
 ###  Additional python packages for the workshop
