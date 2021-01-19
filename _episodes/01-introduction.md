@@ -36,7 +36,14 @@ some nice starting info here: https://machinelearningmastery.com/what-is-deep-le
 >
 {: .solution}
 
-*the neuron definition
+*the neuron/perceptron
+
+* inputs, weight, sum, non-linearity, output 
+* -> DL: stacked perceptrons
+
+* training challenges
+  * gradient
+  * overfitting
 
 ## Building blocks of NN
 
