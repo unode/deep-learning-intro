@@ -22,6 +22,14 @@ keypoints:
 
 *relation of DL to ML (infographics AI, ML, NN, DL)
 
+"deep stack of computations"
+
+for complex problems
+
+usually not possible to solve by human through set of rules
+
+NN as one important model
+
 * DL as one (!) tool of many
 
 some nice starting info here: https://machinelearningmastery.com/what-is-deep-learning/
@@ -38,7 +46,7 @@ some nice starting info here: https://machinelearningmastery.com/what-is-deep-le
 >
 {: .solution}
 
-*the neuron/perceptron
+*the neuron/perceptron/unit/
 
 * inputs, weight, sum, non-linearity, output 
 * -> DL: stacked perceptrons
@@ -123,6 +131,16 @@ build from scratch vs reuse vs transfer learning
 > some links where to get more resources to work with, eg HPC3Europe,AWS?,..?
 >
 {: . callout}
+
+> ## Importance of data mining
+>
+> some notes on data mining
+> why important to know your data for DL
+> also mention that some models have prerequisites of data distribution etc
+>
+>
+{: . callout}
+
 
 FIXME
 
