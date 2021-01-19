@@ -20,7 +20,7 @@ keypoints:
 
 ## What is Deep Learning?
 
-*relation of DL to ML (infographics AI, ML, NN, DL)
+*relation of DL to ML (infographics AI, ML, (NN), DL)
 
 "deep stack of computations"
 
@@ -34,15 +34,28 @@ NN as one important model
 
 some nice starting info here: https://machinelearningmastery.com/what-is-deep-learning/
 
+> ## History
+>
+> some benchmarks
+> DL is not new as a concept but availability of comp resources is now at stage that it can be done efficiently
+> some examples of interesting things that can be achieved using DL models
+>
+>
+{: . callout}
+
 > ## What is Deep Learning:
 >
 > Give multiple definitions of Deep Learning and discuss;
+> OR 
+> show both bubble representations of AI-ML-NN-DL and AI-ML-DL, ask which is right
 >
 {: .discussion}
 
 > ## What is DL - solution
 >
 > learning outcome -> it is vague, find your own
+> OR
+> hah! both are right in some ways, explain why NN has its place there as well
 >
 {: .solution}
 
