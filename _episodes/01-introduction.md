@@ -22,6 +22,8 @@ keypoints:
 
 *relation of DL to ML (infographics AI, ML, NN, DL)
 
+* DL as one (!) tool of many
+
 some nice starting info here: https://machinelearningmastery.com/what-is-deep-learning/
 
 > ## What is Deep Learning:
