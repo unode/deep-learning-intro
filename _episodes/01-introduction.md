@@ -31,6 +31,7 @@ keypoints:
 
 * Prerequisite: lots of Data
 
+![ML_DL](../fig/ML_DL_draft.png)
 
 > ## Application areas/History
 >
