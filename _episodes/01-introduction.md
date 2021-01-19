@@ -20,26 +20,28 @@ keypoints:
 
 ## What is Deep Learning?
 
-*relation of DL to ML (infographics AI, ML, (NN), DL)
+* relation of DL to ML (infographics AI, ML, (NN), DL)
+![AI-ML-DL](../fig/AI_ML_DL_bubble_square_draft.png)
 
-"deep stack of computations"
+* "deep stack of computations"
 
-for complex problems
-
-usually not possible to solve by human through set of rules
-
-NN as one important model
+* for complex problems, usually not possible to solve by human through set of rules
 
 * DL as one (!) tool of many
 
-some nice starting info here: https://machinelearningmastery.com/what-is-deep-learning/
+* Prerequisite: lots of Data
 
-> ## History
+
+> ## Application areas/History
 >
 > some benchmarks
 > DL is not new as a concept but availability of comp resources is now at stage that it can be done efficiently
-> some examples of interesting things that can be achieved using DL models
->
+> some examples of interesting things that can be achieved using DL models:
+> image classification, text generation, language translation, GAN, Gameplay (Dota/Go), voice recognition,
+> self-driving cars, natural language and image processing, predictive forecasting, fraud detection in financial applications, 
+> financial time-series forecasting, predictive and prescriptive analytics, medical image processing, power systems research, 
+> recommendation systems
+> we are still far from computers understanding us
 >
 {: . callout}
 
