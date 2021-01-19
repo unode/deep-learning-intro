@@ -19,6 +19,7 @@ layout: reference
     * Under
 * overfitting
 * transfer learning
+* hidden layers
 * ...
 
 ## Troubleshooting
