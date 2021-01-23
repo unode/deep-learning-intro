@@ -83,22 +83,21 @@ keypoints:
 ## Deep Learning workflow
 
 (one way, open for discussion and to be filled with information)
-1. formulate the problem
+1. Formulate/ Outline the problem
 
-2. get data
-where to get data from
+2. Identify inputs and outputs
 
-3. prepare data
+3. Prepare data
 common steps for data preparation
 
-4. choose model 
+4. Choose a cost function and metrics
+
+5. Choose a pretrained model or start building architecture from scratch
 build from scratch vs reuse vs transfer learning
 
-5. choose model parameters
+6. Train model
 
-6. train model
-
-7. hyperparameter tuning
+7. Tune hyperparameters
 
 8. 'predict'
 
