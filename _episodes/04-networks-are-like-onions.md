@@ -8,7 +8,7 @@ questions:
 - "What is a convolutional layer?"
 - "How can we avoid overfitting?"
 objectives:
-- "Understand why convolutional and pooling keras.layers are useful for image data"
+- "Understand why convolutional and pooling layers are useful for image data"
 - "Use normalization as preparation step for deep learning"
 - "Implement a convolutional neural network on an image dataset"
 - "Plot and interpret the training process"
@@ -16,23 +16,24 @@ objectives:
 - "Understand strategies to improve your model based on the plots"
 - "Use drop-out layer to prevent overfitting"
 keypoints:
-- "Convolutional keras.layers make efficient reuse of model parameters."
-- "Pooling keras.layers decrease the resolution of your input"
+- "Convolutional layers make efficient reuse of model parameters."
+- "Pooling layers decrease the resolution of your input"
 - "Dropout is a way to prevent overfitting"
 ---
 
-We start with importing Keras and matplotlib for plotting.
-~~~
-from tensorflow import keras
-import matplotlib.pyplot as plt
-%matplotlib inline
-~~~
-{: .language-python}
+## Different types of layers
+'Network are like onions': a typical neural network consists of many layers. In fact, the word *deep* in *deep learning*
+refers to the many layers that make the network deep.
 
+So far, we have seen one type of layer, namely the **fully connected**, or **dense** layer. They are called fully connected, because all input neurons are 'seen' by all output neurons. The number of parameters that need to be learned by the network, is thus in the order of magnitude of the number of input neurons times the number of hidden neurons.
 
+However, there are many different types of layers that perform different calculations and take different inputs. In this episode we will take a look at **convolutional layers** and **dropout layers**, which are useful in the context of image data.
+
+## Image classification
 Keras comes with a few prepared dataset. We have a look at the [CIFAR10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html),
 which is a widely known dataset for image classification.
 ~~~
+from tensorflow import keras
 (train_images, train_labels), (test_images, test_labels) = keras.datasets.cifar10.load_data()
 ~~~
 {: .language-python}
@@ -126,6 +127,7 @@ class_names = ['airplane', 'automobile', 'bird', 'cat', 'deer',
 
 Now we can plot a sample of the training images, using the `plt.imshow` function.
 ~~~
+import matplotlib.pyplot as plt
 plt.figure(figsize=(10,10))
 for i in range(25):
     plt.subplot(5,5,i+1)
@@ -139,7 +141,7 @@ plt.show()
 
 ![Output of plotting sample](../fig/04_cifar10.png)
 
-## Different types of layers
+## Convolutional layers
 In the previous episodes, we used 'fully connected keras.layers' , that connected all input values to all hidden nodes. This results in many connections, and thus weights to be learned, in the network. Note that our input dimension is now quite high (even with small pictures), we have:
 
 
@@ -200,7 +202,7 @@ Of course, we can decrease the number of units in our hidden layer, but this als
 
 The solution is that we make the network to learn in a 'smart' way. The features that we learn should be similar both for small and large images, and similar features (e.g. edges, corners) can appear anywhere in the image. We do this by making use of a concepts from image processing that preceed deep learning.
 
-A *convolution matrix*, or *kernel*, is a matrix transformation that we 'slide' over the image to calculate features at each position of the image. For ech pixel, we calculate the matrix product between the kernel and the pixel with its surroundings. A kernel is typically small, between 3x3 and 7x7 pixels. We can for example think of the simple 3x3 kernel:
+A **convolution matrix**, or **kernel**, is a matrix transformation that we 'slide' over the image to calculate features at each position of the image. For ech pixel, we calculate the matrix product between the kernel and the pixel with its surroundings. A kernel is typically small, between 3x3 and 7x7 pixels. We can for example think of the simple 3x3 kernel:
 ~~~
 [[0, 0, 0,],
  [1, 1, 1],
@@ -210,7 +212,7 @@ A *convolution matrix*, or *kernel*, is a matrix transformation that we 'slide' 
 This kernel will give a high value to a pixle if it's in the middle of a horizontal edge.
 Note that for RGB images, the kernel should also have a depth of 3.
 
-In our *convolutional layer* our hidden units are a number of convolutional matrices (or kernels), where the values of the matrices are the weights that we learn in the training process. The output of a convolutional layer is an 'image' for each of the kernels, that gives the output of the kernel applied to each pixel.
+In our **convolutional layer** our hidden units are a number of convolutional matrices (or kernels), where the values of the matrices are the weights that we learn in the training process. The output of a convolutional layer is an 'image' for each of the kernels, that gives the output of the kernel applied to each pixel.
 
 > ## Border pixels
 >
@@ -235,7 +237,7 @@ In our *convolutional layer* our hidden units are a number of convolutional matr
 {: .challenge}
 
 
-Another type of layer is the *Pooling layer*. As opposed to the convoutional layer, the pooling layer actually alters the dimensions of the image and reduces it by a scaling factor. It is basically decreasing the resolution of your picture. The rationale behind this is that higher layers of the network should focus on higher-level features of the image. By introducing a pooling layer, the subsequent convolutional layer has a broader 'view' on the original image. (FIXME Include illustration here?)
+Another type of layer is the **Pooling layer**. As opposed to the convoutional layer, the pooling layer actually alters the dimensions of the image and reduces it by a scaling factor. It is basically decreasing the resolution of your picture. The rationale behind this is that higher layers of the network should focus on higher-level features of the image. By introducing a pooling layer, the subsequent convolutional layer has a broader 'view' on the original image. (FIXME Include illustration here?)
 
 Let's put it into practice. We compose a Convolutional network with two convolutional layers and two pooling layers.
 
