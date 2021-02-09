@@ -140,6 +140,7 @@ After this module, learners can ...
 
 ### Lesson Map
 
+{% graphviz %}
 digraph hierarchy {
 
                 nodesep=1.0 // increases the separation between nodes
@@ -156,5 +157,6 @@ digraph hierarchy {
                 quality->"overfitting/underfitting" [label="discovers"]
                 quality->"precision/recall" [label="settles"]
 }
+{% endgraphviz %}
 
 {% include links.md %}
