@@ -1,0 +1,16 @@
+digraph hierarchy {
+
+                nodesep=1.0 // increases the separation between nodes
+
+                node [color=darkgray,fontname=Courier,shape=box] //All nodes will this shape and colour
+                edge [color=navy, style=dashed] //All the lines look like this
+
+                "what to learn/predict?"->{preprocessing "network design"} [label="governs"]
+                "network design"->{"layer types" optimizer loss} [label="requires"]
+                {"layer types" optimizer loss}->training
+
+                training->quality
+                training->"pre-trained network" [label="can produce"]
+                quality->"overfitting/underfitting" [label="discovers"]
+                quality->"precision/recall" [label="settles"]
+}
