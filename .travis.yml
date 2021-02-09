@@ -31,7 +31,7 @@ before_install:
   - sudo add-apt-repository -y "ppa:ubuntugis/ppa"
   - sudo add-apt-repository -y "ppa:cran/travis"
   - travis_apt_get_update
-  - sudo apt-get install -y --no-install-recommends build-essential gcc g++ libblas-dev liblapack-dev libncurses5-dev libreadline-dev libjpeg-dev libpcre3-dev libpng-dev zlib1g-dev libbz2-dev liblzma-dev libicu-dev cdbs qpdf texinfo libssh2-1-dev gfortran jq python3.5 python3-pip r-base
+  - sudo apt-get install -y --no-install-recommends build-essential gcc g++ libblas-dev liblapack-dev libncurses5-dev libreadline-dev libjpeg-dev libpcre3-dev libpng-dev zlib1g-dev libbz2-dev liblzma-dev libicu-dev cdbs qpdf texinfo libssh2-1-dev gfortran jq python3.5 python3-pip r-base graphviz
   - export PATH=${TRAVIS_HOME}/R-bin/bin:$PATH
   - export LD_LIBRARY_PATH=${TRAVIS_HOME}/R-bin/lib:$LD_LIBRARY_PATH
   - sudo mkdir -p /usr/local/lib/R/site-library $R_LIBS_USER
