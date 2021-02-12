@@ -66,7 +66,7 @@ After this module, learners can ...
 - execute a min-max normalization on floating point data
 - sketch how to insert missing timestamps or literal values (i.e. factors or non-numeric entries)
 - implement a transformation of categorical values into a numerical encoding (`int8`)
-- argue for or against strategies to to normalize data
+- argue for or against strategies to normalize data
 - formulate techniques beyond transformations to clean data (exploit correlations, create summary statistics, ...)
 
 ### Design and train a Deep Neural Network
@@ -76,7 +76,7 @@ This includes knowledge of when to different types of layers
 After this module, learners can ...
 
 - list/repeat the three ingrediants to a feed forward network: input, hidden layers, output
-- classify parts of a feed forward network
+- classify/categorize parts of a feed forward network when presented a network architecture (as from `keras.model.summary()`
 - describe a fully connected (dense) layer
 - describe a convolutional layer
 - describe a max pooling layer
