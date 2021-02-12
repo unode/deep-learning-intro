@@ -128,7 +128,7 @@ Re-use of architectures is common in deep learning. Especially when using pre-tr
 After this module, learners can ...
 
 - describe what transfer learning stands for
-- explain the expected relation of data sets (one used for the network originally and one for the network at hand)
+-  explain in what situations transfer learning is beneficial
 - solve common issues of transfer learning (such as different resolutions of the original training and the training at hand)
 - test training under different data shape mitigation strategies
 - relate training time of a de-novo networt and a pretrained one
