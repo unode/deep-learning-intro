@@ -83,7 +83,7 @@ After this module, learners can ...
 - describe an activation function
 - describe a softmax layer
 - argue against abundant use of the sigmoid function (exploding/vanishing gradients)
-- select the output data shape from a convolutional layer
+- calculate the output data shape of an image when transformed by a fixed convolutional layer
 - interpret errors with convolutional layers
 - execute a 3 layer network on the MNIST data (or similar)
 - differentiate a dense layer and a convolutional layer
