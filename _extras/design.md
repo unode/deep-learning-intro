@@ -26,7 +26,7 @@ Dan produced a large population of bacteria that were subject to genetic alterat
 
 #### Eric from Pediatrics Science
 
-Eric ran a large array of clinical trials in his hospital to improve children pharmaceutics for treating a common (non-lethal) virus. He obtained a table that lists the progression of the treatment for each patient, the dose of the drug given, whether the patient was in the placebo group or not, etc. As the table has more than 100 000 rows, Eric is certain that he can use ML to cluster the rows in one column where the data taking was inconsistent. Eric has touched coding here and there where necessary, but never saw it necessary to learn coding. His cheatsheet is his core wisdom with code. So his supervisor invited him to take a course on ML.
+Eric ran a large array of clinical trials in his hospital to improve children pharmaceutics for treating a common (non-lethal) virus. He obtained a table that lists the progression of the treatment for each patient, the dose of the drug given, whether the patient was in the placebo group or not, etc. As the table has more than 100 000 rows, Eric is certain that he can use ML to cluster the rows in one column where the data taking was inconsistent. Eric has touched coding here and there where necessary, but never saw it necessary to learn coding. His cheatsheet is his core wisdom with code. So his supervisor invited him to take a course on ML as "this is the tech of these days!" as his boss said.
 
 ### Notes
 
