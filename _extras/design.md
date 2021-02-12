@@ -93,9 +93,7 @@ After this module, learners can ...
 
 ### Monitoring and Troubleshooting the learning process
 
-Often when designing neural networks training will not automatically work very well. This requires setting the parameters of the training algorithm correctly, modifying the design of the network or changing the data pre-processing
-
-After training the performance of the network should be checked to prevent overfitting.
+Often when designing neural networks training will not automatically work very well. This requires setting the parameters of the training algorithm correctly, modifying the design of the network or changing the data pre-processing. After training, the performance of the network should be checked to prevent overfitting.
 
 After this module, learners can ...
 
