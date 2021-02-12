@@ -14,7 +14,7 @@ The main audience of this carpentry lesson is PhD students that have little to n
 
 #### Ann from Meteorology
 
-Ann has collected 2-3 GB of structured image data from several autonomous microscope on baloon expeditions into the atmostphere within her PhD programme. Each image has a time stamp to it which can be related to the height of the baloon at this point and the current weather conditions. The images are unstructured and she would like to detect from the images if the baloon traversed a cloud or not. She has tried to do that with standard image processing methods, but the image artifacts to descriminate are somewhat diverse. 20% the data have been annotated by auxiliary data from radar monitoring of the balloons track. Ann has used machine learning on tabular data before and would like to use Deep Learning for the images at hand.
+Ann has collected 2-3 GB of structured image data from several autonomous microscope on baloon expeditions into the atmostphere within her PhD programme. Each image has a time stamp to it which can be related to the height of the baloon at this point and the current weather conditions. The images are unstructured and she would like to detect from the images if the baloon traversed a cloud or not. She has tried to do that with standard image processing methods, but the image artifacts to descriminate are somewhat diverse. Ann has used machine learning on tabular data before and would like to use Deep Learning for the images at hand.
 
 #### Barbara from Material Science
 
@@ -22,7 +22,7 @@ Barbara just started her PostDoc in Material Science. Her new group has a large 
 
 #### Dan from Life Sciences
 
-Dan produced a large population of bacteria that were subject to genetic alterations resulting in 10 different phenotypes. The latter can be identified by different colors, shapes and movement speed under a fluorescence microscope. Dan has not a lot of experience with image processing techniques to segment these different objects, but used GUI based tools like [fiji](https://fiji.sc) and others. He has recorded 50-60 movies of 30 minutes each. 10 of these movies have been produced with one type of phenotype only. Dan doesn't consider himself a strong coder, but would need to identify bacteria of the phenotypes in question in the dataset.
+Dan produced a large population of bacteria that were subject to genetic alterations resulting in 10 different phenotypes. The latter can be identified by different colors, shapes and movement speed under a fluorescence microscope. Dan has not a lot of experience with image processing techniques to segment these different objects, but used GUI based tools like [fiji](https://fiji.sc) and others. He has recorded 50-60 movies of 30 minutes each. 10 of these movies have been produced with one type of phenotype only. Dan doesn't consider himself a strong coder, but would need to identify bacteria of the phenotypes in the dataset. He is interested to learn if Deep Learning can help.
 
 #### Eric from Pediatrics Science
 
