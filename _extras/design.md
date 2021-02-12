@@ -91,11 +91,9 @@ After this module, learners can ...
 - select a layer type depending on the input data
 - develop a 5 layer network that comprises both layer types
 
-### Troubleshoot the learning process
+### Monitoring and Troubleshooting the learning process
 
 Often when designing neural networks training will not automatically work very well. This requires setting the parameters of the training algorithm correctly, modifying the design of the network or changing the data pre-processing
-
-### Measure the performance of the network
 
 After training the performance of the network should be checked to prevent overfitting.
 
@@ -109,6 +107,8 @@ After this module, learners can ...
 - compare values of precision and recall
 - differentiate a overfitting network from a well-behaved network
 - detect a underfitting network
+- design countermeasures for overfitting (e.g. more dropout layers, reduce model size)
+- design countermeasures for underfitting (e.g. larger model)
 - critique a provided network design
 
 ### Visualizing Data and Results
