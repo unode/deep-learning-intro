@@ -107,7 +107,7 @@ After this module, learners can ...
 - execute a plot to draw the loss per epoch for training and test set
 - compare values of precision and recall
 - differentiate a overfitting network from a well-behaved network
-- detect a underfitting network
+- detect when a network is underfitting or overfitting
 - design countermeasures for overfitting (e.g. more dropout layers, reduce model size)
 - design countermeasures for underfitting (e.g. larger model)
 - critique a provided network design
