@@ -37,9 +37,9 @@ Eric ran a large array of clinical trials in his hospital to improve children ph
 
 #### Required Pre-Knowledge
 
-- **Python** – Previous Experience programming in python is required (Refer to Python Data Carpentry Lesson )
-- **Pandas** – Knowledge of the Pandas python package
-- **Basic Machine Learning Knowledge** – Data Cleaning, Train & Test Split, Overfitting & Underfitting, Metrics (Accuracy, Recall, etc.),
+- **Python** – Previous programming experience in Python is required (Refer to Python Data Carpentry Lesson)
+- **Pandas** – Knowledge of the Pandas Python package
+- **Basic Machine Learning Knowledge** – Data cleaning, train & test split, overfitting & underfitting, metrics (accuracy, recall, etc.),
 
 ## Learning objectives
 
