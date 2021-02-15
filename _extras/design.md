@@ -50,7 +50,7 @@ Eric ran a large array of clinical trials in his hospital to improve children ph
 > - Design and train a Deep Neural Network
 > - Troubleshoot the learning process
 > - Measure the performance of the network
-> - Visualizing Data and Results
+> - Visualizing data and results
 > - Re-use existing network architectures with and without pre-trained weights
 > 
 {: .objectives }
