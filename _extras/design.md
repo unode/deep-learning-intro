@@ -78,8 +78,8 @@ This includes knowledge of when to different types of layers
 
 After this module, learners can ...
 
-- list/repeat the three ingrediants to a feed forward network: input, hidden layers, output
-- classify/categorize parts of a feed forward network when presented a network architecture (as from `keras.model.summary()`
+- list/repeat the three ingredients to a feed forward network: input, hidden layers, output
+- classify/categorize parts of a feed forward network when presented a network architecture (as from `keras.model.summary()`)
 - describe a fully connected (dense) layer
 - describe a convolutional layer
 - describe a max pooling layer
