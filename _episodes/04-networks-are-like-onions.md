@@ -25,9 +25,9 @@ keypoints:
 'Network are like onions': a typical neural network consists of many layers. In fact, the word *deep* in *deep learning*
 refers to the many layers that make the network deep.
 
-So far, we have seen one type of layer, namely the **fully connected**, or **dense** layer. They are called fully connected, because all input neurons are 'seen' by all output neurons. The number of parameters that need to be learned by the network, is thus in the order of magnitude of the number of input neurons times the number of hidden neurons.
+So far, we have seen one type of layer, namely the **fully connected**, or **dense** layer. This layer is called fully connected, because all input neurons are 'seen' by all output neurons. The number of parameters that need to be learned by the network, is thus in the order of magnitude of the number of input neurons times the number of hidden neurons.
 
-However, there are many different types of layers that perform different calculations and take different inputs. In this episode we will take a look at **convolutional layers** and **dropout layers**, which are useful in the context of image data.
+However, there are many different types of layers that perform different calculations and take different inputs. In this episode we will take a look at **convolutional layers** and **dropout layers**, which are useful in the context of image data, but also in many other types of (structured) data.
 
 ## Image classification
 Keras comes with a few prepared dataset. We have a look at the [CIFAR10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html),
@@ -406,6 +406,15 @@ It seems that the model is overfitting somewhat, because the validation accuracy
 > {: .solution}
 {: .challenge}
 
+> ## Other types of data
+>
+> Convolutional and Pooling layers are also applicable to different types of
+> data than image data. Whenever the data is ordered in a (spatial) dimension,
+> and *translation invariant* features are expected to be useful, convolutions
+> can be used. Think for example of time series data from an accelerometer,
+> speech recognition, or chemical structures (TODO: add some references).
+>
+{: .callout}
 
 ## Dropout
 
