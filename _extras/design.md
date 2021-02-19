@@ -64,13 +64,13 @@ This includes cleaning data, filling missing values, normalizing, and transformi
 
 After this module, learners can ...
 
-- define a checklist how to analyze the raw data considering an application of ML
+- define a checklist for data analysis steps before applying Deep Learning to the data
 - describe criteria by which to judge good or bad data, e.g. how a column's values should be distributed
 - execute a min-max normalization on floating point data
 - sketch how to insert missing timestamps or literal values (i.e. factors or non-numeric entries)
 - implement a transformation of categorical values into a numerical encoding (`int8`)
 - argue for or against strategies to normalize data
-- formulate techniques beyond transformations to clean data (exploit correlations, create summary statistics, ...)
+- formulate techniques to prepare (clean) data for training a deep learning network
 
 ### Design and train a Deep Neural Network
 
