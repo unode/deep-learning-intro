@@ -200,7 +200,7 @@ print(dim)
 
 Of course, we can decrease the number of units in our hidden layer, but this also decreases the number of patterns our network can remember. Moreover, if we increase the image size, this number of weights will explode, even though the task of recognizing large images is not necessarily more difficult than the task of recognizing small images.
 
-The solution is that we make the network to learn in a 'smart' way. The features that we learn should be similar both for small and large images, and similar features (e.g. edges, corners) can appear anywhere in the image. We do this by making use of a concepts from image processing that preceed deep learning.
+The solution is that we make the network learn in a 'smart' way. The features that we learn should be similar both for small and large images, and similar features (e.g. edges, corners) can appear anywhere in the image (in mathematical terms: *translation invariant*). We do this by making use of a concepts from image processing that preceed deep learning.
 
 A **convolution matrix**, or **kernel**, is a matrix transformation that we 'slide' over the image to calculate features at each position of the image. For ech pixel, we calculate the matrix product between the kernel and the pixel with its surroundings. A kernel is typically small, between 3x3 and 7x7 pixels. We can for example think of the simple 3x3 kernel:
 ~~~
@@ -214,21 +214,24 @@ Note that for RGB images, the kernel should also have a depth of 3.
 
 In our **convolutional layer** our hidden units are a number of convolutional matrices (or kernels), where the values of the matrices are the weights that we learn in the training process. The output of a convolutional layer is an 'image' for each of the kernels, that gives the output of the kernel applied to each pixel.
 
+TODO: add image to show the effect of a convolution
+
 > ## Border pixels
 >
-> What, do you think, happens to the border pixels?.
+> What, do you think, happens to the border pixels when applying a convolution?
 >
 > > ## Solution
 > >
 > > There are different ways of dealing with border pixels.
 > > You can ignore them, which means that your output image is slightly smaller then your input.
-> > It is also possible to 'pad' the borders, e.g. with the same value or with zeros, so that the convolution can still be applied.
+> > It is also possible to 'pad' the borders, e.g. with the same value or with zeros, so that the convolution can also be applied to the border pixels.
+> > In that case, the output image will have the same size as the input image.
 > {: .solution}
 {: .challenge}
 
 > ## Number of model parameters
 >
-> Suppose we have a convolutional layer with 100 kernels of size 3 by 3, (that also have a depth of 3, for the number of channels). How many parameters do we have? Assume, for simplicity, that the kernels do not use bias terms. Compare this to the answer of the previous exercise
+> Suppose we apply a convolutional layer with 100 kernels of size 3 * 3 * 3 (the last dimension applies to the rgb channels) to our images of 32 * 32 * 3 pixels. How many parameters do we have? Assume, for simplicity, that the kernels do not use bias terms. Compare this to the answer of the previous exercise
 >
 > > ## Solution
 > >
@@ -237,7 +240,7 @@ In our **convolutional layer** our hidden units are a number of convolutional ma
 {: .challenge}
 
 
-Another type of layer is the **Pooling layer**. As opposed to the convoutional layer, the pooling layer actually alters the dimensions of the image and reduces it by a scaling factor. It is basically decreasing the resolution of your picture. The rationale behind this is that higher layers of the network should focus on higher-level features of the image. By introducing a pooling layer, the subsequent convolutional layer has a broader 'view' on the original image. (FIXME Include illustration here?)
+Another type of layer is the **Pooling layer**. As opposed to the convolutional layer, the pooling layer actually alters the dimensions of the image and reduces it by a scaling factor. It is basically decreasing the resolution of your picture. The rationale behind this is that higher layers of the network should focus on higher-level features of the image. By introducing a pooling layer, the subsequent convolutional layer has a broader 'view' on the original image. (TODO Include illustration here?)
 
 Let's put it into practice. We compose a Convolutional network with two convolutional layers and two pooling layers.
 
@@ -421,8 +424,10 @@ It seems that the model is overfitting somewhat, because the validation accuracy
 Note that the training accuracy continues to increase, while the validation accuracy stagnates over the course of the epochs. This means we are overfitting on our training data set.
 
 There are several ways of preventing overfitting, called regularization methods.
-One common and simple method is Dropout. (explain how and why dropout works)
+One common and simple but remarkebly effective method is Dropout ([Srivastava et al., 2014](https://jmlr.org/papers/v15/srivastava14a.html)).
 
+In the Dropout layer, a random portion of the nodes in the previous layer is ignored during training time.
+TODO: explain why this works
 Let's add one dropout layer towards the end of the network, that randomly drops 20% of the input units
 
 
