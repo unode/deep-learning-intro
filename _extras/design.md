@@ -70,7 +70,7 @@ After this module, learners can ...
 - sketch how to insert missing timestamps or literal values (i.e. factors or non-numeric entries)
 - implement a transformation of categorical values into a numerical encoding (`int8`)
 - argue for or against strategies to normalize data
-- formulate techniques beyond transformations to clean data (exploit correlations, create summary statistics, ...)
+- formulate techniques to prepare (clean) data for training a deep learning network
 
 ### Design and train a Deep Neural Network
 
