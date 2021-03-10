@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: prep image 
         run: |
-          apt install graphviz
+          sudo apt install graphviz
 
       - name: Set up Ruby
         uses: actions/setup-ruby@v1
