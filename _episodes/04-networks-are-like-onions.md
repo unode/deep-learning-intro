@@ -292,7 +292,7 @@ We compile the model and train it on our training data for 10 epochs
 
 ~~~
 model.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
 history = model.fit(train_images, train_labels, epochs=10,
@@ -304,16 +304,18 @@ history = model.fit(train_images, train_labels, epochs=10,
 We can plot the training process using the history:
 
 ~~~
-plt.plot(history.history['accuracy'], label='train_accuracy')
-plt.plot(history.history['val_accuracy'], label = 'val_accuracy')
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.legend(loc='lower right')
+history_df = pd.DataFrame.from_dict(history.history)
+sns.lineplot(data=history_df[['accuracy', 'val_accuracy']])
 ~~~
 {: .language-python}
 ![Output of plotting sample](../fig/04_training_history_1.png)
+~~~
+sns.lineplot(data=history_df[['loss', 'val_loss']])
+~~~
+{: .language-python}
+![Output of plotting sample](../fig/04_training_history_loss_1.png)
 
-It seems that the model is overfitting somewhat, because the validation accuracy stagnates.
+It seems that the model is overfitting somewhat, because the validation accuracy and loss stagnates.
 
 > ## Network depth
 >
@@ -392,20 +394,23 @@ It seems that the model is overfitting somewhat, because the validation accuracy
 > > To train the network and plot the results:
 > > ~~~
 > > model.compile(optimizer='adam',
-> >               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+> >               loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
 > >               metrics=['accuracy'])
 > >
 > > history = model.fit(train_images, train_labels, epochs=20,
 > >                     validation_data=(test_images, test_labels))
 > >
-> > plt.plot(history.history['accuracy'], label='train_accuracy')
-> > plt.xlabel('Epoch')
-> > plt.ylabel('Accuracy')
-> > plt.legend(loc='lower right')
+> > history_df = pd.DataFrame.from_dict(history.history)
+> > sns.lineplot(data=history_df[['accuracy', 'val_accuracy']])
 > >
 > > ~~~
 > > {: .language-python}
 > > ![Output of training](../fig/04_training_history_2.png)
+> > ~~~
+> > sns.lineplot(data=history_df[['loss', 'val_loss']])
+> > ~~~
+> > {: .language-python}
+> > ![Output of plotting sample](../fig/04_training_history_loss_2.png)
 > {: .solution}
 {: .challenge}
 
@@ -421,9 +426,9 @@ It seems that the model is overfitting somewhat, because the validation accuracy
 
 ## Dropout
 
-Note that the training accuracy continues to increase, while the validation accuracy stagnates over the course of the epochs. This means we are overfitting on our training data set.
+Note that the training loss continues to decrease, while the validation loss stagnates, and even starts to increase over the course of the epochs. Similarily, the accuracy for the validation set does not improve anymore after some epochs. This means we are overfitting on our training data set.
 
-There are several ways of preventing overfitting, called regularization methods.
+There are several ways of preventing overfitting, called *regularization methods*.
 One common and simple but remarkebly effective method is Dropout ([Srivastava et al., 2014](https://jmlr.org/papers/v15/srivastava14a.html)).
 
 In the Dropout layer, a random portion of the nodes in the previous layer is ignored during training time.
@@ -485,7 +490,7 @@ We can see that the dropout does note alter the dimensions of the image, and has
 We again compile and train the model.
 ~~~
 model_dropout.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
 history_dropout = model_dropout.fit(train_images, train_labels, epochs=20,
@@ -495,12 +500,10 @@ history_dropout = model_dropout.fit(train_images, train_labels, epochs=20,
 
 And inspect the training results:
 ~~~
-plt.plot(history_dropout.history['accuracy'], label='train_accuracy')
-plt.plot(history_dropout.history['val_accuracy'], label = 'val_accuracy')
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.ylim([0, 1])
-plt.legend(loc='lower right')
+history_df = pd.DataFrame.from_dict(history_dropout.history)
+history_df['epoch'] = range(1,len(history_df)+1)
+history_df = history_df.set_index('epoch')
+sns.lineplot(data=history_df[['accuracy', 'val_accuracy']])
 
 test_loss, test_acc = model_dropout.evaluate(test_images,  test_labels, verbose=2)
 ~~~
@@ -510,8 +513,14 @@ test_loss, test_acc = model_dropout.evaluate(test_images,  test_labels, verbose=
 ~~~
 {: .output}
 ![Output of training](../fig/04_training_history_3.png)
+~~~
+sns.lineplot(data=history_df[['loss', 'val_loss']])
+~~~
+{: .language-python}
+![Output of plotting sample](../fig/04_training_history_loss_3.png)
 
 Now we see that the gap between the training accuracy and validation accuracy is much smaller, and that the final accuracy on the validation set is higher than without dropout.
+Nevertheless, there is still some difference between the training loss and validation loss, so we could experiment with regularization even more.
 
 
 {% include links.md %}
