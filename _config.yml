@@ -102,7 +102,3 @@ highlighter: rouge
 
 # Remote theme
 remote_theme: carpentries/carpentries-theme
-
-# jekyll plugins
-plugins:
-  - jekyll-diagrams

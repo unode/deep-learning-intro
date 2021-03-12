@@ -30,8 +30,8 @@ Eric ran a large array of clinical trials in his hospital to improve children ph
 
 ### Notes
 
-- Probably have overhyped expectations of deep learning. 
-- They don’t know if it’s the right tool for their situations. 
+- Probably have overhyped expectations of deep learning.
+- They don’t know if it’s the right tool for their situations.
 - They have no idea what it takes to actually do deep learning.
 - Want to quickly have some useful skills for their own data.
 
@@ -46,19 +46,19 @@ Eric ran a large array of clinical trials in his hospital to improve children ph
 > ## Overview
 > After following this lesson, learners will be able to:
 >  
-> - Prepare input data for use for deep learning 
+> - Prepare input data for use for deep learning
 > - Design and train a Deep Neural Network
 > - Troubleshoot the learning process
 > - Measure the performance of the network
 > - Visualizing data and results
 > - Re-use existing network architectures with and without pre-trained weights
-> 
+>
 {: .objectives }
 
 
 The following offers more details to each learning objective based on Bloom's Taxonomy. For hints on how to use this approach, see [lesson 15 of the instructor training](https://carpentries.github.io/instructor-training/15-lesson-study/index.html)
 
-### Prepare input data for use for deep learning 
+### Prepare input data for use for deep learning
 
 This includes cleaning data, filling missing values, normalizing, and transforming categorical columns into dummy encoding.
 
@@ -120,7 +120,7 @@ After this module, learners can ...
 
 - identify important plots to create at the end of training (provide selected samples and their prediction)
 - execute plotting of important variables during training (loss, ROC)
-- use tensorboard and related callbacks during training 
+- use tensorboard and related callbacks during training
 - examine the results of a partners network
 - critique the results of a partners network
 
@@ -136,28 +136,5 @@ After this module, learners can ...
 - test training under different data shape mitigation strategies
 - relate training time of a de-novo networt and a pretrained one
 - relate prediction quality of a de-novo networt and a pretrained one
-
-## Concept Maps
-
-### Lesson Map
-
-{% graphviz %}
-digraph hierarchy {
-
-                nodesep=1.0 // increases the separation between nodes
-
-                node [color=darkgray,fontname=Courier,shape=box] //All nodes will this shape and colour
-                edge [color=navy, style=dashed] //All the lines look like this
-
-                "what to learn/predict?"->{preprocessing "network design"} [label="governs"]
-                "network design"->{"layer types" optimizer loss} [label="requires"]
-                {"layer types" optimizer loss}->training
-
-                training->quality
-                training->"pre-trained network" [label="can produce"]
-                quality->"overfitting/underfitting" [label="discovers"]
-                quality->"precision/recall" [label="settles"]
-}
-{% endgraphviz %}
 
 {% include links.md %}
