@@ -1,7 +1,8 @@
 # Contributing
 
 This lesson is part of The Carpentries Incubator.
-[The Carpentries][c-site] ([Software Carpentry][swc-site], [Data Carpentry][dc-site], and [Library Carpentry][lc-site]) are open source projects,
+[The Carpentries][c-site] ([Software Carpentry][swc-site], [Data Carpentry][dc-site],
+and [Library Carpentry][lc-site]) are open source projects,
 and we welcome contributions of all kinds:
 new lessons,
 fixes to existing material,
@@ -70,10 +71,43 @@ to forget how impenetrable some of this material can be,
 so fresh eyes are always welcome.
 
 ## Pull Requests
-If you submit a pull request please request one of the maintainers as one of the reviewers.
-Each pull request needs to be reviewed by at least one person that is not an author of the pull request.
+If you decide to contribute in the form of a pull request please read the
+following carefully.
 
-Each pull request should also be free of conflicts with the gh-pages branch and build succesfully on with the github action. The github action to build will be automatically run when you submit a pull request.
+### Getting the code and making changes
+This lesson requires you to have python 3.4+ and ruby 2.7+ installed.
+See the [lesson setup](https://carpentries.github.io/lesson-example/setup.html)
+for more information.
+
+1. Fork the repository to create a place on github where you can push your changes to.
+2. Clone the repository to your local pc.
+3. Make your changes
+4. Preview your changes using `make serve`
+5. If you are happy with your changes check if the site still adheres to the
+   lesson format using `make lesson-check-all`
+6. Commit and push your changes
+7. Create a (draft) pull request
+
+### Working on a draft pull request
+When working on changes to this lesson it is useful to create a draft pull
+request early in the development.
+This alerts the maintainers that you are working on a certain issue and allows
+them to provide you with early feedback.
+
+### Submitting a pull request
+If you submit a pull request please request one of the maintainers as one of the reviewers.
+Each pull request needs to be reviewed by at least one person that is not an author
+of the pull request.
+
+Each pull request should also be free of conflicts with the gh-pages branch and build
+succesfully with the github action.
+The github action to build will be automatically run when you submit a pull request.
+The easiest way to check if your contribution is ready is to run:
+```bash
+$ make site
+$ make lesson-check-all
+```
+These should result in no errors.
 
 Make sure your name and email adress are in the AUTHORS file in your pull request.
 Once the pull request is approved it will be merged by one of the maintainers.
@@ -106,7 +140,8 @@ To use the web interface for contributing to a lesson:
 1.  Fork the originating repository to your GitHub profile.
 2.  Within your version of the forked repository, move to the `gh-pages` branch and
 create a new branch for each significant change being made.
-3.  Navigate to the file(s) you wish to change within the new branches and make revisions as required.
+3.  Navigate to the file(s) you wish to change within the new branches and make revisions
+    as required.
 4.  Commit all changed files within the appropriate branches.
 5.  Create individual pull requests from each of your changed branches
 to the `gh-pages` branch within the originating repository.
@@ -118,8 +153,8 @@ When starting work, please make sure your clone of the originating `gh-pages` br
 before creating your own revision-specific branch(es) from there.
 Additionally, please only work from your newly-created branch(es) and *not*
 your clone of the originating `gh-pages` branch.
-Lastly, published copies of all the lessons are available in the `gh-pages` branch of the originating
-repository for reference while revising.
+Lastly, published copies of all the lessons are available in the `gh-pages` branch of the
+originating repository for reference while revising.
 
 ## Other Resources
 
