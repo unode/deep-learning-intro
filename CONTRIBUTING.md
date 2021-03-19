@@ -1,5 +1,6 @@
 # Contributing
 
+This lesson is part of The Carpentries Incubator.
 [The Carpentries][c-site] ([Software Carpentry][swc-site], [Data Carpentry][dc-site], and [Library Carpentry][lc-site]) are open source projects,
 and we welcome contributions of all kinds:
 new lessons,
@@ -45,24 +46,9 @@ and to meet some of our community members.
 
 ## Where to Contribute
 
-1.  If you wish to change this lesson,
-    please work in <https://github.com/swcarpentry/FIXME>,
-    which can be viewed at <https://swcarpentry.github.io/FIXME>.
-
-2.  If you wish to change the example lesson,
-    please work in <https://github.com/carpentries/lesson-example>,
-    which documents the format of our lessons
-    and can be viewed at <https://carpentries.github.io/lesson-example>.
-
-3.  If you wish to change the template used for workshop websites,
-    please work in <https://github.com/carpentries/workshop-template>.
-    The home page of that repository explains how to set up workshop websites,
-    while the extra pages in <https://carpentries.github.io/workshop-template>
-    provide more background on our design choices.
-
-4.  If you wish to change CSS style files, tools,
-    or HTML boilerplate for lessons or workshops stored in `_includes` or `_layouts`,
-    please work in <https://github.com/carpentries/styles>.
+If you wish to change this lesson,
+please work in <https://github.com/carpentries-incubator/deep-learning-intro>,
+which can be viewed at <https://carpentries-incubator.github.io/deep-learning-intro/>.
 
 ## What to Contribute
 
@@ -73,7 +59,7 @@ and submitting [bug reports][issues]
 about things that don't work, aren't clear, or are missing.
 If you are looking for ideas, please see the 'Issues' tab for
 a list of issues associated with this repository,
-or you may also look at the issues for [Data Carpentry][dc-issues], 
+or you may also look at the issues for [Data Carpentry][dc-issues],
 [Software Carpentry][swc-issues], and [Library Carpentry][lc-issues] projects.
 
 Comments on issues and reviews of pull requests are just as welcome:
@@ -82,6 +68,15 @@ Reviews from novices and newcomers are particularly valuable:
 it's easy for people who have been using these lessons for a while
 to forget how impenetrable some of this material can be,
 so fresh eyes are always welcome.
+
+## Pull Requests
+If you submit a pull request please request one of the maintainers as one of the reviewers.
+Each pull request needs to be reviewed by at least one person that is not an author of the pull request.
+
+Each pull request should also be free of conflicts with the gh-pages branch and build succesfully on with the github action. The github action to build will be automatically run when you submit a pull request.
+
+Make sure your name and email adress are in the AUTHORS file in your pull request.
+Once the pull request is approved it will be merged by one of the maintainers.
 
 ## What *Not* to Contribute
 
