@@ -7,4 +7,9 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 # Synchronize with https://pages.github.com/versions
 ruby '>=2.5.8'
 
-gem 'github-pages', group: :jekyll_plugins
+# gem 'github-pages', group: :jekyll_plugins
+# gem 'jekyll-diagrams', group :jekyll_plugins
+
+group :jekyll_plugins do
+  gem 'github-pages'
+end
