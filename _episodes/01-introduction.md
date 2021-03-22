@@ -21,27 +21,24 @@ keypoints:
 ## What is Deep Learning?
 
 
-* Deep neural networks, analog of human brain
-* Good at classification problems
-* Needs lots of training data
-* Outperforms many other machine learning techniques, especially on larger datasets
+### Deep Learning, Machine Learning and Artificial Intelligence
 
+Deep learning is just one of many techniques collectively known as machine learning. Machine learning (ML) refers to techniques where a computer can "learn" patterns in data, usually by being shown numerous examples to train it. People often talk about machine learning being a form of artificial intelligence (AI). Definintions of artificial intelligence vary, but usually involve having computers mimic the behaviour of intelligent biological systems. Since the 1950s many works of science fiction have dealt with the idea of an artificial intelligence which matches (or exceeds) human intelligence in all areas. Although there have been great advances in AI and ML research recently we can only come close to human like intelligence in a few specialist areas and are still a long way from a general purpose AI.
+
+Deep learning is based upon a technique known as an artificial neural network, which uses a simplified model of a collection of neurons in the brain. Each neuron has several inputs and typically one output. The neuron produces its output by combining the values of its inputs in someway. By altering the sensitivites (known as weights) to the different inputs we can alter the neuron's behaviour. A network can be trained by adjusting these weights many times and comparing the output of the network with some example training data.
+
+Artificial neural networks aren't a new technique, they have been around since the late 1940s. But until around 2010 neural networks tended to be quite small, consisting of only 10s or perhaps 100s of neurons. Around 2010 improvements in computing power and the algorithms for training the networks made much larger and more powerful networks practical.
 
 * relation of DL to ML (infographics AI, ML, (NN), DL)
 ![AI-ML-DL](../fig/AI_ML_DL_bubble_square_draft.png)
 
-* "deep stack of computations"
+Deep learning requires extensive training using example data which shows the network what output it should produce for a given input. One common application of deep learning is classifying images. Here the network will be trained by being "shown" a series of images and told what they contain. Once the network is trained it should be able to take another image and correctly classify its contents. But we are not restricted to just using images, any kind of data can be learned by a deep learning neural network. This makes them able to appear to learn a set of complex rules only by being shown what the inputs and outputs of those rules are instead of being taught the actual rules. Using these approaches deep learning networks have been taught to play video games and even drive cars. The data on which networks are trained usually has to be quite extensive, typically including thousands of examples. For this reason they are not suited to all applications and should be considered just one of many machine learning techniques which are available.
 
-* for complex problems, usually not possible to solve by human through set of rules
-
-* DL as one (!) tool of many
-
-* Prerequisite: lots of Data
 
 ![ML_DL](../fig/ML_DL_draft.png)
 
 
-## What sort of problems can it solve?
+### What sort of problems can it solve?
 
 * Pattern/object recognition
 * Segmenting images (or any data)
@@ -49,13 +46,13 @@ keypoints:
 * Generating new data that looks similar to the training data, often used to create synthetic datasets, art or even "deepfake" videos.
   * This can also be used to give the illusion of enhancing data, for example making images look sharper, video look smoother or adding colour to black and white images. But beware of this, its not an accurate recreation of the original data, but a recreation based on something statistically similar, effectively a digital imagination of what that data could look like.
 
-## What sort of problems can't it solve?
+### What sort of problems can't it solve?
 
 * Only small amounts of training data
 * Tasks requiring an explanation of how the answer was arrived at
 * Being asked to classify things which are nothing like their training data.
 
-## What sort of problems can it solve, but shouldn't be used for?
+### What sort of problems can it solve, but shouldn't be used for?
 Deep learning needs a lot of computational power, for this reason it often relies on specialist hardware like graphical processing units (GPUs). Many computational problems can be solved using less intensive techniques, but could still technically be solved with deep learning.
 
 The following could technically be achieved using deep learning, but it would be a wasteful way to do it:
