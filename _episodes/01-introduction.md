@@ -8,21 +8,38 @@ questions:
 - "When is it successful?"
 - "What are the tools involved?"
 - "What is the workflow for deep learning?"
+- "Why we chose Keras"
 objectives:
-- "Understand the types of problems for which Deep Learning is useful to solve."
-- "Recall some of the common tools available for Deep Learning."
-- "Recall the steps of a Deep Learning workflow."
+- "State for which problems Deep learning is a useful tool"
+- "List the available tools for Deep Learning"
+- "List the steps of a Deep Learning workflow"
 - "Understand why it is important to test the accuracy of deep learning system."
 keypoints:
 - "Keras is a deep learning framework that is easier to use than many of the alternatives."
 ---
 
-# What is deep learning?
+## What is Deep Learning?
+
 
 * Deep neural networks, analog of human brain
 * Good at classification problems
 * Needs lots of training data
 * Outperforms many other machine learning techniques, especially on larger datasets
+
+
+* relation of DL to ML (infographics AI, ML, (NN), DL)
+![AI-ML-DL](../fig/AI_ML_DL_bubble_square_draft.png)
+
+* "deep stack of computations"
+
+* for complex problems, usually not possible to solve by human through set of rules
+
+* DL as one (!) tool of many
+
+* Prerequisite: lots of Data
+
+![ML_DL](../fig/ML_DL_draft.png)
+
 
 ## What sort of problems can it solve?
 
@@ -38,15 +55,36 @@ keypoints:
 * Tasks requiring an explanation of how the answer was arrived at
 * Being asked to classify things which are nothing like their training data.
 
-
 ## What sort of problems can it solve, but shouldn't be used for?
-Deep learning needs a lot of computational power, for this reason it often relies on specialist hardware like graphical processing units (GPUs). Many computational problems can be solved using less intensive techniques, but could still technically be solved with deep learning. 
+Deep learning needs a lot of computational power, for this reason it often relies on specialist hardware like graphical processing units (GPUs). Many computational problems can be solved using less intensive techniques, but could still technically be solved with deep learning.
 
 The following could technically be achieved using deep learning, but it would be a wasteful way to do it:
 
-* Logic operations, such as computing totals, averages, ranges etc. 
+* Logic operations, such as computing totals, averages, ranges etc.
 * Modelling well defined systems, where the equations governing them are known and understood.
 * Basic computer vision tasks such as edge detection, decreasing colour depth or blurring an image.
+
+
+> ## Application areas/History
+>
+> some benchmarks
+> DL is not new as a concept but availability of comp resources is now at stage that it can be done efficiently
+> some examples of interesting things that can be achieved using DL models:
+> image classification, text generation, language translation, GAN, Gameplay (Dota/Go), voice recognition,
+> self-driving cars, natural language and image processing, predictive forecasting, fraud detection in financial applications,
+> financial time-series forecasting, predictive and prescriptive analytics, medical image processing, power systems research,
+> recommendation systems
+> we are still far from computers understanding us
+>
+{: . callout}
+
+> ## What is Deep Learning:
+>
+> Give multiple definitions of Deep Learning and discuss;
+> OR
+> show both bubble representations of AI-ML-NN-DL and AI-ML-DL, ask which is right
+>
+{: .discussion}
 
 
 > ## Deep Learning Problems Exercise
@@ -61,34 +99,110 @@ The following could technically be achieved using deep learning, but it would be
 > {: .solution}
 {: .challenge}
 
-# Tools for Deep Learning
+> ## What is DL - solution
+>
+> learning outcome -> it is vague, find your own
+> OR
+> hah! both are right in some ways, explain why NN has its place there as well
+>
+{: .solution}
 
-## TensorFlow
+*the neuron/perceptron/unit/
 
-## PyTorch
+* inputs, weight, sum, non-linearity, output
+* -> DL: stacked perceptrons
 
-## Caffe
+* training challenges
+  * gradient
+  * overfitting
 
-## Keras
+## Building blocks of NN
 
-## Cloud based and abstracted tools
+*building blocks of a DL model:
+    *example case CNN
+        *show how each layer may look
+        *eg based on face features
+        *we learn from many examples what and eye looks like and where it is located
+*-> needs high amount of data
 
-* Google Cloud Vision - https://cloud.google.com/vision
-* Azure Compupter Vision - https://azure.microsoft.com/en-gb/services/cognitive-services/computer-vision/#features
-* Amazon Rekognition - https://aws.amazon.com/rekognition/
+## Deep Learning workflow
 
-# Deep Learning workflows
+(one way, open for discussion and to be filled with information)
+1. Formulate/ Outline the problem
 
-## Preparing Data
+2. Identify inputs and outputs
 
-## Training
+3. Prepare data
+common steps for data preparation
 
-## Evaluating Training
+4. Choose a cost function and metrics
 
-## Classification
+5. Choose a pretrained model or start building architecture from scratch
+build from scratch vs reuse vs transfer learning
 
-* Exercise on preparing data for deep learning, ask what changes might have to be made to some common data types.
+6. Train model
 
+7. Tune hyperparameters
+
+8. 'predict'
+
+(1 and 2 sometimes mixed)
+
+> ## DL workflow
+>
+> Give an example problem: create DL workflow
+>
+{: .challenge}
+
+> ## DL workflow - solution
+>
+>
+{: .solution}
+
+## Deep Learning in Python
+
+* many different options
+    * name them (and known limitations)
+
+* why keras (and why 'with' tensor-flow)
+    * easy start
+    * huge community
+        * help and tutorials online
+    *
+
+> ## Keras
+>
+> load keras and do something simple with it, get familiar with keras docs
+>
+{: .challenge}
+
+
+> ## package and enviroment management
+>
+> some notes on importance of package and environment management for DL
+> especially when trying out different setups
+>
+{: . callout}
+
+> ## Computational resources
+>
+> some notes on computational resources needed for DL
+> we try to have everyhting in the course run on a laptop with minimum requirements xxx
+> some links where to get more resources to work with, eg HPC3Europe,AWS?,..?
+>
+{: . callout}
+
+> ## Importance of data mining
+>
+> some notes on data mining
+> why important to know your data for DL
+> also mention that some models have prerequisites of data distribution etc
+>
+>
+{: . callout}
+
+
+FIXME
 
 {% include links.md %}
 
