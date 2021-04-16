@@ -2,7 +2,7 @@
 This lesson gives an introduction to deep learning.
 
 ## Lesson Design
-The design of this less can be found in the [lesson design](_extras/design.md)
+The design of this lesson can be found in the [lesson design](_extras/design.md)
 
 ## Target Audience
 The main audience of this carpentry lesson is PhD students that have little to no experience with
