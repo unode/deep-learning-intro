@@ -3,11 +3,11 @@ title: "Classification by a Neural Network using Keras"
 teaching: 0
 exercises: 0
 questions:
+- "What is a neural network?"
 - "How do I compose a Neural Network using Keras?"
 - "How do I train this network on a dataset"
 - "How do I get insight into learning process"
 - "How do I measure the performance of the network"
-- "What happens to the number of parameters if you add another layer?"
 
 objectives:
 - "Explain what a classification task is"
@@ -35,6 +35,35 @@ As a reminder below are the steps of the deep learning workflow:
 8. 'predict'
 
 In this episode will focus on a minimal example for each of these steps, later episodes will build on this knowledge to go into greater depth for some or all of these steps.
+Furthermore this episode assumes you already know what a neural network is and what a classification
+task is. However, below is a very short summary of what these are as a reminder.
+
+### Neural Network
+A neural network is an artificial intelligence technique loosely based on the way biological
+neural networks work.
+A neural network consists of connected computational units called neurons.
+Each neuron takes the sum of all its inputs, performs some, typically non-linear, calculation on them and produces one output.
+The connections between neurons are called edges, these edges typically have a weight associated with
+them.
+This weight determines the 'strength' of the connection, these weights are adjusted during training.
+In this way, the combination of neurons and edges describe a computational graph, an example can be
+seen in the image below.
+In most neural networks neurons are aggregated into layers.
+Signals travel from the input layer to the output layer, possibly through one or more intermediate layers called hidden layers.
+
+
+![An example neural network with ][neural-network]
+[*Glosser.ca, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons*](https://commons.wikimedia.org/wiki/File:Colored_neural_network.svg)
+
+### Classification Task
+In a classification task the goal is to determine to which instance of a category a certain input
+sample belongs to.
+In such a classification task we will 'show' each sample to the neural network and have it make
+a guess.
+In the beginning, when the neural network is still untrained, it will likely 'guess' the wrong category, therefore we will need to train it.
+During training the neural network is repeatedly asked to classify samples and the training
+algorithm will steer the network towards the correct answers by updating the weights of the
+neural network.
 
 > ## GPU usage
 > For this lesson having a GPU (graphics card) available is not needed.
@@ -46,21 +75,24 @@ In this episode will focus on a minimal example for each of these steps, later e
 ## Step 1. Formulate / Outline the problem: Penguin classification
 In this episode we will be using the [penguin dataset](https://zenodo.org/record/3960218), this is a dataset that was published in 2020 by Allison Horst and contains data on three different species of the penguins.
 
-The `palmerpenguins` data contains size measurements for three penguin species observed on three islands in the Palmer Archipelago, Antarctica.
-
+We will use the penguin dataset to train a neural network which can classify which species a
+penguin belongs to, based on their physical characteristics.
 > ## Goal
-> The goal is to predict a penguins species using the attributes available in this dataset.
+> The goal is to predict a penguins' species using the attributes available in this dataset.
 {: .objectives}
+
+The `palmerpenguins` data contains size measurements for three penguin species observed on three islands in the Palmer Archipelago, Antarctica.
+The physical attributes measured are flipper length, beak length, beak width, body mass, and sex.
 
 ![Illustration of the three species of penguins found in the Palmer Archipelago, Antarctica: Chinstrap, Gentoo and Adele][palmer-penguins]
 *Artwork by @allison_horst*
 
-These data were collected from 2007 - 2009 by Dr. Kristen Gorman with the [Palmer Station Long Term Ecological Research Program](https://pal.lternet.edu/), part of the [US Long Term Ecological Research Network](https://lternet.edu/). The data were imported directly from the [Environmental Data Initiative](https://environmentaldatainitiative.org/) (EDI) Data Portal, and are available for use by CC0 license ("No Rights Reserved") in accordance with the [Palmer Station Data Policy](https://pal.lternet.edu/data/policies).
-
-
 ![Illustration of the beak dimensions called culmen length and culmen depth in the dataset][penguin-beaks]
 *Artwork by @allison_horst*
 
+These data were collected from 2007 - 2009 by Dr. Kristen Gorman with the [Palmer Station Long Term Ecological Research Program](https://pal.lternet.edu/), part of the [US Long Term Ecological Research Network](https://lternet.edu/). The data were imported directly from the [Environmental Data Initiative](https://environmentaldatainitiative.org/) (EDI) Data Portal, and are available for use by CC0 license ("No Rights Reserved") in accordance with the [Palmer Station Data Policy](https://pal.lternet.edu/data/policies).
+
+## 2. Identify inputs and outputs
 > ## Prerequisite: Start Jupyter Notebook
 > Start a jupyter notebook by issueing the following command on a command line. It is probably a
 > good idea to create an empty directory for this course first.
@@ -75,7 +107,6 @@ These data were collected from 2007 - 2009 by Dr. Kristen Gorman with the [Palme
 {:.language-python}
 {:.prereq}
 
-## 2. Identify inputs and outputs
 To identify the inputs and outputs that we will use to design the neural network we need to familiarize
 ourselves with the dataset. This step is sometimes also called data exploration.
 
@@ -97,7 +128,7 @@ This will give you a pandas dataframe which contains the penguin data.
 > ## penguin dataset
 >
 > Use seaborn to load the dataset and inspect the mentioned attributes.
-> 1. What are the different features called?
+> 1. What are the different features called in the dataframe?
 > 2. Are the target classes of the dataset stored as numbers or strings?
 > 3. How many samples does this dataset have?
 >
@@ -177,22 +208,12 @@ By using the `hue='class'` setting for the pairplot the graphs on the diagonal a
 > {:.solution}
 {:.challenge}
 
-
-[pairplot]: ../fig/pairplot.png "Pair Plot"
-{: width="66%"}
-
-[palmer-penguins]: ../fig/palmer_penguins.png "Palmer Penguins"
-{: width="50%"}
-
-[penguin-beaks]: ../fig/culmen_depth.png "Culmen Depth"
-{: width="50%"}
-
 ### Input and Output Selection
 Now that we have familiarized ourselves with the dataset we can select the data attributes to use
 as input for the neural network and the target that we want to predict.
 
-In the reset of this episode we will use the `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, and `body_mass_g` attributes.
-The target for the classification task will be the species.
+In the rest of this episode we will use the `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, `body_mass_g` attributes.
+The target for the classification task will be the `species`.
 
 Using the following code we can select these columns from the dataframe:
 ~~~
@@ -214,10 +235,10 @@ There are many ways to deal with missing values, but for now we will just remove
 Add a call to `dropna()` before the input_data definition that we used above, the cell should now
 look like this:
 ~~~
-penguins = penguins.dropna()
+valid_data = penguins.dropna()
 
-input_data = penguins.drop(columns=["species", 'island', 'sex'])
-target = penguins['species']
+input_data = valid_data.drop(columns=["species", 'island', 'sex'])
+target = valid_data['species']
 ~~~
 {:.language-python}
 
@@ -227,12 +248,14 @@ neural network is from the true species.
 When the target is a string category column as we have here it is very difficult to determine this "distance" or error.
 Therefore we will transform this column into a more suitable format.
 Again there are many ways to do this, but two of the most used ones are
-1. Mapping each value to a numerical value (e.g. Adelie => 0, Chinstrap => 1, Gentoo => 2)
-2. Mapping the values to a 1-hot encoding. This encoding creates multiple columns, as many as there
+1. Mapping each value to a numerical value (e.g. Adelie => 0, Chinstrap => 1, Gentoo => 2),
+   this is called Ordinal encoding.
+2. Mapping the values using a 1-hot encoding. This encoding creates multiple columns, as many as there
    are unique values, and puts a 1 in the column with the corresponding correct class, and 0's in
    the other columns. (e.g. for the first row: 1 0 0)
 
-We will try both encodings to train the neural network so let's create them both now.
+We will try both encodings to train the neural network and see which one works best,
+so let's create them both now.
 Fortunately pandas is able to generate both encodings for us.
 ~~~
 # Convert the target from string to category type
@@ -255,6 +278,19 @@ target_1_hot = pd.get_dummies(target)
 {:.callout}
 
 ## 4. Choose a cost function and metrics
+Having selected the target enodings that we want to try we need to select an appropriate loss
+function that we will use during training.
+This loss function tells the training algorithm how wrong, or how 'far away' from the true
+value the predicted value is.
+
+For the ordinal encoding the most straightforward loss function is the Mean Squared Error.
+This loss function favours small deviations above large deviations.
+In keras this is implemented in the `keras.losses.MeanSquaredError` class, which we will use later.
+
+For the one hot encoding we will use the Categorical Crossentropy loss.
+This is a measure for how close the distribution of the three neural network outputs corresponds
+to the distribution of the three values in the one hot encoding.
+Its lower if the distributions are more similar.
 
 ## 5. Choose a pretrained model or start building architecture from scratch
 
@@ -267,3 +303,14 @@ target_1_hot = pd.get_dummies(target)
 
 {% include links.md %}
 
+[neural-network]: https://upload.wikimedia.org/wikipedia/commons/4/46/Colored_neural_network.svg "Neural Network"
+{: width="25%"}
+
+[palmer-penguins]: ../fig/palmer_penguins.png "Palmer Penguins"
+{: width="50%"}
+
+[penguin-beaks]: ../fig/culmen_depth.png "Culmen Depth"
+{: width="50%"}
+
+[pairplot]: ../fig/pairplot.png "Pair Plot"
+{: width="66%"}
