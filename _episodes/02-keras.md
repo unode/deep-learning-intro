@@ -43,6 +43,7 @@ A neural network is an artificial intelligence technique loosely based on the wa
 neural networks work.
 A neural network consists of connected computational units called neurons.
 Each neuron takes the sum of all its inputs, performs some, typically non-linear, calculation on them and produces one output.
+This calculation is called the activation function.
 The connections between neurons are called edges, these edges typically have a weight associated with
 them.
 This weight determines the 'strength' of the connection, these weights are adjusted during training.
@@ -104,7 +105,6 @@ These data were collected from 2007 - 2009 by Dr. Kristen Gorman with the [Palme
 > ~~~
 > {:.language-bash}
 > Now create a new notebook and call it assignment1.ipynb.
-{:.language-python}
 {:.prereq}
 
 To identify the inputs and outputs that we will use to design the neural network we need to familiarize
@@ -117,6 +117,8 @@ pandas dataframe, luckily the datasets available in seaborn are already in a pan
 ~~~
 import seaborn as sns
 ~~~
+{:.language-python}
+
 We can load the penguin dataset using
 ~~~
 penguins = sns.load_dataset('penguins')
@@ -200,6 +202,7 @@ By using the `hue='class'` setting for the pairplot the graphs on the diagonal a
 > > ~~~
 > > sns.pairplot(df, hue="class")
 > > ~~~
+> > {:.language-python}
 > > ![Pair plot showing the separability of the three species of penguin][pairplot]
 > >
 > > The plots show that the green class, Gentoo is somewhat more easily distinguishable from the other two.
@@ -247,23 +250,16 @@ To train a neural network we need to be able to calculate how "far away" the spe
 neural network is from the true species.
 When the target is a string category column as we have here it is very difficult to determine this "distance" or error.
 Therefore we will transform this column into a more suitable format.
-Again there are many ways to do this, but two of the most used ones are
-1. Mapping each value to a numerical value (e.g. Adelie => 0, Chinstrap => 1, Gentoo => 2),
-   this is called Ordinal encoding.
-2. Mapping the values using a 1-hot encoding. This encoding creates multiple columns, as many as there
-   are unique values, and puts a 1 in the column with the corresponding correct class, and 0's in
-   the other columns. (e.g. for the first row: 1 0 0)
+Again there are many ways to do this, however we will be using the 1-hot encoding.
+This encoding creates multiple columns, as many as there are unique values, and
+puts a 1 in the column with the corresponding correct class, and 0's in
+the other columns.
+For instance, for a penguin of the Adelie species the 1 hot encoding would be 1 0 0
 
-We will try both encodings to train the neural network and see which one works best,
-so let's create them both now.
-Fortunately pandas is able to generate both encodings for us.
+Fortunately pandas is able to generate this encoding for us.
 ~~~
-# Convert the target from string to category type
-# so pandas can generate the codes for us.
-target = target.astype('category')
-
-target_numerical = target.cat.codes
-target_1_hot = pd.get_dummies(target)
+target = pd.get_dummies(valid_data['species'])
+target.head() # print out the top 5 to see what it looks like.
 ~~~
 {:.language-python}
 
@@ -274,28 +270,139 @@ target_1_hot = pd.get_dummies(target)
 > It is part of the tensorflow python package and can be imported using `from tensorflow import keras`.
 >
 > Keras includes functions, classes and definitions to define deep learning models, cost functions and
-> optimizers (optimizer train a model).
+> optimizers (optimizers are used to train a model).
 {:.callout}
 
 ## 4. Choose a cost function and metrics
-Having selected the target enodings that we want to try we need to select an appropriate loss
+Having selected the target enoding, we need to select an appropriate loss
 function that we will use during training.
 This loss function tells the training algorithm how wrong, or how 'far away' from the true
 value the predicted value is.
 
-For the ordinal encoding the most straightforward loss function is the Mean Squared Error.
-This loss function favours small deviations above large deviations.
-In keras this is implemented in the `keras.losses.MeanSquaredError` class, which we will use later.
-
 For the one hot encoding we will use the Categorical Crossentropy loss.
 This is a measure for how close the distribution of the three neural network outputs corresponds
 to the distribution of the three values in the one hot encoding.
-Its lower if the distributions are more similar.
+It is lower if the distributions are more similar.
+In keras this is implemented in the `keras.losses.CategoricalCrossentropy` class.
 
 ## 5. Choose a pretrained model or start building architecture from scratch
+Now we will build a neural network from scratch, and although this sounds like
+a daunting task, with Keras it is actually surprisingly straightforward.
+
+With keras you compose a neural network by creating layers and linking them
+together. For now we will only use one type of layer called a fully connected
+or Dense layer. In keras this is defined by the `keras.layers.Dense` class.
+
+A dense layer has a number of neurons, which is a parameter when you create the layer.
+When connecting the layer to its input and output layers every neuron in the dense
+layer gets an edge (i.e. connection) to ***all*** of the input neurons and ***all*** of the output neurons.
+The hidden layer in the image in the introduction of this episode is a Dense layer.
+
+The input in Keras also gets special treatment, Keras autmatically calculates the number of inputs
+and outputs a layer needs and therefore how many edges need to be created.
+This means we need to let Keras now how big our input is going to be.
+We do this by instantiating a `keras.Input` class and tell it how big our input is.
+
+~~~
+inputs = keras.Input(shape=input_data.shape[1])
+~~~
+{:.language-python}
+
+We store a reference to this input class in a variable so we can pass it to the creation of
+our hidden layer.
+Creating the hidden layer can then be done as follows:
+~~~
+hidden_layer = keras.layers.Dense(10, activation="relu")(inputs)
+~~~
+{:.language-python}
+
+The instantiation here has 2 parameters and a seemlingly strange combination of parenthenses, so
+let's take a closer look.
+The first parameter `10` is the number of neurons we want in this layer, this is one of the
+hyperparameters of our system and needs to be chosen carefully. We will get back to this in the section
+on hyperparameter tuning.
+The second parameter is the activation function to use, here we choose relu which is 0 for values
+0 and below and the same as the input for values above 0.
+This is a commonly used activation functions in deep neural networks that is proven to work well.
+Next we see an extra set of parenthenses with inputs in them, this means that after creating an
+instance of the Dense layer we call it as if it was a function.
+This tells the Dense layer to connect the layer passed as a parameter, in this case the inputs.
+Finally we store a reference so we can pass it to the output layer in a minute.
+
+Now we create another layer that will be our output layer.
+Again we use a Dense layer and so the call is very similar to the previous one.
+~~~
+output_layer = keras.layers.Dense(3, activation="softmax")(hidden_layer)
+~~~
+{:.language-python}
+Because we chose the one hot encoding, we use `3` neurons for the output layer.
+This works well in combination with the `softmax` activation function and the
+Categorical Crossentropy loss we chose earlier.
+
+The softmax activation ensures that the three output neurons produce values in the range
+(0, 1) and the sum to 1.
+We can interpret this as a kind of 'probability' that the sample belongs to a certain
+species.
+The Categorical Crossentropy loss then works well with comparing these probabilities
+with 'true' probabilities that we generated using the one hot encoding.
+
+Now that we have defined the layers of our neural network we can combine them into
+a keras model which facilitates training the network.
+~~~
+model = keras.Model(inputs=inputs, outputs=output_layer)
+model.summary()
+~~~
+{:.language-python}
+
+The model summary here can show you some information about the neural network we have defined.
+
+> ## Create the neural network
+>
+> Using the code snippets above define a keras model with 1 hidden layer with
+> 10 neurons and an output layer with 3 neurons.
+>
+> * How many parameters does the resulting model have?
+> * What happens to the number of parameters if we increase or decrease the number of neurons
+>   in the hidden layer?
+>
+> > ## Solution
+> > ~~~
+> > inputs = keras.Input(shape=input_data.shape[1])
+> > hidden_layer = keras.layers.Dense(10, activation="relu")(inputs)
+> > output_layer = keras.layers.Dense(3, activation="softmax")(hidden_layer)
+> >
+> > model = keras.Model(inputs=inputs, outputs=output_layer)
+> > model.summary()
+> > ~~~
+> > {:.language-python}
+> >
+> > ~~~
+> Model: "functional_1"
+> > _________________________________________________________________
+> > Layer (type)                 Output Shape              Param #
+> > =================================================================
+> > input_1 (InputLayer)         [(None, 4)]               0
+> > _________________________________________________________________
+> > dense (Dense)                (None, 10)                50
+> > _________________________________________________________________
+> > dense_1 (Dense)              (None, 3)                 33
+> > =================================================================
+> > Total params: 83
+> > Trainable params: 83
+> > Non-trainable params: 0
+> > _________________________________________________________________
+> > ~~~
+> > {:.output}
+> >
+> > The model has 83 trainable parameters.
+> > If you increase the number of neurons in the hidden layer the number of
+> > trainable parameters increases and decreases if you decrease the number
+> > of neurons.
+> {:.solution}
+{:.challenge}
 
 ## 6. Train model
-
+We are now ready to train the model.
 ## 7. Tune hyperparameters
 
 ## 8. 'predict'
