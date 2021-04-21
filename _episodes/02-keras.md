@@ -440,6 +440,11 @@ sns.lineplot(x=history.epoch, y=history.history['loss'])
 {:.language-python}
 
 ## 7. Tune hyperparameters
+As we discussed before the design and training of a neural network comes with
+many hyper parameter choices.
+We will go into more depth of these hyperparameters in later episodes, but
+it is good to play with them a little bit to see how they change and influence the
+model training.
 > ## Change some of the hyperparameters
 >
 > Change one of the hyperparameters of the neural network.
@@ -450,17 +455,49 @@ sns.lineplot(x=history.epoch, y=history.history['loss'])
 >
 > * How does changing these hyperparameters impact the training
 > * What would be a good strategy to find good hyperparameter values?
+{:.challenge}
 
 ## 8. Measuring Performance
-Now that we have a training neural network, we can use it to predict new samples
-of penguin.
-Normally now we would try to assess the quality of the trained model by testing it
-on some data not used for training.
+Normally we would now try to assess the quality of the trained model by testing it
+on some data that was not used for training.
+This is often done by keeping a portion of the dataset seperate from the training data,
+when using that to measure performance such a set is called a test set.
 In this episode we did not prepare such a test set, however, and this will be covered
 in later epidsodes.
 
 ## 9. 'predict'
-model.predict(input_data)
+Now that we have a training neural network, we can use it to predict new samples
+of penguin using the `predict` function.
+This will use the network to predict the outputs we trained.
+
+~~~
+# Select the first penguin from the dataset as an example
+penguin_data = training_data[0:1]
+
+# use predict to predict the
+prediction = model.predict(penguin_data)
+print(prediction)
+~~~
+{:.language-python}
+
+Remember that the output of the network uses the `softmax` activation function and has three
+outputs, one for each species.
+Therefore, we need to transform this output to one penguin species.
+We can do this by taking the highest valued output and converting that to the
+corresponding species.
+
+We can do this using numpy `argmax`, which gives is the index of the highest output.
+This number we can use with the categories in the species column to get the correct species
+like so:
+~~~
+import numpy as np
+species_nr = np.argmax(prediction, axis=1)
+penguin_species = penguins['species'].cat.categories[species_nr]
+print(penguin_species)
+~~~
+{:.language-python}
+
+## Conclusion
 
 {% include links.md %}
 
