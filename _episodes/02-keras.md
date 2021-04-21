@@ -220,7 +220,7 @@ The target for the classification task will be the `species`.
 
 Using the following code we can select these columns from the dataframe:
 ~~~
-input_data = penguins.drop(columns=["species", 'island', 'sex'])
+training_data = penguins.drop(columns=["species", 'island', 'sex'])
 target = penguins['species']
 ~~~
 {:.language-python}
@@ -240,7 +240,7 @@ look like this:
 ~~~
 valid_data = penguins.dropna()
 
-input_data = valid_data.drop(columns=["species", 'island', 'sex'])
+training_data = valid_data.drop(columns=["species", 'island', 'sex'])
 target = valid_data['species']
 ~~~
 {:.language-python}
@@ -304,7 +304,7 @@ This means we need to let Keras now how big our input is going to be.
 We do this by instantiating a `keras.Input` class and tell it how big our input is.
 
 ~~~
-inputs = keras.Input(shape=input_data.shape[1])
+inputs = keras.Input(shape=training_data.shape[1])
 ~~~
 {:.language-python}
 
@@ -403,10 +403,64 @@ The model summary here can show you some information about the neural network we
 
 ## 6. Train model
 We are now ready to train the model.
+Training the model requires us to make a several more choices, this time we need to
+choose which optimizer to use and if this optimizer has parameters what values
+to use for those.
+Furthermore the training we need to specify how many times to show the training samples.
+
+Once more keras gives us plenty of choices all have their own pro's and cons,
+but for now let us go with the widely used Adam optimizer.
+Adam has a number of parameters, but the default values work well for most problems.
+So we will use it with its default parameters.
+
+Combining this with the loss function we decided on earlier we can now compile the
+model using `model.compile`.
+Compiling the model prepares it to start the training.
+
+Training the model is done using the `fit` method, it takes the input data and
+target data as inputs and it has several other parameters for certain options
+of the training.
+Here we only set a different number of `epochs`.
+One training epoch means that every sample in the training data has been shown
+to the neural network and used to update its parameters.
+
+~~~
+model.compile(optimizer=keras.optimizers.Adam(), loss=keras.losses.CategoricalCrossentropy())
+history = model.fit(training_data, target, epochs=100)
+~~~
+{:.language-python}
+
+The fit method returns a history object that has a history attribute with the training loss and
+potentially other metrics per training epoch.
+It can be very insightful to plot the training loss to see how the training progresses.
+Using seaborn we can do this as follow:
+~~~
+sns.lineplot(x=history.epoch, y=history.history['loss'])
+~~~
+{:.language-python}
+
 ## 7. Tune hyperparameters
+> ## Change some of the hyperparameters
+>
+> Change one of the hyperparameters of the neural network.
+> You can for instance change the model by adding or removing layers,
+> changing the activation function of the hidden layer.
+> Or you can change the training, for instance by adding a learning
+> rate throught the `learning_rate` parameter of the Adam optimizer.
+>
+> * How does changing these hyperparameters impact the training
+> * What would be a good strategy to find good hyperparameter values?
 
-## 8. 'predict'
+## 8. Measuring Performance
+Now that we have a training neural network, we can use it to predict new samples
+of penguin.
+Normally now we would try to assess the quality of the trained model by testing it
+on some data not used for training.
+In this episode we did not prepare such a test set, however, and this will be covered
+in later epidsodes.
 
+## 9. 'predict'
+model.predict(input_data)
 
 {% include links.md %}
 
