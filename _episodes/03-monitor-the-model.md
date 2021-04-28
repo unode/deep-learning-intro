@@ -72,7 +72,7 @@ def create_nn(n_features, n_predictions):
     # Output layer
     output = Dense(n_predictions)(layers_dense)
 
-    return Model(inputs=input, outputs=output)
+    return Model(inputs=input, outputs=output, name="weather_prediction_model")
 
 n_features = X_data.shape[1]
 n_predictions = 1
@@ -81,5 +81,21 @@ model.compile(loss='mse', optimizer=Adam(), metrics=['mse', 'mae'])
 model.summary()
 ~~~
 {:.language-python}
+Model: "weather_prediction_model"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input (InputLayer)           [(None, 152)]             0         
+_________________________________________________________________
+dense_0 (Dense)              (None, 100)               15300     
+_________________________________________________________________
+dense_1 (Dense)              (None, 50)                5050      
+_________________________________________________________________
+dense_2 (Dense)              (None, 1)                 51        
+=================================================================
+Total params: 20,401
+Trainable params: 20,401
+Non-trainable params: 0
+_________________________________________________________________
 
 ## Train a dense neural network
