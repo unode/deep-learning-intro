@@ -81,6 +81,8 @@ model.compile(loss='mse', optimizer=Adam(), metrics=['mse', 'mae'])
 model.summary()
 ~~~
 {:.language-python}
+
+~~~
 Model: "weather_prediction_model"
 _________________________________________________________________
 Layer (type)                 Output Shape              Param #   
@@ -97,5 +99,7 @@ Total params: 20,401
 Trainable params: 20,401
 Non-trainable params: 0
 _________________________________________________________________
+~~~
+{: .output}
 
 ## Train a dense neural network
