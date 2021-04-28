@@ -48,6 +48,8 @@ As with classical machine learning techniques, it is common in deep learning to 
 ## Regression and classification - how to set a training goal
 - Explain how to define the output part of a neural network
 - What is the loss function (and which one to chose for a regression or classification task)?
+
+
 In episode 2 we trained a dense neural network on a *classification task*. For this one hot encoding was used together with a Categorical Crossentropy loss function.
 This measured how close the distribution of the neural network outputs corresponds to the distribution of the three values in the one hot encoding.
 Now we want to work on a *regression task*, thus not prediciting the right class for a datapoint but a certain value (could in principle also be several values). In our example we want to predict the sunshine hours in Düsseldorf (or any other place in the dataset) for a particular day based on the weather data of all other places. 
@@ -74,10 +76,7 @@ def create_nn(n_features, n_predictions):
 
     return Model(inputs=input, outputs=output, name="weather_prediction_model")
 
-n_features = X_data.shape[1]
-n_predictions = 1
-model = create_nn(n_features, n_predictions)
-model.compile(loss='mse', optimizer=Adam(), metrics=['mse', 'mae'])
+model = create_nn(n_features=X_data.shape[1], n_predictions=1)
 model.summary()
 ~~~
 {:.language-python}
@@ -103,3 +102,29 @@ _________________________________________________________________
 {: .output}
 
 ## Train a dense neural network
+We compile the model and train it on our training data for 200 epochs
+
+~~~
+model.compile(optimizer='adam',
+              loss='mse',
+              metrics=['mae', 'mse'])
+
+history = model.fit(X_train, y_train,
+                    batch_size=10,
+                    epochs=200,
+                    verbose=2)
+~~~
+{: .language-python}
+
+We can plot the training process using the history:
+~~~
+history_df = pd.DataFrame.from_dict(history.history)
+sns.lineplot(data=history_df['mae'])
+~~~
+{: .language-python}
+![Output of plotting sample](../fig/03_training_history_1.png)
+~~~
+sns.lineplot(data=history_df[['mse']])
+~~~
+{: .language-python}
+![Output of plotting sample](../fig/03_training_history_loss_1.png)
