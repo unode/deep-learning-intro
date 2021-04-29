@@ -172,7 +172,7 @@ For those familiar with (classical) machine learning this might look familiar. I
 Overfitting also happens in classical machine learning, but there it is usually interpreted as the model having more parameters than the training data would justify (say, a decision tree with too many branches for the number of training instances). As a consequence one would reduce the number of parameters to avoid overfitting.
 In deep learning the situation is slightly different. It can -same as for classical machine learning- also be a sign of having a *too big* model, meaning a model with too many parameters (layers and/or nodes). However, in deep learning higher number of model parameters are often still considered acceptable and models often perform best (in terms of prediction accuracy) when they are at the verge of overfitting. So, in a way, training deep learning models is always a bit like playing with fire...
 
-## Watch you model training closely
+## Watch your model training closely
 As we just saw, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a 2nd split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a 2nd test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evalute the model with the *validation set* after every epoch during training, for instance to splot if we see signs of clear overfitting.
 
 Let's give this a try!
