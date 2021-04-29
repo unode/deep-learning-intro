@@ -119,12 +119,69 @@ history = model.fit(X_train, y_train,
 We can plot the training process using the history:
 ~~~
 history_df = pd.DataFrame.from_dict(history.history)
-sns.lineplot(data=history_df['mae'])
+sns.lineplot(data=history_df['mse'])
 ~~~
 {: .language-python}
-![Output of plotting sample](../fig/03_training_history_1.png)
+![Output of plotting sample](../fig/03_training_history_1_mse.png)
+
+This looks very promising! Our loss ("mse") is dropping nicely and while it maybe keeps fluctuating a bit it does end up at fairly low *mse* values.
+But the *mse* is just the *mean* squared error, so we might want to look a bit more in detail how well our just trained model does in predicting the sunshine hours.
+
+## Evaluate our model
+There is not a single way to evaluate how a model performs. But there is at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly. For the present *regression task* however, it makes more sense to compare true and predicted values in simple scatter plot.
+
+First, we will do the actual prediction step. And here let's do this for both the training and the test set.
 ~~~
-sns.lineplot(data=history_df[['mse']])
+y_train_predicted = model.predict(X_train)
+y_test_predicted = model.predict(X_test)
 ~~~
 {: .language-python}
-![Output of plotting sample](../fig/03_training_history_loss_1.png)
+
+We can then compare those to the true labels, for instance by
+~~~
+fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+plt.style.use('ggplot')  # optional, that's only to define a visual style
+axes[0].scatter(y_train_predicted, y_train, s=10, alpha=0.5, color="teal")
+axes[0].set_title("training set")
+axes[0].set_xlabel("predicted sunshine hours")
+axes[0].set_ylabel("true sunshine hours")
+
+axes[1].scatter(y_test_predicted, y_test, s=10, alpha=0.5, color="teal")
+axes[1].set_title("test set")
+axes[1].set_xlabel("predicted sunshine hours")
+axes[1].set_ylabel("true sunshine hours")
+~~~
+{: .language-python}
+![Scatter plot to evaluate training and test set](../fig/03_regression_compare_training_and_test_performance.png)
+
+Maybe that is not exactly what you expected? What is the issue here? Any ideas?
+
+
+For those familiar with (classical) machine learning this might look familiar. It is a very clear signature of *overfitting* which means that the model has to some extend memorized aspects of the training data. As a result makes much more accurate predictions on the training data than on unseen data.
+
+Overfitting also happens in classical machine learning, but there it is usually interpreted as the model having more parameters than the training data would justify (say, a decision tree with too many branches for the number of training instances). As a consequence one would reduce the number of parameters to avoid overfitting.
+In deep learning the situation is slightly different. It can -same as for classical machine learning- also be a sign of having a *too big* model, meaning a model with too many parameters (layers and/or nodes). However, in deep learning higher number of model parameters are often still considered acceptable and models often perform best (in terms of prediction accuracy) when they are at the verge of overfitting. So, in a way, training deep learning models is always a bit like playing with fire...
+
+## Watch you model training closely
+As we just saw, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a 2nd split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a 2nd test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evalute the model with the *validation set* after every epoch during training, for instance to splot if we see signs of clear overfitting.
+
+Let's give this a try!
+
+We need to initiate a new model -- otherwise Keras will simply assume that we want to continue training the model we already trained above.
+~~~
+model = create_nn(n_features=X_data.shape[1], n_predictions=1)
+model.compile(optimizer='adam',
+              loss='mse',
+              metrics=['mae', 'mse'])
+~~~
+{: .language-python}
+
+But now we train it with the small addition of also passing it our validation set:
+~~~
+history = model.fit(X_train, y_train,
+                    batch_size=10,
+                    epochs=200,
+                    validation_data=(X_val, y_val),
+                    verbose=2)
+~~~
+{: .language-python}
