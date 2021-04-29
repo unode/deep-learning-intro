@@ -36,6 +36,16 @@ X_data.head()
 ~~~
 {:.language-python}
 
+
+| | DATE 	| MONTH | 	BASEL_cloud_cover 	| 	BASEL_humidity 	| 	BASEL_pressure	| ... |
+|------:|------:|---------------:|--------------:|------------------:|------------:|------------:|
+|0| 	20000101 	|1 	|8 	|0.89 	|1.0286|... |
+|1| 	20000102 	|1 	|8 	|0.87 	|1.0318|... |
+|2| 	20000103 	|1 	|5 	|0.81 	|1.0314|... |
+|3| 	20000104 	|1 	|7 	|0.79 	|1.0262|... |
+|4| 	20000105 	|1 	|5 	|0.90 	|1.0246|... |
+{: .output}
+
 As a label, that is the the values we want to later predict, we here pick the sunshine hours which we can get by
 ~~~
 y_data = data.loc[:365*3]["DUSSELDORF_sunshine"].values
