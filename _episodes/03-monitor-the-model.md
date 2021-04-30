@@ -116,12 +116,15 @@ _________________________________________________________________
 {: .output}
 
 ## Train a dense neural network
-We compile the model and train it on our training data for 200 epochs
+When compiling the model we can define a few very important aspects. First, there is the optimizer that we want to use.
+The *optimizer* here refers to the algorithm with which the model learns to optimize on the set loss function. For now, we can largely skip this step and simply pick one of the most common optimizers that works well for most tasks: the *Adam optimizer*. Second, we here determine which loss function the model should optimize on. As discussed above we here chose `'mse'` refering to mean squared error. 
+
+In our first example (episode 2) we plotted the progression of the loss during training. That is indeed a good first indicator if things are working alright, i.e. if the loss is indeed decreasing as it should. However, when models become more complicated then also the loss functions often become less intuitive (side remark: e.g. when adding L1 or L2 regularization). That is why it is good practice to monitor the training process with additional, more intuitive metrics. They are not used to optimize the model, but are simply recorded during training. With Keras they can simply be added via `metrics=[...]` and can contain one or multiple metrics of interest. Here we could for instance chose to use `'mae'` the mean absolute error, or the the *root mean squared error* (RMSE) which unlike the *mse* has the same units as the predicted values. Finally, after compiling we train the model on our training data for 200 epochs.
 
 ~~~
 model.compile(optimizer='adam',
               loss='mse',
-              metrics=['mae', 'mse'])
+              metrics=[tf.keras.metrics.RootMeanSquaredError()])
 
 history = model.fit(X_train, y_train,
                     batch_size=10,
@@ -133,10 +136,12 @@ history = model.fit(X_train, y_train,
 We can plot the training process using the history:
 ~~~
 history_df = pd.DataFrame.from_dict(history.history)
-sns.lineplot(data=history_df['mse'])
+sns.lineplot(data=history_df['root_mean_squared_error'])
+plt.xlabel("epochs")
+plt.ylabel("RMSE")
 ~~~
 {: .language-python}
-![Output of plotting sample](../fig/03_training_history_1_mse.png)
+![Output of plotting sample](../fig/03_training_history_1_rmse.png)
 
 This looks very promising! Our loss ("mse") is dropping nicely and while it maybe keeps fluctuating a bit it does end up at fairly low *mse* values.
 But the *mse* is just the *mean* squared error, so we might want to look a bit more in detail how well our just trained model does in predicting the sunshine hours.
@@ -186,7 +191,7 @@ We need to initiate a new model -- otherwise Keras will simply assume that we wa
 model = create_nn(n_features=X_data.shape[1], n_predictions=1)
 model.compile(optimizer='adam',
               loss='mse',
-              metrics=['mae', 'mse'])
+              metrics=[tf.keras.metrics.RootMeanSquaredError()])
 ~~~
 {: .language-python}
 
@@ -199,3 +204,5 @@ history = model.fit(X_train, y_train,
                     verbose=2)
 ~~~
 {: .language-python}
+
+![Output of plotting sample](../fig/03_training_history_2_rmse.png)
