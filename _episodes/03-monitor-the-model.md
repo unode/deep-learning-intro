@@ -71,50 +71,62 @@ Now we want to work on a *regression task*, thus not prediciting the right class
 ### Network output layer:
 The network should hence output a single float value which is why the last layer of our network will only consist of a single node. 
 
-## Excercise:
-We have seen how to build a dense neural network in episode 2. Try now to construct a dense neural network with 2-3 layers for a regression task (hence one node in the output layer)...
+> ## Create the neural network
+>
+> We have seen how to build a dense neural network in episode 2. 
+> Try now to construct a dense neural network with 3 layers for a regression task.
+> You could for instance start with a network of a dense layer with 100 nodes, followed by one with 50 nodes and finally an output layer.
+>
+> * What must here be the dimension of our input layer?
+> * How would our output layer look like? What about the activation function?
+>
+> > ## Solution
+> > ~~~
+> > def create_nn(n_features, n_predictions):
+> >     # Input layer
+> >     input = Input(shape=(n_features,), name='input')
+> > 
+> >     # Dense layers
+> >     layers_dense = Dense(100, 'relu')(input)
+> >     layers_dense = Dense(50, 'relu')(layers_dense)
+> > 
+> >     # Output layer
+> >     output = Dense(n_predictions)(layers_dense)
+> > 
+> >     return Model(inputs=input, outputs=output, name="weather_prediction_model")
+> > 
+> > model = create_nn(n_features=X_data.shape[1], n_predictions=1)
+> > model.summary()
+> > ~~~
+> > {:.language-python}
+> >
+> > ~~~
+> Model: "weather_prediction_model"
+> > _________________________________________________________________
+> > Layer (type)                 Output Shape              Param #   
+> > =================================================================
+> > input (InputLayer)           [(None, 152)]             0         
+> > _________________________________________________________________
+> > dense_0 (Dense)              (None, 100)               15300     
+> > _________________________________________________________________
+> > dense_1 (Dense)              (None, 50)                5050      
+> > _________________________________________________________________
+> > dense_2 (Dense)              (None, 1)                 51        
+> > =================================================================
+> > Total params: 20,401
+> > Trainable params: 20,401
+> > Non-trainable params: 0
+> > _________________________________________________________________
+> > ~~~
+> > {:.output}
+> >
+> > The shape of the input layer has to correspond to the number of features in our data: 152
+> > 
+> > The output layer here is a dense layer with only 1 node. And we here have chosen to use *no activation function*.
+> > While we might use *softmax* for a classification task, here we do not want to restrict the possible outcomes for a start.
+> {:.solution}
+{:.challenge}
 
-
-
-
-~~~
-def create_nn(n_features, n_predictions):
-    # Input layer
-    input = Input(shape=(n_features,), name='input')
-
-    # Dense layers
-    layers_dense = Dense(100, 'relu')(input)
-    layers_dense = Dense(50, 'relu')(layers_dense)
-
-    # Output layer
-    output = Dense(n_predictions)(layers_dense)
-
-    return Model(inputs=input, outputs=output, name="weather_prediction_model")
-
-model = create_nn(n_features=X_data.shape[1], n_predictions=1)
-model.summary()
-~~~
-{:.language-python}
-
-~~~
-Model: "weather_prediction_model"
-_________________________________________________________________
-Layer (type)                 Output Shape              Param #   
-=================================================================
-input (InputLayer)           [(None, 152)]             0         
-_________________________________________________________________
-dense_0 (Dense)              (None, 100)               15300     
-_________________________________________________________________
-dense_1 (Dense)              (None, 50)                5050      
-_________________________________________________________________
-dense_2 (Dense)              (None, 1)                 51        
-=================================================================
-Total params: 20,401
-Trainable params: 20,401
-Non-trainable params: 0
-_________________________________________________________________
-~~~
-{: .output}
 
 ### Loss function:
 The loss is what the neural network will be optimized on during training, so chosing a suitable loss function is crucial for training neural networks.
