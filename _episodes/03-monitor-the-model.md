@@ -18,6 +18,10 @@ keypoints:
 ---
 
 ## Import dataset
+Here we want to work with the *weather prediction dataset* which can be downloaded from [ADD ZENODO LINK].
+It contains daily weather observations from 18 different European cities or places through the years 2000 to 2010. For all locations the data contains the variables ‘mean temperature’, ‘max temperature’, and ‘min temperature’. In addition, for multiple of the following variables are provided: 'cloud_cover', 'wind_speed', 'wind_gust', 'humidity', 'pressure', 'global_radiation', 'precipitation', 'sunshine', but not all of them are provided for all locations. A more extensive description of the dataset including the different physical units is given in accompanying metadata file.
+![18 locations in the weather prediction dataset](../fig/03_weather_prediction_dataset_map.png)
+
 ~~~
 filename_data = os.path.join(path_data, "weather_prediction_dataset.csv")
 data = pd.read_csv(filename_data)
