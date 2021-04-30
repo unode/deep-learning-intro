@@ -101,7 +101,7 @@ The network should hence output a single float value which is why the last layer
 > > {:.language-python}
 > >
 > > ~~~
-> Model: "weather_prediction_model"
+> > Model: "weather_prediction_model"
 > > _________________________________________________________________
 > > Layer (type)                 Output Shape              Param #   
 > > =================================================================
@@ -124,6 +124,8 @@ The network should hence output a single float value which is why the last layer
 > > 
 > > The output layer here is a dense layer with only 1 node. And we here have chosen to use *no activation function*.
 > > While we might use *softmax* for a classification task, here we do not want to restrict the possible outcomes for a start.
+> > 
+> > In addition, we have here chosen to write the network creation as a function so that we can use it later again to initiate new models.
 > {:.solution}
 {:.challenge}
 
