@@ -71,10 +71,11 @@ Now we want to work on a *regression task*, thus not prediciting the right class
 ### Network output layer:
 The network should hence output a single float value which is why the last layer of our network will only consist of a single node. 
 
-### Loss function:
-The loss is what the neural network will be optimized on during training, so chosing a suitable loss function is crucial for training neural networks.
-In the given case we want to stimulate that the prodicted values are as close as possible to the true values. This is commonly done by using the *mean squared error* (mse) or the *mean absolute error* (mae), both of which should work OK in this case. Often, mse is prefered over mae because it "punishes" large prediction errors more severely.
-In keras this is implemented in the `keras.losses.MeanSquaredError` class.
+## Excercise:
+We have seen how to build a dense neural network in episode 2. Try now to construct a dense neural network with 2-3 layers for a regression task (hence one node in the output layer)...
+
+
+
 
 ~~~
 def create_nn(n_features, n_predictions):
@@ -114,6 +115,11 @@ Non-trainable params: 0
 _________________________________________________________________
 ~~~
 {: .output}
+
+### Loss function:
+The loss is what the neural network will be optimized on during training, so chosing a suitable loss function is crucial for training neural networks.
+In the given case we want to stimulate that the prodicted values are as close as possible to the true values. This is commonly done by using the *mean squared error* (mse) or the *mean absolute error* (mae), both of which should work OK in this case. Often, mse is prefered over mae because it "punishes" large prediction errors more severely.
+In keras this is implemented in the `keras.losses.MeanSquaredError` class.
 
 ## Train a dense neural network
 When compiling the model we can define a few very important aspects. First, there is the optimizer that we want to use.
