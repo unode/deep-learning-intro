@@ -53,42 +53,21 @@ Deep learning requires extensive training using example data which shows the net
 * Being asked to classify things which are nothing like their training data.
 
 ### What sort of problems can it solve, but shouldn't be used for?
+
+
 Deep learning needs a lot of computational power, for this reason it often relies on specialist hardware like graphical processing units (GPUs). Many computational problems can be solved using less intensive techniques, but could still technically be solved with deep learning.
 
-The following could technically be achieved using deep learning, but it would be a wasteful way to do it:
+The following could technically be achieved using deep learning, but it would probably be a very wasteful way to do it:
 
-* Logic operations, such as computing totals, averages, ranges etc.
+* Logic operations, such as computing totals, averages, ranges etc. (see [this example](https://joelgrus.com/2016/05/23/fizz-buzz-in-tensorflow) applying deep learning to solve the "FizzBuzz" problem often used for programming interviews)
 * Modelling well defined systems, where the equations governing them are known and understood.
 * Basic computer vision tasks such as edge detection, decreasing colour depth or blurring an image.
-
-
-> ## Application areas/History
->
-> some benchmarks
-> DL is not new as a concept but availability of comp resources is now at stage that it can be done efficiently
-> some examples of interesting things that can be achieved using DL models:
-> image classification, text generation, language translation, GAN, Gameplay (Dota/Go), voice recognition,
-> self-driving cars, natural language and image processing, predictive forecasting, fraud detection in financial applications,
-> financial time-series forecasting, predictive and prescriptive analytics, medical image processing, power systems research,
-> recommendation systems
-> we are still far from computers understanding us
->
-{: . callout}
-
-> ## What is Deep Learning:
->
-> Give multiple definitions of Deep Learning and discuss;
-> OR
-> show both bubble representations of AI-ML-NN-DL and AI-ML-DL, ask which is right
->
-{: .discussion}
-
 
 > ## Deep Learning Problems Exercise
 > Which of the following could you apply deep learning to?
 > 1. Recognising whether or not a picture contains a bird.
 > 2. Calculating the median and interquartile range of a dataset.
-> 3. Identifying pictures of people when only one or two images of them are available.
+> 3. Identifying MRI images of a rare disease when only one or two example images available for training.
 > 4. Identifying people in pictures after being trained only on cats and dogs.
 > 5. Translating English into French.
 >> ## Solution
@@ -96,54 +75,32 @@ The following could technically be achieved using deep learning, but it would be
 > {: .solution}
 {: .challenge}
 
-> ## What is DL - solution
->
-> learning outcome -> it is vague, find your own
-> OR
-> hah! both are right in some ways, explain why NN has its place there as well
->
-{: .solution}
 
-*the neuron/perceptron/unit/
-
-* inputs, weight, sum, non-linearity, output
-* -> DL: stacked perceptrons
-
-* training challenges
-  * gradient
-  * overfitting
-
-## Building blocks of NN
-
-*building blocks of a DL model:
-    *example case CNN
-        *show how each layer may look
-        *eg based on face features
-        *we learn from many examples what and eye looks like and where it is located
-*-> needs high amount of data
 
 ## Deep Learning workflow
 
-(one way, open for discussion and to be filled with information)
-1. Formulate/ Outline the problem
+### 1. Formulate/ Outline the problem
 
-2. Identify inputs and outputs
+### 2. Identify inputs and outputs
 
-3. Prepare data
+### 3. Prepare data
 common steps for data preparation
 
-4. Choose a cost function and metrics
+### 4. Choose a cost function and metrics
 
-5. Choose a pretrained model or start building architecture from scratch
-build from scratch vs reuse vs transfer learning
+### 5. Choose a pretrained model or build a new architecture from scratch
 
-6. Train model
+### 6. Train the model
 
-7. Tune hyperparameters
+### 7. Tune Hyperparameters
 
-8. 'predict'
+### 8. Measure Performance
 
-(1 and 2 sometimes mixed)
+### 9.  Perform a Prediction/Classification
+
+[//]: # "Would it make sense to move this to the training model section? Using Keras it usually only appears when you define the training algorithm"
+[//]: # "Before, or perhaps instead of, predict I would add a section on measuring performance. This would neatly align the tuning of hyper parameters with a validation set and performance measurement with a test set."
+
 
 > ## DL workflow
 >
@@ -156,50 +113,46 @@ build from scratch vs reuse vs transfer learning
 >
 {: .solution}
 
-## Deep Learning in Python
+## Deep Learning Libraries
 
-* many different options
-    * name them (and known limitations)
+For this workshop we'll be using a Python library called Keras for performing deep learning. There are many other libraries available including:
 
-* why keras (and why 'with' tensor-flow)
-    * easy start
-    * huge community
-        * help and tutorials online
-    *
+* TensorFlow
 
-> ## Keras
->
-> load keras and do something simple with it, get familiar with keras docs
->
-{: .challenge}
+TensorFlow was developed by Google and is one of the older deep learning libraries first released to the public in 2015. It was originally developed for the C++ programming language and doesn't always follow a "pythonic" style that might make it seem a bit diffrent to other libraries in Python. Its been ported to many other languages including JavaScript, Ruby and Swift. It works on a very low level of individual "tensors" or arrays. Its capable of much more than deep learning and offers a very versatile toolkit for tensor operations. As a result it often takes a lot more lines of code to write deep learning operations in TensorFlow than other libraries. It offers (almost) seamless integration with GPU acclerators and Google's own TPU (Tensor Processing Unit) chips that are built specially for machine learning.
 
+* PyTorch
 
-> ## package and enviroment management
->
-> some notes on importance of package and environment management for DL
-> especially when trying out different setups
->
-{: . callout}
+PyTorch was developed by Facebook in 2016 and is a popular choice for deep learning applications. It was developed for Python from the start and feels a lot more "pythonic" than TensorFlow. Its only available for Python. Like TensorFlow its designed to do more than just deep learning and offers some very low level interfaces. Like TensorFlow it's also very easy to integrate PyTorch with a GPU. In many benchmarks it out performs the other libraries.
 
-> ## Computational resources
->
-> some notes on computational resources needed for DL
-> we try to have everyhting in the course run on a laptop with minimum requirements xxx
-> some links where to get more resources to work with, eg HPC3Europe,AWS?,..?
->
-{: . callout}
+* Keras
 
-> ## Importance of data mining
->
-> some notes on data mining
-> why important to know your data for DL
-> also mention that some models have prerequisites of data distribution etc
->
->
-{: . callout}
+Keras is designed to be easy to use and usually requires fewer lines of code than other libraries. We have chosen it for this workshop for that reason. Keras can actually work on top of TensorFlow (and several other libraries), hiding away the complexities of TensorFlow while still allowing you to make use of their features.
 
+The performance of Keras is sometimes not as good as other libraries and if you are going to move on to create very large networks using very large datasets then you might want to consider one of the other libraries. You will find that most of the concepts from this workshop translate across very well. But for many applications the performance difference will not be enough to worry about and the time you'll save with simpler code will exceed what you'll save by having the code run a little faster.
 
-FIXME
+Keras also benefits from a very good set of [online documentation](https://keras.io/guides/) and a large user community.
+
+### Installing Keras
+
+Follow the instructions in the setup document to install keras.
+
+> ## Testing Keras Installation
+> Lets check you have a suitable version of Keras installed.
+> Open up a new Jupyter notebook or interactive python console and run the following commands:
+> ~~~
+> import keras
+> from tensorflow import keras
+> print(keras.__version__)
+> ~~~
+> {:.language-python}
+> > ## Solution
+> > You should get a version number reported. At the time of writing 2.4.3 is the latest version.
+> > ~~~
+> > 2.4.3
+> > ~~~
+> > {:.output}
+> {:.solution}
+{:.challenge}
 
 {% include links.md %}
-
