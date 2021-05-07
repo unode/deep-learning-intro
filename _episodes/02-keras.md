@@ -1,7 +1,7 @@
 ---
 title: "Classification by a Neural Network using Keras"
-teaching: 0
-exercises: 0
+teaching: 30
+exercises: 30
 questions:
 - "What is a neural network?"
 - "How do I compose a Neural Network using Keras?"
@@ -20,58 +20,29 @@ objectives:
 
 
 ## Introduction
-In this first episode we will learn how to create and train a Neural Network using Keras to solve a simple classification task.
+In this episode we will learn how to create and train a Neural Network using Keras to solve a simple classification task.
 
 The goal of this episode is to quickly get your hands dirty in actually defining and training a neural network, without going into depth of how neural networks work on a technical or mathematical level.
-We do want you to go through the most deep learning workflow that was covered in the introduction.
+We want you to go through the most commonly used deep learning workflow that was covered
+in the introduction.
 As a reminder below are the steps of the deep learning workflow:
 1. Formulate / Outline the problem
 2. Identify inputs and outputs
 3. Prepare data
-4. Choose a cost function and metrics
-5. Choose a pretrained model or start building architecture from scratch
+4. Choose a pretrained model or start building architecture from scratch
+5. Choose a cost function and metrics
 6. Train model
 7. Tune hyperparameters
 8. 'predict'
 
 In this episode will focus on a minimal example for each of these steps, later episodes will build on this knowledge to go into greater depth for some or all of these steps.
-Furthermore this episode assumes you already know what a neural network is and what a classification
-task is. However, below is a very short summary of what these are as a reminder.
-
-### Neural Network
-A neural network is an artificial intelligence technique loosely based on the way biological
-neural networks work.
-A neural network consists of connected computational units called neurons.
-Each neuron takes the sum of all its inputs, performs some, typically non-linear, calculation on them and produces one output.
-This calculation is called the activation function.
-The connections between neurons are called edges, these edges typically have a weight associated with
-them.
-This weight determines the 'strength' of the connection, these weights are adjusted during training.
-In this way, the combination of neurons and edges describe a computational graph, an example can be
-seen in the image below.
-In most neural networks neurons are aggregated into layers.
-Signals travel from the input layer to the output layer, possibly through one or more intermediate layers called hidden layers.
-
-
-![An example neural network with ][neural-network]
-[*Glosser.ca, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons*](https://commons.wikimedia.org/wiki/File:Colored_neural_network.svg)
-
-### Classification Task
-In a classification task the goal is to determine to which instance of a category a certain input
-sample belongs to.
-In such a classification task we will 'show' each sample to the neural network and have it make
-a guess.
-In the beginning, when the neural network is still untrained, it will likely 'guess' the wrong category, therefore we will need to train it.
-During training the neural network is repeatedly asked to classify samples and the training
-algorithm will steer the network towards the correct answers by updating the weights of the
-neural network.
 
 > ## GPU usage
 > For this lesson having a GPU (graphics card) available is not needed.
 > We specifically use very small toy problems so that you do not need one.
 > However, Keras will use your GPU automatically when it is available.
-> Using a GPU becomes necessary when tackling larger datasets or complex problems which require
-> more complex Neural Network.
+> Using a GPU becomes necessary when tackling larger datasets or complex problems which
+> require a more complex Neural Network.
 {: .callout}
 ## Step 1. Formulate / Outline the problem: Penguin classification
 In this episode we will be using the [penguin dataset](https://zenodo.org/record/3960218), this is a dataset that was published in 2020 by Allison Horst and contains data on three different species of the penguins.
@@ -94,19 +65,6 @@ The physical attributes measured are flipper length, beak length, beak width, bo
 These data were collected from 2007 - 2009 by Dr. Kristen Gorman with the [Palmer Station Long Term Ecological Research Program](https://pal.lternet.edu/), part of the [US Long Term Ecological Research Network](https://lternet.edu/). The data were imported directly from the [Environmental Data Initiative](https://environmentaldatainitiative.org/) (EDI) Data Portal, and are available for use by CC0 license ("No Rights Reserved") in accordance with the [Palmer Station Data Policy](https://pal.lternet.edu/data/policies).
 
 ## 2. Identify inputs and outputs
-> ## Prerequisite: Start Jupyter Notebook
-> Start a jupyter notebook by issueing the following command on a command line. It is probably a
-> good idea to create an empty directory for this course first.
->
-> ~~~
-> $ mkdir deep-learning-intro
-> $ cd deep-learning-intro
-> $ jupyter notebook
-> ~~~
-> {:.language-bash}
-> Now create a new notebook and call it assignment1.ipynb.
-{:.prereq}
-
 To identify the inputs and outputs that we will use to design the neural network we need to familiarize
 ourselves with the dataset. This step is sometimes also called data exploration.
 
@@ -135,12 +93,25 @@ This will give you a pandas dataframe which contains the penguin data.
 > 3. How many samples does this dataset have?
 >
 > > ## Solution
-> > **1.** Using the pandas `describe` function you can see the names of the features and some statistics:
+> > **1.** Using the pandas `head` function you can see the names of the features.
+> > Using the `describe` function we can also see some statistics for the numeric columns
+> > ~~~
+> > penguins.head()
+> > ~~~
+> > {:.language-python}
+> >
+> > |       | species | island | bill_length_mm | bill_depth_mm | flipper_length_mm | body_mass_g | sex |
+> > |------:|---------------:|--------------:|------------------:|------------:|------------:|------------:|------------:|
+> > | 0 | Adelie | Torgersen | 39.1 | 18.7 | 181.0 | 3750.0 | Male   |
+> > | 1 | Adelie | Torgersen | 39.5 | 17.4 | 186.0 | 3800.0 | Female |
+> > | 2 | Adelie | Torgersen | 40.3 | 18.0 | 195.0 | 3250.0 | Female |
+> > | 3 | Adelie | Torgersen | NaN  | NaN  | NaN   | NaN    | NaN    |
+> > | 4 | Adelie | Torgersen | 36.7 | 19.3 | 193.0 | 3450.0 | Female |
+> >
 > > ~~~
 > > penguins.describe()
 > > ~~~
 > > {:.language-python}
-> >
 > >
 > > |       | bill_length_mm | bill_depth_mm | flipper_length_mm | body_mass_g |
 > > |------:|---------------:|--------------:|------------------:|------------:|
@@ -152,7 +123,6 @@ This will give you a pandas dataframe which contains the penguin data.
 > > |   50% |      44.450000 |     17.300000 |        197.000000 | 4050.000000 |
 > > |   75% |      48.500000 |     18.700000 |        213.000000 | 4750.000000 |
 > > |   max |      59.600000 |     21.500000 |        231.000000 | 6300.000000 |
-> > {:.output}
 > >
 > > **2.** We can get the unique values in the `species` column using the `unique` function of pandas.
 > > It shows the target class is stored as a string and has 3 unique values. This type of column is
@@ -190,7 +160,7 @@ working with, so let us create a visualization.
 #### Pair Plot
 One nice visualization for datasets with relatively few attributes is the Pair Plot.
 This can be created using `sns.pairplot(...)`. It shows a scatterplot of each attribute plotted against each of the other attributes.
-By using the `hue='class'` setting for the pairplot the graphs on the diagonal are layered kernel density estimate plots.
+By using the `hue='species'` setting for the pairplot the graphs on the diagonal are layered kernel density estimate plots for the different values of the `species` column.
 
 > ## Create the pairplot using Seaborn
 >
@@ -200,7 +170,7 @@ By using the `hue='class'` setting for the pairplot the graphs on the diagonal a
 >
 > > ## Solution
 > > ~~~
-> > sns.pairplot(df, hue="class")
+> > sns.pairplot(penguins, hue="species")
 > > ~~~
 > > {:.language-python}
 > > ![Pair plot showing the separability of the three species of penguin][pairplot]
@@ -220,7 +190,7 @@ The target for the classification task will be the `species`.
 
 Using the following code we can select these columns from the dataframe:
 ~~~
-training_data = penguins.drop(columns=["species", 'island', 'sex'])
+penguin_features = penguins.drop(columns=["species", 'island', 'sex'])
 target = penguins['species']
 ~~~
 {:.language-python}
@@ -231,6 +201,17 @@ target = penguins['species']
 {:.keypoints}
 ## 3. Prepare data
 The input data and target data are not yet in a format that is suitable to use for training a neural network.
+
+### Change types if needed
+First, the species column is our categorical target, however pandas still sees it as the
+generic type `Object`. We can convert this to the pandas categorical type by adding the following line above the code which drops the columns we do not use.
+~~~
+penguins['species'] = penguins['species'].astype('category')
+~~~
+{:.language-python}
+This will make later interaction with this column a little easier.
+
+### Clean missing values
 During the exploration phase you may have noticed that some rows in the dataset have missing (NaN)
 values, leaving such values in the input data will ruin the training, so we need to deal with them.
 There are many ways to deal with missing values, but for now we will just remove the offending rows.
@@ -238,16 +219,22 @@ There are many ways to deal with missing values, but for now we will just remove
 Add a call to `dropna()` before the input_data definition that we used above, the cell should now
 look like this:
 ~~~
-valid_data = penguins.dropna()
+penguins['species'] = penguins['species'].astype('category')
 
-training_data = valid_data.drop(columns=["species", 'island', 'sex'])
-target = valid_data['species']
+# Drop the rows that have NaN values in them
+penguin_filtered = penguins.drop(columns=['island', 'sex']).dropna()
+
+# Split the dataset in the features and the target
+penguin_features = penguins_filtered.drop(columns=['species'])
+target = penguins_filtered['species']
 ~~~
 {:.language-python}
 
+### Prepare target data for training
 Second, the target data is also in a format that cannot be used to train.
-To train a neural network we need to be able to calculate how "far away" the species predicted by the
-neural network is from the true species.
+A neural network can only take numerical inputs and outputs, and learns by
+calculating how "far away" the species predicted by the neural network is
+from the true species.
 When the target is a string category column as we have here it is very difficult to determine this "distance" or error.
 Therefore we will transform this column into a more suitable format.
 Again there are many ways to do this, however we will be using the 1-hot encoding.
@@ -258,10 +245,66 @@ For instance, for a penguin of the Adelie species the 1 hot encoding would be 1 
 
 Fortunately pandas is able to generate this encoding for us.
 ~~~
-target = pd.get_dummies(valid_data['species'])
+import pandas as pd
+
+target = pd.get_dummies(penguin_features['species'])
 target.head() # print out the top 5 to see what it looks like.
 ~~~
 {:.language-python}
+
+### Split data into training and test set
+Finally, we will split the dataset into a training set and a test set.
+As the names imply we will use the training set to train the neural network,
+while the test set is kept separate.
+We will use the test set to assess the performance of the trained neural network
+on unseen samples.
+In many cases a validation set is also kept separate from the training and test sets (i.e. the dataset is split into 3 parts).
+This validation set is then used to select the values of the parameters of the neural network and the training methods.
+For this episode we will keep it at just a training and test set however.
+
+To split the cleaned dataset into a training and test set we will use a very convenient
+method from sklearn called `train_test_split`.
+This method takes a number of parameters:
+- The first two are the dataset and the corresponding targets.
+- Next is the named parameter `test_size` this is the fraction of the dataset that is
+used for testing, in this case `0.2` means 20% of the data will be used for testing.
+- `random_state` controls the shuffling of the dataset, setting this value will reproduce
+the same results (assuming you give the same integer) every time it is called.
+- `shuffle` which can be either `True` or `False`, it controls whether the order of the rows of the dataset is shuffled before splitting. It defaults to `True`.
+- `stratify` is a more advanced parameter that controls how the split is done. By setting it to `target` the train and test sets the function will return will have roughly the same proportions (with regards to the number of penguins of a certain species) as the dataset.
+
+~~~
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(penguin_features, target,test_size=0.2, random_state=0, shuffle=True, stratify=target)
+~~~
+{:.language-python}
+
+> ## Training and Test sets
+>
+> Using the information above, clean the dataset and split
+> it into a training and test set.
+> - How many samples do the training and test sets have?
+> - Is the training set well balanced?
+>
+> > ## Solution
+> > Using `y_train.shape` and `y_test.shape` we can see the training set has 266
+> > samples and y_test has 67 samples.
+> >
+> > We can check the balance of classes by using the `value_counts` function from pandas
+> > which shows the training set has 117 Adelie, 95 Gentoo and 54 Chinstrap samples.
+> > ~~~
+> > Adelie  Chinstrap  Gentoo
+> > 1       0          0         117
+> > 0       0          1          95
+> >         1          0          54
+> > dtype: int64
+> > ~~~
+> > {:.output}
+> > The dataset is not perfectly balanced, but it is not orders of magnitude out of balance
+> > either. So we will leave it as it is.
+> {:.solution}
+{:.challenge}
 
 > ## Keras for Neural Networks
 > For this lesson we will be using [Keras](https://keras.io/) to define and train our neural network
@@ -273,27 +316,16 @@ target.head() # print out the top 5 to see what it looks like.
 > optimizers (optimizers are used to train a model).
 {:.callout}
 
-## 4. Choose a cost function and metrics
-Having selected the target enoding, we need to select an appropriate loss
-function that we will use during training.
-This loss function tells the training algorithm how wrong, or how 'far away' from the true
-value the predicted value is.
-
-For the one hot encoding we will use the Categorical Crossentropy loss.
-This is a measure for how close the distribution of the three neural network outputs corresponds
-to the distribution of the three values in the one hot encoding.
-It is lower if the distributions are more similar.
-In keras this is implemented in the `keras.losses.CategoricalCrossentropy` class.
-
-## 5. Choose a pretrained model or start building architecture from scratch
+## 4. Choose a pretrained model or start building architecture from scratch
 Now we will build a neural network from scratch, and although this sounds like
 a daunting task, with Keras it is actually surprisingly straightforward.
 
-With keras you compose a neural network by creating layers and linking them
+With Keras you compose a neural network by creating layers and linking them
 together. For now we will only use one type of layer called a fully connected
 or Dense layer. In keras this is defined by the `keras.layers.Dense` class.
 
-A dense layer has a number of neurons, which is a parameter when you create the layer.
+A dense layer has a number of neurons, which is a parameter you can choose when
+you create the layer.
 When connecting the layer to its input and output layers every neuron in the dense
 layer gets an edge (i.e. connection) to ***all*** of the input neurons and ***all*** of the output neurons.
 The hidden layer in the image in the introduction of this episode is a Dense layer.
@@ -304,7 +336,10 @@ This means we need to let Keras now how big our input is going to be.
 We do this by instantiating a `keras.Input` class and tell it how big our input is.
 
 ~~~
-inputs = keras.Input(shape=training_data.shape[1])
+# Make sure keras is imported
+from tensorflow import keras
+
+inputs = keras.Input(shape=X_train.shape[1])
 ~~~
 {:.language-python}
 
@@ -321,8 +356,9 @@ let's take a closer look.
 The first parameter `10` is the number of neurons we want in this layer, this is one of the
 hyperparameters of our system and needs to be chosen carefully. We will get back to this in the section
 on hyperparameter tuning.
-The second parameter is the activation function to use, here we choose relu which is 0 for values
-0 and below and the same as the input for values above 0.
+The second parameter is the activation function to use, here we choose relu which is 0
+for inputs that are 0 and below and the identity function (returning the same value)
+for inputs above 0.
 This is a commonly used activation functions in deep neural networks that is proven to work well.
 Next we see an extra set of parenthenses with inputs in them, this means that after creating an
 instance of the Dense layer we call it as if it was a function.
@@ -336,15 +372,11 @@ output_layer = keras.layers.Dense(3, activation="softmax")(hidden_layer)
 ~~~
 {:.language-python}
 Because we chose the one hot encoding, we use `3` neurons for the output layer.
-This works well in combination with the `softmax` activation function and the
-Categorical Crossentropy loss we chose earlier.
 
 The softmax activation ensures that the three output neurons produce values in the range
 (0, 1) and the sum to 1.
 We can interpret this as a kind of 'probability' that the sample belongs to a certain
 species.
-The Categorical Crossentropy loss then works well with comparing these probabilities
-with 'true' probabilities that we generated using the one hot encoding.
 
 Now that we have defined the layers of our neural network we can combine them into
 a keras model which facilitates training the network.
@@ -358,7 +390,7 @@ The model summary here can show you some information about the neural network we
 
 > ## Create the neural network
 >
-> Using the code snippets above define a keras model with 1 hidden layer with
+> With the code snippets above, we defined a keras model with 1 hidden layer with
 > 10 neurons and an output layer with 3 neurons.
 >
 > * How many parameters does the resulting model have?
@@ -367,7 +399,7 @@ The model summary here can show you some information about the neural network we
 >
 > > ## Solution
 > > ~~~
-> > inputs = keras.Input(shape=input_data.shape[1])
+> > inputs = keras.Input(shape=X_train.shape[1])
 > > hidden_layer = keras.layers.Dense(10, activation="relu")(inputs)
 > > output_layer = keras.layers.Dense(3, activation="softmax")(hidden_layer)
 > >
@@ -396,19 +428,39 @@ The model summary here can show you some information about the neural network we
 > >
 > > The model has 83 trainable parameters.
 > > If you increase the number of neurons in the hidden layer the number of
-> > trainable parameters increases and decreases if you decrease the number
+> > trainable parameters in both the hidden and output layer increases or
+> > decreases accordingly
 > > of neurons.
 > {:.solution}
 {:.challenge}
+
+## 5. Choose a cost function and metrics
+We have now designed a neural network that in theory we should be able to
+train to classify Penguins.
+However, we first need to select an appropriate loss
+function that we will use during training.
+This loss function tells the training algorithm how wrong, or how 'far away' from the true
+value the predicted value is.
+
+For the one hot encoding that we selected before a fitting loss function is the Categorical Crossentropy loss.
+In keras this is implemented in the `keras.losses.CategoricalCrossentropy` class.
+
+This loss function works well in combination with the `softmax` activation function
+we chose earlier.
+The Categorical Crossentropy works by comparing the probabilities that the
+neural network predicts with 'true' probabilities that we generated using the one
+hot encoding.
+This is a measure for how close the distribution of the three neural network outputs corresponds to the distribution of the three values in the one hot encoding.
+It is lower if the distributions are more similar.
 
 ## 6. Train model
 We are now ready to train the model.
 Training the model requires us to make a several more choices, this time we need to
 choose which optimizer to use and if this optimizer has parameters what values
 to use for those.
-Furthermore the training we need to specify how many times to show the training samples.
+Furthermore, we need to specify how many times to show the training samples to the optimizer.
 
-Once more keras gives us plenty of choices all have their own pro's and cons,
+Once more, Keras gives us plenty of choices all of which have their own pro's and cons,
 but for now let us go with the widely used Adam optimizer.
 Adam has a number of parameters, but the default values work well for most problems.
 So we will use it with its default parameters.
@@ -426,7 +478,7 @@ to the neural network and used to update its parameters.
 
 ~~~
 model.compile(optimizer=keras.optimizers.Adam(), loss=keras.losses.CategoricalCrossentropy())
-history = model.fit(training_data, target, epochs=100)
+history = model.fit(X_train, y_train, epochs=100)
 ~~~
 {:.language-python}
 
@@ -438,6 +490,17 @@ Using seaborn we can do this as follow:
 sns.lineplot(x=history.epoch, y=history.history['loss'])
 ~~~
 {:.language-python}
+
+> ## Train the neural network and plot the training curve
+>
+> Using the `compile` and `fit` functions train a neural network
+> and plot the training loss.
+>
+> > ## Solution
+> > The training loss curve should look somthing like this:
+> > ![Training loss curve of the neural network training][training_curve]
+> {:.solution}
+{:.challenge}
 
 ## 7. Tune hyperparameters
 As we discussed before the design and training of a neural network comes with
@@ -471,11 +534,8 @@ of penguin using the `predict` function.
 This will use the network to predict the outputs we trained.
 
 ~~~
-# Select the first penguin from the dataset as an example
-penguin_data = training_data[0:1]
-
 # use predict to predict the
-prediction = model.predict(penguin_data)
+prediction = model.predict(X_test)
 print(prediction)
 ~~~
 {:.language-python}
@@ -511,4 +571,7 @@ print(penguin_species)
 {: width="50%"}
 
 [pairplot]: ../fig/pairplot.png "Pair Plot"
+{: width="66%"}
+
+[training_curve]: ../fig/training_curve.png "Training Curve"
 {: width="66%"}
