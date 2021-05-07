@@ -141,7 +141,6 @@ Follow the instructions in the setup document to install keras.
 > Lets check you have a suitable version of Keras installed.
 > Open up a new Jupyter notebook or interactive python console and run the following commands:
 > ~~~
-> import keras
 > from tensorflow import keras
 > print(keras.__version__)
 > ~~~
