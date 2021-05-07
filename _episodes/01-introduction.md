@@ -32,7 +32,14 @@ Artificial neural networks aren't a new technique, they have been around since t
 * relation of DL to ML (infographics AI, ML, (NN), DL)
 ![AI-ML-DL](../fig/AI_ML_DL_bubble_square_draft.png)
 
+#### Neural Networks
+
+A neural network is an artificial intelligence technique loosely based on the way biological neural networks work. A neural network consists of connected computational units called neurons. Each neuron takes the sum of all its inputs, performs some, typically non-linear, calculation on them and produces one output. This calculation is called the activation function. The connections between neurons are called edges, these edges typically have a weight associated with them. This weight determines the 'strength' of the connection, these weights are adjusted during training. In this way, the combination of neurons and edges describe a computational graph, an example can be seen in the image below. In most neural networks neurons are aggregated into layers. Signals travel from the input layer to the output layer, possibly through one or more intermediate layers called hidden layers.
+
 Deep learning requires extensive training using example data which shows the network what output it should produce for a given input. One common application of deep learning is classifying images. Here the network will be trained by being "shown" a series of images and told what they contain. Once the network is trained it should be able to take another image and correctly classify its contents. But we are not restricted to just using images, any kind of data can be learned by a deep learning neural network. This makes them able to appear to learn a set of complex rules only by being shown what the inputs and outputs of those rules are instead of being taught the actual rules. Using these approaches deep learning networks have been taught to play video games and even drive cars. The data on which networks are trained usually has to be quite extensive, typically including thousands of examples. For this reason they are not suited to all applications and should be considered just one of many machine learning techniques which are available.
+
+![An example neural network with ][neural-network]
+[*Glosser.ca, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons*](https://commons.wikimedia.org/wiki/File:Colored_neural_network.svg)
 
 
 ![ML_DL](../fig/ML_DL_draft.png)
@@ -81,37 +88,66 @@ The following could technically be achieved using deep learning, but it would pr
 
 ### 1. Formulate/ Outline the problem
 
+Firstly we must decide what it is we want the our deep learning system to do. Is it going to classify some data into one of a few categories? For example if we have an image of some hand written characters, the neural network could classify which character it is being shown. Or is it going to perform a prediciton? For example trying to predict what the price of something will be tomorrow given some historical data on pricing.
+
+[//]: # "What about pattern association tasks like language translation?"
+
 ### 2. Identify inputs and outputs
 
+Next we need to identify what the inputs and outputs of the neural network will be. This might require looking at our data and deciding what features of the data we can use as inputs. If the data is images then the inputs could be the individual pixels of the images. Depending upon the data we're dealing with it might help to visualize the data or perform some kind of exploration to discover what features we have available.
+
+For the outputs we'll need to look at what we want to identify from the data. If we are performing a classification problem then typically we will have one output for each potential class. The classification that the network identifies will have its output set to one and the other classes will output zero. Some networks might make this a probability and use numbers between zero and one to indicate the probability of each class.
+
+
 ### 3. Prepare data
-common steps for data preparation
 
-### 4. Choose a cost function and metrics
+Many datasets aren't ready for immediate use in a neural network and will require some preparation. Neural networks can only really deal with numerical data, so any non-numerical data (for example words) will have to be somehow convertered to numerical data. Many datasets will also have missing data and we will need to clean up our data and remove items with missing data or find a way to convert them to sensible values.
 
-### 5. Choose a pretrained model or build a new architecture from scratch
+Next we'll need to divide the data into multiple sets. One of these will be used by the training process and we'll call it the training set. Another will be used to evaluate the accuracy of the training and we'll call that one the test set. Sometimes we'll also use a 3rd set known as a validation set to check our results after training is complete. Typically 80-90% of the data will be used as the training set and 10-20% for teh test set and another 10% for the validation set (if we have one). We should split the data in such a way that the training and test set are similar, for example by randomising which items go in which set instead of just taking the first 90% as the training set and the remainding 10% as the test set, especially if the last 10% of the data is very different to the previous 90%.
+
+### 4. Choose a pretrained model or build a new architecture from scratch
+
+Often we can use an existing neural network instead of designing one from scratch. There are a number of well publicised networks which have been shown to perform well at certain tasks, if you know of one which already does a similar task well then it makes sense to use it. This concept can be taken one step further, somebody else might have released a pretrained network which is already trained on similar data and that can work for our purposes. If there's a network which was trained on similar data but might need a little bit more training on our specific data then this is possible using a technique called transfer learning which we'll talk about in more detail later.
+
+If instead we decide we do want to design our own network then we need to think about how many input neurons it will have, how many hidden layers and how many outputs, what types of layers we use (we'll explore the different types later on). This will probably need some experimentation and we might have to try tweaking the network design a few times before we see acceptable results.
+
+
+### 5. Choose a cost function and metrics
+
+how do we decide how close/correct the answer is to what we want?
+
 
 ### 6. Train the model
 
+which optimizer
+learning rate, how big the change will be
+how many times (epochs) should we run
+batch size
+
+
 ### 7. Tune Hyperparameters
+
+we might find that the performance of the network isn't as good as we'd like
+We might need to go back and change the cost functions and metrics, the structure of the network and some of the parameters to the training algorithm.
 
 ### 8. Measure Performance
 
-### 9.  Perform a Prediction/Classification
+How well did our network perform? We might use a test set
 
-[//]: # "Would it make sense to move this to the training model section? Using Keras it usually only appears when you define the training algorithm"
-[//]: # "Before, or perhaps instead of, predict I would add a section on measuring performance. This would neatly align the tuning of hyper parameters with a validation set and performance measurement with a test set."
+### 9. Perform a Prediction/Classification
+
+Now that we have a trained network that performs at a level we are happy with we can go and use it on real data to perform a prediction.
 
 
 > ## DL workflow
 >
-> Give an example problem: create DL workflow
->
+> Think about a problem you'd like to use deep learning to solve.
+> 1. What do you want a deep learning system to be able to tell you?
+> 2. What data inputs and outputs will you have?
+> 3. What preparation will your data need? Consider both the data you are going to predict/classify from and the data you'll use to train the network.
+> 4. Do you think you'll need to train the network or will a pretrained network be suitable?
+> Discuss your answers with the group or the person next to you.
 {: .challenge}
-
-> ## DL workflow - solution
->
->
-{: .solution}
 
 ## Deep Learning Libraries
 
@@ -133,9 +169,9 @@ The performance of Keras is sometimes not as good as other libraries and if you 
 
 Keras also benefits from a very good set of [online documentation](https://keras.io/guides/) and a large user community.
 
-### Installing Keras
+### Installing Keras and other dependencies
 
-Follow the instructions in the setup document to install keras.
+Follow the instructions in the setup document to install Keras, Seaborn and Sklearn.
 
 > ## Testing Keras Installation
 > Lets check you have a suitable version of Keras installed.
@@ -153,5 +189,41 @@ Follow the instructions in the setup document to install keras.
 > > {:.output}
 > {:.solution}
 {:.challenge}
+
+> ## Testing Seaborn Installation
+> Lets check you have a suitable version of Keras installed.
+> Open up a new Jupyter notebook or interactive python console and run the following commands:
+> ~~~
+> from tensorflow import keras
+> print(keras.__version__)
+> ~~~
+> {:.language-python}
+> > ## Solution
+> > You should get a version number reported. At the time of writing 2.4.3 is the latest version.
+> > ~~~
+> > 2.4.3
+> > ~~~
+> > {:.output}
+> {:.solution}
+{:.challenge}
+
+
+> ## Testing Sklearn Installation
+> Lets check you have a suitable version of Keras installed.
+> Open up a new Jupyter notebook or interactive python console and run the following commands:
+> ~~~
+> from tensorflow import keras
+> print(keras.__version__)
+> ~~~
+> {:.language-python}
+> > ## Solution
+> > You should get a version number reported. At the time of writing 2.4.3 is the latest version.
+> > ~~~
+> > 2.4.3
+> > ~~~
+> > {:.output}
+> {:.solution}
+{:.challenge}
+
 
 {% include links.md %}
