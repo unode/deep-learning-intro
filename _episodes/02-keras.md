@@ -263,8 +263,8 @@ This validation set is then used to select the values of the parameters of the n
 For this episode we will keep it at just a training and test set however.
 
 To split the cleaned dataset into a training and test set we will use a very convenient
-method from sklearn called `train_test_split`.
-This method takes a number of parameters:
+function from sklearn called `train_test_split`.
+This function takes a number of parameters:
 - The first two are the dataset and the corresponding targets.
 - Next is the named parameter `test_size` this is the fraction of the dataset that is
 used for testing, in this case `0.2` means 20% of the data will be used for testing.
@@ -288,15 +288,15 @@ X_train, X_test, y_train, y_test = train_test_split(penguin_features, target,tes
 > - Is the training set well balanced?
 >
 > > ## Solution
-> > Using `y_train.shape` and `y_test.shape` we can see the training set has 266
-> > samples and y_test has 67 samples.
+> > Using `y_train.shape` and `y_test.shape` we can see the training set has 273
+> > samples and y_test has 69 samples.
 > >
 > > We can check the balance of classes by using the `value_counts` function from pandas
 > > which shows the training set has 117 Adelie, 95 Gentoo and 54 Chinstrap samples.
 > > ~~~
 > > Adelie  Chinstrap  Gentoo
-> > 1       0          0         117
-> > 0       0          1          95
+> > 1       0          0         121
+> > 0       0          1          98
 > >         1          0          54
 > > dtype: int64
 > > ~~~
@@ -444,7 +444,6 @@ value the predicted value is.
 
 For the one hot encoding that we selected before a fitting loss function is the Categorical Crossentropy loss.
 In keras this is implemented in the `keras.losses.CategoricalCrossentropy` class.
-
 This loss function works well in combination with the `softmax` activation function
 we chose earlier.
 The Categorical Crossentropy works by comparing the probabilities that the
@@ -452,6 +451,9 @@ neural network predicts with 'true' probabilities that we generated using the on
 hot encoding.
 This is a measure for how close the distribution of the three neural network outputs corresponds to the distribution of the three values in the one hot encoding.
 It is lower if the distributions are more similar.
+
+For more information on the available loss functions in Keras you can check the
+[documentation](https://www.tensorflow.org/api_docs/python/tf/keras/losses).
 
 ## 6. Train model
 We are now ready to train the model.
@@ -497,7 +499,7 @@ sns.lineplot(x=history.epoch, y=history.history['loss'])
 > and plot the training loss.
 >
 > > ## Solution
-> > The training loss curve should look somthing like this:
+> > The training loss curve should look something like this:
 > > ![Training loss curve of the neural network training][training_curve]
 > {:.solution}
 {:.challenge}
@@ -521,39 +523,140 @@ model training.
 {:.challenge}
 
 ## 8. Measuring Performance
-Normally we would now try to assess the quality of the trained model by testing it
-on some data that was not used for training.
-This is often done by keeping a portion of the dataset seperate from the training data,
-when using that to measure performance such a set is called a test set.
-In this episode we did not prepare such a test set, however, and this will be covered
-in later epidsodes.
+Now that we have a trained neural network it is important to assess how well it performs.
+For this we have created a test set during the data preparation stage which we will use
+now to create a confusion matrix.
 
-## 9. 'predict'
-Now that we have a training neural network, we can use it to predict new samples
-of penguin using the `predict` function.
-This will use the network to predict the outputs we trained.
-
+### Predict the species of the test set
+The first step here is to use the neural network to predict the species of the test set
+using the `predict` function. This will return a `numpy` matrix, which I like to convert
+to a pandas dataframe to easily see the labels.
 ~~~
-# use predict to predict the
-prediction = model.predict(X_test)
-print(prediction)
+y_pred = model.predict(X_test)
+prediction = pd.DataFrame(y_pred, columns=target.columns)
+prediction
 ~~~
 {:.language-python}
 
 Remember that the output of the network uses the `softmax` activation function and has three
-outputs, one for each species.
-Therefore, we need to transform this output to one penguin species.
-We can do this by taking the highest valued output and converting that to the
-corresponding species.
+outputs, one for each species. This dataframe shows this nicely.
 
-We can do this using numpy `argmax`, which gives is the index of the highest output.
-This number we can use with the categories in the species column to get the correct species
-like so:
+We now need to transform this output to one penguin species per sample.
+We can do this by looking for the index of highest valued output and converting that
+to the corresponding species.
+Pandas dataframes have the `idxmax` function, which will do exactly that.
+
 ~~~
-import numpy as np
-species_nr = np.argmax(prediction, axis=1)
-penguin_species = penguins['species'].cat.categories[species_nr]
-print(penguin_species)
+predicted_species = prediction.idxmax(axis="columns")
+predicted_species
+~~~
+{:.language-python}
+
+### Confusion matrix
+With the predicted species we can now create a confusion matrix and display it
+using seaborn.
+To create a confusion matrix we will use another convenient function from sklearn
+called `confusion_matrix`.
+This function takes as a first parameter the true labels of the test set.
+We can get these by using the `idxmax` method on the y_test dataframe.
+The second parameter is the predicted labels which we did above.
+
+~~~
+from sklearn.metrics import confusion_matrix
+
+true_species = y_test.idxmax(axis="columns")
+
+matrix = confusion_matrix(true_species, predicted_species)
+print(matrix)
+~~~
+{:.language-python}
+
+Unfortunately, this matrix is kinda hard to read. Its not clear which column and which row
+corresponds to which species.
+So let's convert it to a pandas dataframe with its index and columns set to the species
+as follows:
+
+~~~
+# Convert to a pandas dataframe
+confusion_df = pd.DataFrame(matrix, index=y_test.columns.values, columns=y_test.columns.values)
+
+# Set the names of the x and y axis, this helps with the readability of the heatmap.
+confusion_df.index.name = 'True Label'
+confusion_df.columns.name = 'Predicted Label'
+
+sns.heatmap(confusion_df, annot=True)
+~~~
+{:.language-python}
+
+We can then use the `heatmap` function from seaborn to create a nice visualization of
+the confusion matrix.
+The `annot=True` parameter here will put the numbers from the confusion matrix in
+the heatmap.
+
+~~~
+sns.heatmap(confusion_df, annot=True)
+~~~
+{:.language-python}
+
+> ## Train the neural network and plot the training curve
+>
+> Measure the performance of the neural network you trained and
+> visualize a confusion matrix.
+>
+> - Did the neural network perform well on the test set?
+> - Did you expect this from the training loss you saw?
+> - What could we do to improve the performance?
+>
+> > ## Solution
+> > The confusion matrix look similar to this:
+> > ![Confusion matrix of the test set][confusion_matrix]
+> >
+> > The confusion matrix shows that the predictions for Adelie and Gentoo
+> > are decent, but could be improved. However, Chinstrap is not predicted
+> > ever.
+> >
+> > The training loss was very low, so from that perspective this may be
+> > surprising.
+> > But this illustrates very well why a test set is important when training
+> > neural networks.
+> >
+> > We can try many things to improve the performance from here.
+> > One of the first things we can try is to balance the dataset better.
+> > Other options include: changing the network architecture or changing the
+> > training parameters
+> {:.solution}
+{:.challenge}
+
+## 9. 'predict'
+Now that we have a training neural network, we can use it to predict new samples
+of penguin using the `predict` function like we did in the previous step.
+
+However, it is very useful to be able to use the trained neural network at a later
+stage without having to retrain it.
+This can be done by using the `save` method of the model.
+It takes a string as a parameter which is the path of a directory where the model is stored.
+
+~~~
+model.save('my_first_model')
+~~~
+{:.language-python}
+
+This saved model can be loaded again by using the `load_model` method as follows:
+~~~
+pretrained_model = keras.models.load_model('my_first_model')
+~~~
+{:.language-python}
+
+This loaded model can be used as before to predict.
+
+~~~
+# use the pretrained model here
+y_pretrained_pred = pretrained_model.predict(X_test)
+pretrained_prediction = pd.DataFrame(y_pretrained_pred, columns=target.columns.values)
+
+# idxmax will select the column for each row with the highest value
+pretrained_predicted_species = pretrained_prediction.idxmax(axis="columns")
+print(pretrained_predicted_species)
 ~~~
 {:.language-python}
 
@@ -575,3 +678,6 @@ print(penguin_species)
 
 [training_curve]: ../fig/training_curve.png "Training Curve"
 {: width="66%"}
+
+[confusion_matrix]: ../fig/confusion_matrix.png "Confusion Matrix"
+{: width="50%"}
