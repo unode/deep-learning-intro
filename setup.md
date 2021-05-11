@@ -57,7 +57,7 @@ If you run into any difficulties, please request help before the workshop begins
     ~~~
     $ bash Anaconda3-
     ~~~
-    {: .bash}
+    {: .language-bash}
 
     and press tab.  The name of the file you just downloaded should appear.
 
@@ -76,7 +76,7 @@ Open a terminal and type the command (note that installing tensorflow causes ker
 ~~~
 $ conda install tensorflow seaborn scikit-learn
 ~~~
-{: .bash}
+{: .language-bash}
 
 
 ## Starting a Jupyter Notebook
@@ -94,7 +94,7 @@ To start the notebook, open a terminal or git bash and type the command:
 ~~~
 $ jupyter notebook
 ~~~
-{: .bash}
+{: .language-bash}
 
 To start the Python interpreter without the notebook, open a terminal
 or git bash and type the command:
@@ -102,7 +102,7 @@ or git bash and type the command:
 ~~~
 $ python
 ~~~
-{: .bash}
+{: .language-bash}
 
 [anaconda]: https://www.continuum.io/anaconda
 [continuum-mac]: http://continuum.io/downloads#_macosx
