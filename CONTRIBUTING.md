@@ -1,6 +1,8 @@
 # Contributing
 
-[The Carpentries][c-site] ([Software Carpentry][swc-site], [Data Carpentry][dc-site], and [Library Carpentry][lc-site]) are open source projects,
+This lesson is part of The Carpentries Incubator.
+[The Carpentries][c-site] ([Software Carpentry][swc-site], [Data Carpentry][dc-site],
+and [Library Carpentry][lc-site]) are open source projects,
 and we welcome contributions of all kinds:
 new lessons,
 fixes to existing material,
@@ -45,24 +47,9 @@ and to meet some of our community members.
 
 ## Where to Contribute
 
-1.  If you wish to change this lesson,
-    please work in <https://github.com/swcarpentry/FIXME>,
-    which can be viewed at <https://swcarpentry.github.io/FIXME>.
-
-2.  If you wish to change the example lesson,
-    please work in <https://github.com/carpentries/lesson-example>,
-    which documents the format of our lessons
-    and can be viewed at <https://carpentries.github.io/lesson-example>.
-
-3.  If you wish to change the template used for workshop websites,
-    please work in <https://github.com/carpentries/workshop-template>.
-    The home page of that repository explains how to set up workshop websites,
-    while the extra pages in <https://carpentries.github.io/workshop-template>
-    provide more background on our design choices.
-
-4.  If you wish to change CSS style files, tools,
-    or HTML boilerplate for lessons or workshops stored in `_includes` or `_layouts`,
-    please work in <https://github.com/carpentries/styles>.
+If you wish to change this lesson,
+please work in <https://github.com/carpentries-incubator/deep-learning-intro>,
+which can be viewed at <https://carpentries-incubator.github.io/deep-learning-intro/>.
 
 ## What to Contribute
 
@@ -73,7 +60,7 @@ and submitting [bug reports][issues]
 about things that don't work, aren't clear, or are missing.
 If you are looking for ideas, please see the 'Issues' tab for
 a list of issues associated with this repository,
-or you may also look at the issues for [Data Carpentry][dc-issues], 
+or you may also look at the issues for [Data Carpentry][dc-issues],
 [Software Carpentry][swc-issues], and [Library Carpentry][lc-issues] projects.
 
 Comments on issues and reviews of pull requests are just as welcome:
@@ -82,6 +69,48 @@ Reviews from novices and newcomers are particularly valuable:
 it's easy for people who have been using these lessons for a while
 to forget how impenetrable some of this material can be,
 so fresh eyes are always welcome.
+
+## Pull Requests
+If you decide to contribute in the form of a pull request please read the
+following carefully.
+
+### Getting the code and making changes
+This lesson requires you to have python 3.4+ and ruby 2.7+ installed.
+See the [lesson setup](https://carpentries.github.io/lesson-example/setup.html)
+for more information.
+
+1. Fork the repository to create a place on github where you can push your changes to.
+2. Clone the repository to your local pc.
+3. Make your changes
+4. Preview your changes using `make serve`
+5. If you are happy with your changes check if the site still adheres to the
+   lesson format using `make lesson-check-all`
+6. Commit and push your changes
+7. Create a (draft) pull request
+
+### Working on a draft pull request
+When working on changes to this lesson it is useful to create a draft pull
+request early in the development.
+This alerts the maintainers that you are working on a certain issue and allows
+them to provide you with early feedback.
+
+### Submitting a pull request
+If you submit a pull request please request one of the maintainers as one of the reviewers.
+Each pull request needs to be reviewed by at least one person that is not an author
+of the pull request.
+
+Each pull request should also be free of conflicts with the gh-pages branch and build
+succesfully with the github action.
+The github action to build will be automatically run when you submit a pull request.
+The easiest way to check if your contribution is ready is to run:
+```bash
+$ make site
+$ make lesson-check-all
+```
+These should result in no errors.
+
+Make sure your name and email adress are in the AUTHORS file in your pull request.
+Once the pull request is approved it will be merged by one of the maintainers.
 
 ## What *Not* to Contribute
 
@@ -111,7 +140,8 @@ To use the web interface for contributing to a lesson:
 1.  Fork the originating repository to your GitHub profile.
 2.  Within your version of the forked repository, move to the `gh-pages` branch and
 create a new branch for each significant change being made.
-3.  Navigate to the file(s) you wish to change within the new branches and make revisions as required.
+3.  Navigate to the file(s) you wish to change within the new branches and make revisions
+    as required.
 4.  Commit all changed files within the appropriate branches.
 5.  Create individual pull requests from each of your changed branches
 to the `gh-pages` branch within the originating repository.
@@ -123,8 +153,8 @@ When starting work, please make sure your clone of the originating `gh-pages` br
 before creating your own revision-specific branch(es) from there.
 Additionally, please only work from your newly-created branch(es) and *not*
 your clone of the originating `gh-pages` branch.
-Lastly, published copies of all the lessons are available in the `gh-pages` branch of the originating
-repository for reference while revising.
+Lastly, published copies of all the lessons are available in the `gh-pages` branch of the
+originating repository for reference while revising.
 
 ## Other Resources
 
