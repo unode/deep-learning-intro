@@ -4,18 +4,26 @@ teaching: 0
 exercises: 0
 questions:
 - "What is deep learning?"
-- "When is it used and not used?"
+- "When does it make sense to use and not use deep learning?"
 - "When is it successful?"
 - "What are the tools involved?"
 - "What is the workflow for deep learning?"
 - "Why we chose Keras"
 objectives:
-- "State for which problems Deep learning is a useful tool"
-- "List the available tools for Deep Learning"
-- "List the steps of a Deep Learning workflow"
+- "Recall the sort of problems for which Deep learning is a useful tool"
+- "List some of the available tools for Deep Learning"
+- "Recall the steps of a Deep Learning workflow"
 - "Understand why it is important to test the accuracy of deep learning system."
+- "Identify the inputs and outputs of a deep learning system.
+- "Test that we've correctly installed the Keras, Seaborn and Sklearn libraries"
 keypoints:
-- "Keras is a deep learning framework that is easier to use than many of the alternatives."
+- "Machine learning is the process where computers learn to recognise patterns of data."
+- "Artificial neural networks are a machine learning technique based on a model inspired by groups of neurons in the brain."
+- "Aritifical neural networks can be trained on example data."
+- "Deep learning is a machine learning technique based on using many artificial neurons arranged in layers."
+- "Deep learning is well suited to classification and prediction problems such as image recognition."
+- "To use deep learning effectively we need to go through a workflow of: defining the problem, identifying inputs and outputs, preparing data, choosing the type of network, choosing a loss function, training the model, tuning Hyperparameters, measuring performance before we can classify data."
+- "Keras is a deep learning framework that is easier to use than many of the alternatives such as TensorFlow and PyTorch."
 ---
 
 ## What is Deep Learning?
@@ -112,34 +120,40 @@ Often we can use an existing neural network instead of designing one from scratc
 If instead we decide we do want to design our own network then we need to think about how many input neurons it will have, how many hidden layers and how many outputs, what types of layers we use (we'll explore the different types later on). This will probably need some experimentation and we might have to try tweaking the network design a few times before we see acceptable results.
 
 
-### 5. Choose a cost function and metrics
+### 5. Choose a loss function and metrics
 
-how do we decide how close/correct the answer is to what we want?
+The loss function tells the training algorithm how far away the predicted value was from the true value. There are a number of different types of function we can use here that might be suited to different types of data and network architectures. We'll look at choosing a loss function in more detail later on.
 
 
 ### 6. Train the model
 
-which optimizer
-learning rate, how big the change will be
-how many times (epochs) should we run
-batch size
+Before we can train the model we have one final component to decide upon, the optimizer. The optimizer is responsible for taking the output of the loss function and then applying some changes to weights within the network. We can think of the training process as like trying to gradually descend a (very jagged looking) curve on a graph (that looks more like a rocky mountain side than a smooth curve) and find the bottom of it, without knowing in advance where that bottom is. Along the way we might hit some flat or even rising parts of the curve that make it look like we've reached the bottom when we haven't, we call these local minima. Different optimizers and optimizer parameters can help prevent us getting stuck in local minima. As with the loss function the best choice may depend on the kind of data and network architecture that we're using.
 
+Now that we've set the optimizer function we can go ahead and start training our network. We'll probably keep doing this for a given number of iterations or epochs or until the loss function gives a value under a certain threshold.
+
+[//]: # "is a graph of a reduction in loss sensible here?"
 
 ### 7. Tune Hyperparameters
 
-we might find that the performance of the network isn't as good as we'd like
-We might need to go back and change the cost functions and metrics, the structure of the network and some of the parameters to the training algorithm.
+Hyperparameters are all the parameters set by the person configuring the machine learning instead of those learned by the algorithm itself. The Hyperparameters include the number of epochs or the parameters for the optimizer. If we are really trying to optimize things then we might even do a sweep through a whole range of Hyperparameters and use the loss function to decide which Hyperparameters performed best.
 
 ### 8. Measure Performance
 
-How well did our network perform? We might use a test set
+Once we think the network is performing well we want to measure its performance. To do this we might use the validation set of data that we put aside earlier and didn't use as part of the training process. For a classification task we can often evaluate four different measures for each possible class in the data:
+
+1. True Positives: Where we correctly classified something as belonging to this class.
+2. True Negatives: Where we correctly classified that something wasn't a member of this class.
+3. False Positives: Where we incorrectly classified something as belonging to this class when it doesn't.
+4. False Negatives: Where we incorrectly classified something as not belonging to this class when it does.
+
+There are a number of metrics which combine some of these four measures. For example accuracy is defined as the number of true positives plus the number of true Negatives divided by the total number of samples (TP+TN/n). Exactly which of these we want to optimize may depend upon the task we are trying to achieve and how acceptable misclassification is.
 
 ### 9. Perform a Prediction/Classification
 
-Now that we have a trained network that performs at a level we are happy with we can go and use it on real data to perform a prediction.
+Now that we have a trained network that performs at a level we are happy with we can go and use it on real data to perform a prediction. At this point we might want to consider publishing a file with both the architecture of our network and the weights which it has learned (assuming we didn't use a pre-trained network). This will allow others to use it as as pre-trained network for their own purposes.
 
 
-> ## DL workflow
+> ## Deep Learning workflow exercise
 >
 > Think about a problem you'd like to use deep learning to solve.
 > 1. What do you want a deep learning system to be able to tell you?
@@ -151,7 +165,7 @@ Now that we have a trained network that performs at a level we are happy with we
 
 ## Deep Learning Libraries
 
-For this workshop we'll be using a Python library called Keras for performing deep learning. There are many other libraries available including:
+There are many software libraries available for deep learning including:
 
 * TensorFlow
 
@@ -165,9 +179,9 @@ PyTorch was developed by Facebook in 2016 and is a popular choice for deep learn
 
 Keras is designed to be easy to use and usually requires fewer lines of code than other libraries. We have chosen it for this workshop for that reason. Keras can actually work on top of TensorFlow (and several other libraries), hiding away the complexities of TensorFlow while still allowing you to make use of their features.
 
-The performance of Keras is sometimes not as good as other libraries and if you are going to move on to create very large networks using very large datasets then you might want to consider one of the other libraries. You will find that most of the concepts from this workshop translate across very well. But for many applications the performance difference will not be enough to worry about and the time you'll save with simpler code will exceed what you'll save by having the code run a little faster.
+The performance of Keras is sometimes not as good as other libraries and if you are going to move on to create very large networks using very large datasets then you might want to consider one of the other libraries. But for many applications the performance difference will not be enough to worry about and the time you'll save with simpler code will exceed what you'll save by having the code run a little faster.
 
-Keras also benefits from a very good set of [online documentation](https://keras.io/guides/) and a large user community.
+Keras also benefits from a very good set of [online documentation](https://keras.io/guides/) and a large user community. Because of this we'll use Keras for the rest of this workshop. You will find that most of the concepts from Keras translate very well across to the other libraries if you wish to learn them at a later date.
 
 ### Installing Keras and other dependencies
 
@@ -182,9 +196,9 @@ Follow the instructions in the setup document to install Keras, Seaborn and Skle
 > ~~~
 > {:.language-python}
 > > ## Solution
-> > You should get a version number reported. At the time of writing 2.4.3 is the latest version.
+> > You should get a version number reported. At the time of writing 2.4.0 is the latest version.
 > > ~~~
-> > 2.4.3
+> > 2.4.0
 > > ~~~
 > > {:.output}
 > {:.solution}
@@ -194,14 +208,14 @@ Follow the instructions in the setup document to install Keras, Seaborn and Skle
 > Lets check you have a suitable version of Keras installed.
 > Open up a new Jupyter notebook or interactive python console and run the following commands:
 > ~~~
-> from tensorflow import keras
-> print(keras.__version__)
+> seaborn
+> print(seaborn.__version__)
 > ~~~
 > {:.language-python}
 > > ## Solution
-> > You should get a version number reported. At the time of writing 2.4.3 is the latest version.
+> > You should get a version number reported. At the time of writing 0.11.1 is the latest version.
 > > ~~~
-> > 2.4.3
+> > 0.11.1
 > > ~~~
 > > {:.output}
 > {:.solution}
@@ -212,14 +226,14 @@ Follow the instructions in the setup document to install Keras, Seaborn and Skle
 > Lets check you have a suitable version of Keras installed.
 > Open up a new Jupyter notebook or interactive python console and run the following commands:
 > ~~~
-> from tensorflow import keras
-> print(keras.__version__)
+> import sklearn
+> print(sklearn.__version__)
 > ~~~
 > {:.language-python}
 > > ## Solution
-> > You should get a version number reported. At the time of writing 2.4.3 is the latest version.
+> > You should get a version number reported. At the time of writing 0.24.1 is the latest version.
 > > ~~~
-> > 2.4.3
+> > 0.24.1
 > > ~~~
 > > {:.output}
 > {:.solution}
