@@ -4,6 +4,7 @@ on:
     branches:
       - gh-pages
       - main
+      - episode1
   pull_request: []
 jobs:
   build-website:
