@@ -432,6 +432,7 @@ model.summary()
 ~~~
 {: .language-python}
 
+~~~
 Model: "model_dropout"
 _________________________________________________________________
 Layer (type)                 Output Shape              Param #   
@@ -452,6 +453,7 @@ Total params: 21,501
 Trainable params: 21,501
 Non-trainable params: 0
 _________________________________________________________________
+~~~
 {: .output}
 
 Compared to the models above, this required little changes. We add two `Dropout` layers, one after each dense layer and specify the dropout rate.
