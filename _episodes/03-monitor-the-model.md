@@ -399,7 +399,167 @@ Techniques to avoid overfitting, or to improve model generalization, are termed 
 One of the most versatile regularization technique is **dropout**.
 Dropout essentially means that during each training cycle a random fraction of the dense layer nodes are turned off. This is described with the dropout rate between 0 and 1 which determines the fraction of nodes to silence at a time. 
 ![Dropout sketch](../fig/neural_network_sketch_dropout.png)
-The intuition behind dropout is that it enforces redundancies in the network by constantly removing different elements of a network.
-It thus becomes much harder for a network to memorize particular features. At first this might appear a quiet drastic approach which affects the network architecture strongly.
+The intuition behind dropout is that it enforces redundancies in the network by constantly removing different elements of a network. The model can no longer rely on individual nodes and instead must create multiple "paths". In addition, the model has to make predictions with much fewer nodes and weights (connections between the nodes). 
+As a result, it becomes much harder for a network to memorize particular features. At first this might appear a quiet drastic approach which affects the network architecture strongly.
 In practice, however, dropout is computationally a very elegant solution which does not affet training speed. And it frequently works very well.
+
+Let's add dropout to our neural network which we will do by using keras `Dropout` layer (documentation & reference: https://keras.io/api/layers/regularization_layers/dropout/).
+One additional change that we will make here is to lower the learning rate because in the last training example the losses seemed to fluctuate a lot.
+~~~
+from tensorflow.keras.layers import Dropout
+
+def create_nn(n_features, n_predictions):
+    # Input layer
+    layers_input = Input(shape=(n_features,), name='input')
+
+    # Dense layers
+    layers_dense = Dense(100, 'relu')(layers_input)
+    layers_dense = Dropout(rate=0.2)(layers_dense)
+    layers_dense = Dense(50, 'relu')(layers_dense)
+    layers_dense = Dropout(rate=0.2)(layers_dense)
+
+    # Output layer
+    layers_output = Dense(n_predictions)(layers_dense)
+
+    # Defining the model and compiling it
+    return Model(inputs=layers_input, outputs=layers_output, name="model_dropout")
+
+model = create_nn(X_data.shape[1], 1)
+model.compile(loss='mse', optimizer=Adam(1e-4), metrics=[tf.keras.metrics.RootMeanSquaredError()])
+model.summary()
+~~~
+{: .language-python}
+
+Model: "model_dropout"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input (InputLayer)           [(None, 163)]             0         
+_________________________________________________________________
+dense_12 (Dense)             (None, 100)               16400     
+_________________________________________________________________
+dropout (Dropout)            (None, 100)               0         
+_________________________________________________________________
+dense_13 (Dense)             (None, 50)                5050      
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 50)                0         
+_________________________________________________________________
+dense_14 (Dense)             (None, 1)                 51        
+=================================================================
+Total params: 21,501
+Trainable params: 21,501
+Non-trainable params: 0
+_________________________________________________________________
+{: .output}
+
+Compared to the models above, this required little changes. We add two `Dropout` layers, one after each dense layer and specify the dropout rate.
+Here we use `rate=0.2` which means that at any training step 20% of all nodes will be turned off.
+You can also see that Dropout layers do not add additional parameters.
+Now, let's train our new model and plot the losses:
+
+~~~
+history = model.fit(X_train, y_train,
+                    batch_size = 50,
+                    epochs = 1000,
+                    validation_data=(X_val, y_val),
+                    callbacks=[earlystopper],
+                    verbose = 2)
+
+history_df = pd.DataFrame.from_dict(history.history)
+sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+plt.xlabel("epochs")
+plt.ylabel("RMSE")
+~~~
+{: .language-python}                  
+
+![Output of plotting sample](../fig/03_training_history_4_rmse_dropout.png)
+
+In this setting overfitting seems to be pervented succesfully. The overall results though have not improved (at least not by much).
+
+## BatchNorm: the "standard scaler" for deep learning
+A very common step in classical machine learning pipelines is to scale the features, for instance by using sckit-learn's `StandardScaler`.
+This can in principle also be done for deep learning.
+An alternative, more common approach, is to add **BatchNormalization** layers which will learn how to scale the input values.
+Similar to dropout, batch normalization is available as a network layer in keras and can be added to the network in a similar way.
+It does not require any additional parameter setting. 
+
+~~~
+from tensorflow.keras.layers import BatchNormalization
+~~~
+{: .language-python} 
+
+## Exercise: Add a BatchNormalization layer as the first layer to your neural network.
+(documentation & reference: https://keras.io/api/layers/normalization_layers/batch_normalization/)
+
+~~~
+def create_nn(n_features, n_predictions):
+    # Input layer
+    layers_input = Input(shape=(n_features,), name='input')
+
+    # Dense layers
+    layers_dense = BatchNormalization()(layers_input)
+    layers_dense = Dense(100, 'relu')(layers_dense)
+    layers_dense = Dropout(rate=0.2)(layers_dense)
+    layers_dense = Dense(50, 'relu')(layers_dense)
+    layers_dense = Dropout(rate=0.2)(layers_dense)
+
+    # Output layer
+    layers_output = Dense(n_predictions)(layers_dense)
+
+    # Defining the model and compiling it
+    return Model(inputs=layers_input, outputs=layers_output, name="model_dropout_batchnorm")
+
+model = create_nn(X_data.shape[1], 1)
+model.compile(loss='mse', optimizer=Adam(1e-4), metrics=[tf.keras.metrics.RootMeanSquaredError()])
+model.summary()
+~~~
+{: .language-python}      
+
+Which is then trained as above:
+~~~
+history = model.fit(X_train, y_train,
+                    batch_size = 50,
+                    epochs = 1000,
+                    validation_data=(X_val, y_val),
+                    callbacks=[earlystopper],
+                    verbose = 2)
+
+history_df = pd.DataFrame.from_dict(history.history)
+sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+plt.xlabel("epochs")
+plt.ylabel("RMSE")
+~~~
+{: .language-python}      
+
+![Output of plotting sample](../fig/03_training_history_5_rmse_batchnorm.png)
+
+## Run on test set and compare to naive baseline
+It seems that no matter what we add, the overall loss does not decrease much further (we at least avoided overfitting though!).
+Let's again plot the results on the test set:
+~~~
+y_test_predicted = model.predict(X_test)
+
+plt.figure(figsize=(5, 5), dpi=100)
+plt.scatter(y_test_predicted, y_test, s=10, alpha=0.5)
+plt.xlabel("predicted sunshine hours")
+plt.ylabel("true sunshine hours")
+~~~
+{: .language-python} 
+
+![Output of plotting sample](../fig/03_regression_test_5_dropout_batchnorm.png)
+
+Well... certainly not perfect. But how good or bad is this? Maybe not good enough to plan your picnic for tomorrow.
+But let's better compare it to a naive baseline.
+Maybe the simplest prediction to make would be to say: Tomorrow we will have the same number of sunshine hours as today. Let's compare to this.
+
+~~~
+plt.figure(figsize=(5, 5), dpi=100)
+plt.scatter(X_test["BASEL_sunshine"], y_test, s=10, alpha=0.5)
+plt.xlabel("sunshine hours yesterday")
+plt.ylabel("true sunshine hours")
+~~~
+{: .language-python} 
+
+![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
+
 
