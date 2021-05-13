@@ -144,7 +144,7 @@ However, when models become more complicated then also the loss functions often 
 That is why it is good practice to monitor the training process with additional, more intuitive metrics. 
 They are not used to optimize the model, but are simply recorded during training. 
 With Keras they can simply be added via `metrics=[...]` and can contain one or multiple metrics of interest. 
-Here we could for instance chose to use `'mae'` the mean absolute error, or the the *root mean squared error* (RMSE) which unlike the *mse* has the same units as the predicted values. Finally, after compiling we train the model on our training data for 200 epochs.
+Here we could for instance chose to use `'mae'` the mean absolute error, or the the *root mean squared error* (RMSE) which unlike the *mse* has the same units as the predicted values.
 
 ~~~
 model.compile(optimizer='adam',
@@ -173,8 +173,8 @@ plt.ylabel("RMSE")
 {: .language-python}
 ![Output of plotting sample](../fig/03_training_history_1_rmse.png)
 
-This looks very promising! Our loss ("mse") is dropping nicely and while it maybe keeps fluctuating a bit it does end up at fairly low *mse* values.
-But the *mse* is just the *mean* squared error, so we might want to look a bit more in detail how well our just trained model does in predicting the sunshine hours.
+This looks very promising! Our metric ("RMSE") is dropping nicely and while it maybe keeps fluctuating a bit it does end up at fairly low *RMSE* values.
+But the *RMSE* is just the root *mean* squared error, so we might want to look a bit more in detail how well our just trained model does in predicting the sunshine hours.
 
 ## Evaluate our model
 There is not a single way to evaluate how a model performs. But there is at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly. For the present *regression task* however, it makes more sense to compare true and predicted values in simple scatter plot.
@@ -213,7 +213,7 @@ First, we will do the actual prediction step.
 > > In fact, considering that the task of predicting the daily sunshine hours is really not easy it might even be surprising how well the model predicts that 
 > > (at least on the training set). Maybe a little too good?
 > > For those familiar with (classical) machine learning this might look familiar. 
-> > It is a very clear signature of *overfitting* which means that the model has to some extend memorized aspects of the training data. 
+> > It is a very clear signature of **overfitting** which means that the model has to some extend memorized aspects of the training data. 
 > > As a result makes much more accurate predictions on the training data than on unseen data.
 > {:.solution}
 {:.challenge}
