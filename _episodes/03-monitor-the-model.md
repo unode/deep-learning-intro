@@ -702,5 +702,6 @@ Our models get the general trends right, but still predictions vary quiet a bit 
 > > * More data can also mean more features! What about adding the month? 
 > > Another alternative would be to not only look at data from one day, but use the data of a longer period such as a full week. 
 > > This will turn the data into time series data which in turn might also make it worth to apply different model architectures...
+> > 
 > {:.solution}
 {:.challenge}
