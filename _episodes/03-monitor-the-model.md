@@ -56,6 +56,22 @@ y_data = data.loc[1:(365*3 + 1)]["BASEL_sunshine"]
 ### Split data and labels into training, validation, and test set
 As with classical machine learning techniques, it is common in deep learning to split off a *test set* which remains untouched during model training and tuning. It is then later be used to evaluate the model performance. Here, we will also split off an additional *validation set*, the reason of which will hopefully become clearer later in this lesson.
 
+~~~
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X_data, y_data, test_size=0.3, random_state=0) 
+X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, random_state=0)
+
+print(f"Data split into training ({X_train.shape[0]})," \
+      f" validation ({X_val.shape[0]}) and test set ({X_test.shape[0]}).")
+~~~
+{:.language-python}
+
+~~~
+Data split into training (767), validation (164) and test set (165).
+~~~
+{:.output}
+      
 ## Regression and classification - how to set a training goal
 - Explain how to define the output part of a neural network
 - What is the loss function (and which one to chose for a regression or classification task)?
