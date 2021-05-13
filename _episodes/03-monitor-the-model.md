@@ -700,6 +700,7 @@ Our models get the general trends right, but still predictions vary quiet a bit 
 > > * Related to more data: use data augmentation. By creating realistic variations of the available data, the model might improve as well.
 > > * More data can mean more data points (you can test it yourself by taking more than the 3 years we used here!)
 > > * More data can also mean more features! What about adding the month? 
+> > * The labels we used here (sunshine hours) are highly biased, many days with no or nearly no sunshine but few with >10 hours. Techniques such as oversampling or undersampling might handle such biased labels better.
 > > Another alternative would be to not only look at data from one day, but use the data of a longer period such as a full week. 
 > > This will turn the data into time series data which in turn might also make it worth to apply different model architectures...
 > > 
