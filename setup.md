@@ -6,10 +6,10 @@ permalink: /setup/
 
 ## Installing Python Using Anaconda
 
-[Python][python] is a popular language for scientific computing, and great for
-general-purpose programming as well. Installing all of its scientific packages
-individually can be a bit difficult, however, so we recommend the all-in-one
-installer [Anaconda][anaconda].
+[Python][python] is a popular language for scientific computing, and a frequent choice
+for machine learning as well. Installing all of its scientific packages
+individually can be a bit difficult, however, so we recommend the installer [Anaconda][anaconda]
+which includes most (but not all) of the software you will need.
 
 Regardless of how you choose to install it, please make sure you install Python
 version 3.x (e.g., 3.4 is fine). Also, please set up your python environment at
@@ -72,7 +72,8 @@ If you run into any difficulties, please request help before the workshop begins
 
 ## Installing the required packages
 
-Open a terminal and type the command (note that installing tensorflow causes keras to be installed too):
+Open a terminal and type the command (note that installing tensorflow causes keras to
+be installed too):
 ~~~
 $ conda install tensorflow seaborn scikit-learn
 ~~~
