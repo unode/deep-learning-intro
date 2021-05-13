@@ -258,3 +258,103 @@ plt.ylabel("RMSE")
 This clearly shows that something is not completely right here. 
 The model predictions on the validation set quickly seem to reach a plateau while the performance on the training set keeps improving.
 That is a clear signature of overfitting.
+
+## Counteract model overfitting
+Overfitting is a very common issue and there are many strategies to handle it.
+Most similar to classical machine learning might to **reduce the number of parameters**.
+
+> ## Try to reduce the degree of overfitting by lowering the number of parameters
+>
+> We can keep the network architecture unchanged (2 dense layers + a one-node output layer) and only play with the number of nodes per layer.
+> Try to lower the number of nodes in one or both of the two dense layers and observe the changes to the training and validation losses.
+>
+> * Is it possible to get rid of overfitting this way?
+> * Does the overall performance suffer or does it mostly stay the same?
+> * How low can you go with the number of paramters without notable effect on the performance on the validation set?
+>
+> > ## Solution
+> > ~~~
+> > def create_nn(n_features, n_predictions, nodes1, nodes2):
+> >     # Input layer
+> >     input = Input(shape=(n_features,), name='input')
+> > 
+> >     # Dense layers
+> >     layers_dense = Dense(nodes1, 'relu')(input)
+> >     layers_dense = Dense(nodes2, 'relu')(layers_dense)
+> > 
+> >     # Output layer
+> >     output = Dense(n_predictions)(layers_dense)
+> > 
+> >     return Model(inputs=input, outputs=output, name="model_small")
+> > 
+> > model = create_nn(X_data.shape[1], 1, 10, 5)
+> > model.summary()
+> > ~~~
+> > {:.language-python}
+> >
+> > ~~~
+> > Model: "model_small"
+> > _________________________________________________________________
+> > Layer (type)                 Output Shape              Param #   
+> > =================================================================
+> > input (InputLayer)           [(None, 163)]             0         
+> > _________________________________________________________________
+> > dense_21 (Dense)             (None, 10)                1640      
+> > _________________________________________________________________
+> > dense_22 (Dense)             (None, 5)                 55        
+> > _________________________________________________________________
+> > dense_23 (Dense)             (None, 1)                 6         
+> > =================================================================
+> > Total params: 1,701
+> > Trainable params: 1,701
+> > Non-trainable params: 0
+> > _________________________________________________________________
+> > ~~~
+> > {:.output}
+> >
+> > There is obviously no single correct solution here. But you will have noticed that the number of nodes can be reduced quiet a bit!
+> > 
+> > In general, it quickly becomes a very complicated search for the right "sweet spot", i.e. the settings for which overfitting will be (nearly) avoided but which still performes equally well.
+> > 
+> {:.solution}
+{:.challenge}
+
+We saw that reducing the number of parameters can be a strategy to avoid overfitting.
+In practice, however, this is usually not the (main) way to go when it comes to deep learning.
+One reason is, that finding the sweet spot can be really hard and time consuming. And it has to be repeated every time the model is adapted, e.g. when more training data becomes available.
+
+## Early stopping: stop when things are looking best
+Arguable **the** most common technique to avoid (severe) overfitting in deep learning is called **early stopping**.
+As the name suggests, this technique just means that you stop the model training if things do not seem to improve anymore.
+More specifically, this usually means that the training is stopped if the validation loss does not (notably) improve anymore.
+Early stopping is both intuitive and effective to use, so it has become a standard addition for model training.
+
+To better study the effect, we can now savely go back to models with many (too many?) parameters:
+~~~
+model = create_nn(X_data.shape[1], 1, 100, 50)
+model.compile(optimizer='adam',
+              loss='mse',
+              metrics=[tf.keras.metrics.RootMeanSquaredError()])
+~~~
+{: .language-python}
+
+To apply early stopping during training it is easiest to use keras `EarlyStopping` class.
+This allows to define the condition of when to stop training. In our case we will say when the validation loss is lowest.
+However, since we have seen quiet some fluctuation of the losses during training above we will also set `patience=10` which means that the model will stop training of the validation loss has not gone down for 10 epochs.
+~~~
+from tensorflow.keras.callbacks import EarlyStopping
+
+earlystopper = EarlyStopping(
+    monitor='val_loss', mode="min",
+    patience=10,
+    verbose=1
+    )
+
+history = model.fit(X_train, y_train,
+                    batch_size = 50,
+                    epochs = 200,
+                    validation_data=(X_val, y_val),
+                    callbacks=[earlystopper],
+                    verbose = 2)
+~~~
+{: .language-python}
