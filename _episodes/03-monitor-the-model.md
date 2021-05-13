@@ -684,7 +684,7 @@ Our models get the general trends right, but still predictions vary quiet a bit 
 > It is often tempting to hunt for some magical settings that will lead to much better results. But do those settings exist?
 > Applying common sense is often a good first step to make a guess of how much better *could* results be. 
 > In the present case we might certainly not expect to be able to reliably predict sunshine hours for the next day with 5-10 minute precision.
-> But how much better we could make exactly can be a difficult to answer question.
+> But how much better our model could be exactly, often remains difficult to answer.
 > 
 > * What changes to the model architecture might make sense to explore?
 > * Ignoring changes to the model architecture, what might notably improve the prediction quality?
