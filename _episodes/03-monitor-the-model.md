@@ -312,6 +312,21 @@ Most similar to classical machine learning might to **reduce the number of param
 > > ~~~
 > > {:.output}
 > >
+> > ~~~
+> > history = model.fit(X_train, y_train,
+> >                     batch_size = 50,
+> >                     epochs = 200,
+> >                     validation_data=(X_val, y_val), verbose = 2)
+> >                     
+> > history_df = pd.DataFrame.from_dict(history.history)
+> > sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+> > plt.xlabel("epochs")
+> > plt.ylabel("RMSE")
+> > ~~~
+> > {:.language-python}
+> > 
+> > ![Output of plotting sample](../fig/03_training_history_3_rmse_smaller_model.png)
+> > 
 > > There is obviously no single correct solution here. But you will have noticed that the number of nodes can be reduced quiet a bit!
 > > 
 > > In general, it quickly becomes a very complicated search for the right "sweet spot", i.e. the settings for which overfitting will be (nearly) avoided but which still performes equally well.
@@ -358,3 +373,33 @@ history = model.fit(X_train, y_train,
                     verbose = 2)
 ~~~
 {: .language-python}
+
+As before, we can plot the losses during training:
+~~~
+history_df = pd.DataFrame.from_dict(history.history)
+sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+plt.xlabel("epochs")
+plt.ylabel("RMSE")
+~~~
+{: .language-python}
+
+![Output of plotting sample](../fig/03_training_history_3_rmse_early_stopping.png)
+
+This still seems to reveal the onset of overfitting, but the training stops before the discrepancy between training and validation loss can grow further.
+Despite avoiding severe cases of overfitting, early stopping has the additional advantage that the number of training epochs will be regulated automatically.
+Instead of comparing training runs for different number of epochs, early stopping allows to simply set the number of epochs to a desired maximum value.
+
+What might be a bit unintuitive is that the training runs might now end very rapidly (in particular when the learning rate is high).
+This might spark the question: have we really reached an optimum yet?
+And often the answer this this is "no", which is my frequently other approaches to hinder overfitting from happening are combined with early stopping.
+
+## Dropout: make it harder to memorize things
+Overfitting means that a model (seemingly) performs better on seen data compared to unseen data. One then often also says that it does not "generalize" well.
+Techniques to avoid overfitting, or to improve model generalization, are termed **regularization techniques**. 
+One of the most versatile regularization technique is **dropout**.
+Dropout essentially means that during each training cycle a random fraction of the dense layer nodes are turned off. This is described with the dropout rate between 0 and 1 which determines the fraction of nodes to silence at a time. 
+![Dropout sketch](../fig/neural_network_sketch_dropout.png)
+The intuition behind dropout is that it enforces redundancies in the network by constantly removing different elements of a network.
+It thus becomes much harder for a network to memorize particular features. At first this might appear a quiet drastic approach which affects the network architecture strongly.
+In practice, however, dropout is computationally a very elegant solution which does not affet training speed. And it frequently works very well.
+
