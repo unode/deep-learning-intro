@@ -646,6 +646,7 @@ We can inspect an example distribution, for instance by plotting a histrogram:
 
 ~~~
 plt.hist(y_test_predicted_ensemble[0,:], rwidth=0.9)
+plt.xlabel("predicted sunshine hours")
 ~~~
 {: .language-python} 
 
