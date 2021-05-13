@@ -29,18 +29,6 @@ data.head()
 ~~~
 {:.language-python}
 
-### Select a subset and split into data (X) and labels (y)
-The full dataset comprises 10 years (3654 days) from which we here will only select the first 3 years.
-In addition, we will remove all columns of the place that we want to make predictions on (here: Düsseldorf which is about in the middle of all 18 locations).
-
-~~~
-columns_selected = [x for x in data.columns if not x.startswith("DUSSELDORF") if x not in ["DATE", "MONTH"]]
-X_data = data.loc[:365*3][columns_selected]
-X_data.head()
-~~~
-{:.language-python}
-
-
 | | DATE 	| MONTH | 	BASEL_cloud_cover 	| 	BASEL_humidity 	| 	BASEL_pressure	| ... |
 |------:|------:|---------------:|--------------:|------------------:|------------:|------------:|
 |0| 	20000101 	|1 	|8 	|0.89 	|1.0286|... |
@@ -50,11 +38,20 @@ X_data.head()
 |4| 	20000105 	|1 	|5 	|0.90 	|1.0246|... |
 {: .output}
 
-As a label, that is the the values we want to later predict, we here pick the sunshine hours which we can get by
+### Select a subset and split into data (X) and labels (y)
+The full dataset comprises 10 years (3654 days) from which we here will only select the first 3 years.
+We will then define what exactly we want to predict from this data. Possible options could be to create an *interpolation* task by removing one location and predicing its values based on the remaining 17 locations. An even more frequent task when it comes to weather data, however, is to make a predicion about the weather somewhere in the future, say the next day. The present dataset is sorted by "DATE", so we can simply pick a feature and location that we want to predict with our model.
+Here we will pick a rather difficult-to-predict feature, sunshine hours, which we want to predict for the location: BASEL.
+
 ~~~
-y_data = data.loc[:365*3]["DUSSELDORF_sunshine"].values
+# data
+X_data = data.loc[:365*3].drop(columns=['DATE', 'MONTH'])
+
+# labels (sunshine hours the next day)
+y_data = data.loc[1:(365*3 + 1)]["BASEL_sunshine"]
 ~~~
 {:.language-python}
+
 
 ### Split data and labels into training, validation, and test set
 As with classical machine learning techniques, it is common in deep learning to split off a *test set* which remains untouched during model training and tuning. It is then later be used to evaluate the model performance. Here, we will also split off an additional *validation set*, the reason of which will hopefully become clearer later in this lesson.
@@ -66,7 +63,7 @@ As with classical machine learning techniques, it is common in deep learning to 
 
 In episode 2 we trained a dense neural network on a *classification task*. For this one hot encoding was used together with a Categorical Crossentropy loss function.
 This measured how close the distribution of the neural network outputs corresponds to the distribution of the three values in the one hot encoding.
-Now we want to work on a *regression task*, thus not prediciting the right class for a datapoint but a certain value (could in principle also be several values). In our example we want to predict the sunshine hours in Düsseldorf (or any other place in the dataset) for a particular day based on the weather data of all other places. 
+Now we want to work on a *regression task*, thus not prediciting the right class for a datapoint but a certain value (could in principle also be several values). In our example we want to predict the sunshine hours in Basel (or any other place in the dataset) for tomorrow based on the weather data of all 18 locations today. 
 
 ### Network output layer:
 The network should hence output a single float value which is why the last layer of our network will only consist of a single node. 
@@ -105,22 +102,22 @@ The network should hence output a single float value which is why the last layer
 > > _________________________________________________________________
 > > Layer (type)                 Output Shape              Param #   
 > > =================================================================
-> > input (InputLayer)           [(None, 152)]             0         
+> > input (InputLayer)           [(None, 163)]             0         
 > > _________________________________________________________________
-> > dense_0 (Dense)              (None, 100)               15300     
+> > dense_0 (Dense)              (None, 100)               16400     
 > > _________________________________________________________________
 > > dense_1 (Dense)              (None, 50)                5050      
 > > _________________________________________________________________
 > > dense_2 (Dense)              (None, 1)                 51        
 > > =================================================================
-> > Total params: 20,401
-> > Trainable params: 20,401
+> > Total params: 21,501
+> > Trainable params: 21,501
 > > Non-trainable params: 0
 > > _________________________________________________________________
 > > ~~~
 > > {:.output}
 > >
-> > The shape of the input layer has to correspond to the number of features in our data: 152
+> > The shape of the input layer has to correspond to the number of features in our data: 163
 > > 
 > > The output layer here is a dense layer with only 1 node. And we here have chosen to use *no activation function*.
 > > While we might use *softmax* for a classification task, here we do not want to restrict the possible outcomes for a start.
@@ -209,7 +206,7 @@ First, we will do the actual prediction step.
 > > axes[1].set_ylabel("true sunshine hours")
 > > ~~~
 > > {: .language-python}
-> > ![Scatter plot to evaluate training and test set](../fig/03_regression_compare_training_and_test_performance.png)
+> > ![Scatter plot to evaluate training and test set](../fig/03_regression_training_test_comparison.png)
 > > Maybe that is not exactly what you expected? What is the issue here? Any ideas?
 > > 
 > > The accuracy on the training set is fairly good. 
