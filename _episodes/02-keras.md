@@ -85,7 +85,7 @@ penguins = sns.load_dataset('penguins')
 
 This will give you a pandas dataframe which contains the penguin data.
 
-> ## penguin dataset
+> ## Penguin Dataset
 >
 > Use seaborn to load the dataset and inspect the mentioned attributes.
 > 1. What are the different features called in the dataframe?
@@ -507,24 +507,17 @@ sns.lineplot(x=history.epoch, y=history.history['loss'])
 ## 7. Tune hyperparameters
 As we discussed before the design and training of a neural network comes with
 many hyper parameter choices.
-We will go into more depth of these hyperparameters in later episodes, but
-it is good to play with them a little bit to see how they change and influence the
-model training.
-> ## Change some of the hyperparameters
->
-> Change one of the hyperparameters of the neural network.
-> You can for instance change the model by adding or removing layers,
-> changing the activation function of the hidden layer.
-> Or you can change the training, for instance by adding a learning
-> rate throught the `learning_rate` parameter of the Adam optimizer.
->
-> * How does changing these hyperparameters impact the training
-> * What would be a good strategy to find good hyperparameter values?
-{:.challenge}
+We will go into more depth of these hyperparameters in later episodes.
+For now it is important to realize that the parameters we chose were
+somewhat arbitrary and more careful consideration needs to be taken to
+pick hyperparameter values.
 
 ## 8. Measuring Performance
 Now that we have a trained neural network it is important to assess how well it performs.
-For this we have created a test set during the data preparation stage which we will use
+We want to know how well it will perform in a realistic prediction scenario, measuring
+performance will also come back when tuning the hyperparameters.
+
+We have created a test set during the data preparation stage which we will use
 now to create a confusion matrix.
 
 ### Predict the species of the test set
@@ -598,7 +591,7 @@ sns.heatmap(confusion_df, annot=True)
 ~~~
 {:.language-python}
 
-> ## Train the neural network and plot the training curve
+> ## Confusion Matrix
 >
 > Measure the performance of the neural network you trained and
 > visualize a confusion matrix.
