@@ -23,6 +23,9 @@ It contains daily weather observations from 18 different European cities or plac
 ![18 locations in the weather prediction dataset](../fig/03_weather_prediction_dataset_map.png)
 
 ~~~
+import pandas as pd
+import os
+
 filename_data = os.path.join(path_data, "weather_prediction_dataset.csv")
 data = pd.read_csv(filename_data)
 data.head()
@@ -44,11 +47,12 @@ We will then define what exactly we want to predict from this data. Possible opt
 Here we will pick a rather difficult-to-predict feature, sunshine hours, which we want to predict for the location: BASEL.
 
 ~~~
+nr_rows = 365*3
 # data
-X_data = data.loc[:365*3].drop(columns=['DATE', 'MONTH'])
+X_data = data.loc[:nr_rows].drop(columns=['DATE', 'MONTH'])
 
 # labels (sunshine hours the next day)
-y_data = data.loc[1:(365*3 + 1)]["BASEL_sunshine"]
+y_data = data.loc[1:(nr_rows + 1)]["BASEL_sunshine"]
 ~~~
 {:.language-python}
 
@@ -91,22 +95,23 @@ The network should hence output a single float value which is why the last layer
 > You could for instance start with a network of a dense layer with 100 nodes, followed by one with 50 nodes and finally an output layer.
 >
 > * What must here be the dimension of our input layer?
-> * How would our output layer look like? What about the activation function?
+> * How would our output layer look like? What about the activation function? Tip: Remember that the activation function in our previous classification network scaled the outputs between 0 and 1.
 >
 > > ## Solution
 > > ~~~
 > > def create_nn(n_features, n_predictions):
+> >     from tensorflow import keras
 > >     # Input layer
-> >     input = Input(shape=(n_features,), name='input')
+> >     input = keras.Input(shape=(n_features,), name='input')
 > > 
 > >     # Dense layers
-> >     layers_dense = Dense(100, 'relu')(input)
-> >     layers_dense = Dense(50, 'relu')(layers_dense)
+> >     layers_dense = keras.layers.Dense(100, 'relu')(input)
+> >     layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
 > > 
 > >     # Output layer
-> >     output = Dense(n_predictions)(layers_dense)
+> >     output = keras.layers.Dense(n_predictions)(layers_dense)
 > > 
-> >     return Model(inputs=input, outputs=output, name="weather_prediction_model")
+> >     return keras.Model(inputs=input, outputs=output, name="weather_prediction_model")
 > > 
 > > model = create_nn(n_features=X_data.shape[1], n_predictions=1)
 > > model.summary()
@@ -165,7 +170,7 @@ Here we could for instance chose to use `'mae'` the mean absolute error, or the 
 ~~~
 model.compile(optimizer='adam',
               loss='mse',
-              metrics=[tf.keras.metrics.RootMeanSquaredError()])
+              metrics=[keras.metrics.RootMeanSquaredError()])
 ~~~
 {: .language-python}
 
@@ -181,6 +186,8 @@ history = model.fit(X_train, y_train,
 
 We can plot the training process using the history:
 ~~~
+import seaborn as sns
+import matplotlib.pyplot as plt
 history_df = pd.DataFrame.from_dict(history.history)
 sns.lineplot(data=history_df['root_mean_squared_error'])
 plt.xlabel("epochs")
@@ -198,9 +205,9 @@ There is not a single way to evaluate how a model performs. But there is at leas
 First, we will do the actual prediction step. 
 > ## Predict the labels for both training and test set and compare to the true values
 > Even though we here use a different model architecture and a different task compared to episode 2, the prediction step is mostly identical.
-> Here you should predict the labels for the training set and the test set and then compare them in a scatter plot to the true labels.
+> Use the model to predict the labels for the training set and the test set and then compare them in a scatter plot to the true labels.
 > 
-> * Is the accuracy of the predictions as you expected (or better/worse)? 
+> * Is the performance of the model as you expected (or better/worse)? 
 > * Is there a noteable difference between training set and test set? And if so, any idea why?
 > > ~~~
 > > y_train_predicted = model.predict(X_train)
@@ -247,7 +254,7 @@ We need to initiate a new model -- otherwise Keras will simply assume that we wa
 model = create_nn(n_features=X_data.shape[1], n_predictions=1)
 model.compile(optimizer='adam',
               loss='mse',
-              metrics=[tf.keras.metrics.RootMeanSquaredError()])
+              metrics=[keras.metrics.RootMeanSquaredError()])
 ~~~
 {: .language-python}
 
@@ -329,6 +336,9 @@ Most similar to classical machine learning might to **reduce the number of param
 > > {:.output}
 > >
 > > ~~~
+> > model.compile(optimizer='adam',
+              loss='mse',
+              metrics=[keras.metrics.RootMeanSquaredError()])
 > > history = model.fit(X_train, y_train,
 > >                     batch_size = 50,
 > >                     epochs = 200,
@@ -443,7 +453,7 @@ def create_nn(n_features, n_predictions):
     return Model(inputs=layers_input, outputs=layers_output, name="model_dropout")
 
 model = create_nn(X_data.shape[1], 1)
-model.compile(loss='mse', optimizer=Adam(1e-4), metrics=[tf.keras.metrics.RootMeanSquaredError()])
+model.compile(loss='mse', optimizer=keras.optimizers.Adam(1e-4), metrics=[tf.keras.metrics.RootMeanSquaredError()])
 model.summary()
 ~~~
 {: .language-python}
@@ -705,7 +715,8 @@ Our models get the general trends right, but still predictions vary quiet a bit 
 > * What changes to the model architecture might make sense to explore?
 > * Ignoring changes to the model architecture, what might notably improve the prediction quality?
 > 
-> > This is on open question. And we don't actually know how far one could push this sunshine hour preciction (try it out yourself if you like! We're curious!).
+> > # Solution
+> > This is on open question. And we don't actually know how far one could push this sunshine hour prediction (try it out yourself if you like! We're curious!).
 > > But there is a few things that might be worth exploring.
 > > 
 > > Regarding the model architecture:
