@@ -222,7 +222,7 @@ look like this:
 penguins['species'] = penguins['species'].astype('category')
 
 # Drop the rows that have NaN values in them
-penguin_filtered = penguins.drop(columns=['island', 'sex']).dropna()
+penguins_filtered = penguins.drop(columns=['island', 'sex']).dropna()
 
 # Split the dataset in the features and the target
 penguin_features = penguins_filtered.drop(columns=['species'])
