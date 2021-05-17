@@ -229,7 +229,7 @@ Follow the instructions in the [setup]({{ page.root }}//setup) document to insta
 
 
 > ## Testing Sklearn Installation
-> Lets check you have a suitable version of Keras installed.
+> Lets check you have a suitable version of sklearn installed.
 > In your Jupyter notebook or interactive python console run the following commands:
 > ~~~
 > import sklearn
