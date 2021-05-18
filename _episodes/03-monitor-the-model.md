@@ -24,9 +24,8 @@ It contains daily weather observations from 18 different European cities or plac
 
 ~~~
 import pandas as pd
-import os
 
-filename_data = os.path.join(path_data, "weather_prediction_dataset.csv")
+filename_data = "weather_prediction_dataset.csv"
 data = pd.read_csv(filename_data)
 data.head()
 ~~~
@@ -43,7 +42,7 @@ data.head()
 
 ### Select a subset and split into data (X) and labels (y)
 The full dataset comprises 10 years (3654 days) from which we here will only select the first 3 years.
-We will then define what exactly we want to predict from this data. Possible options could be to create an *interpolation* task by removing one location and predicing its values based on the remaining 17 locations. An even more frequent task when it comes to weather data, however, is to make a predicion about the weather somewhere in the future, say the next day. The present dataset is sorted by "DATE", so we can simply pick a feature and location that we want to predict with our model.
+We will then define what exactly we want to predict from this data. A very common task with weather data is to make a predicion about the weather somewhere in the future, say the next day. The present dataset is sorted by "DATE", so for each row `*i*` in the table we can simply pick a corresponding feature and location from row `*i+1*` that we later want to predict with our model.
 Here we will pick a rather difficult-to-predict feature, sunshine hours, which we want to predict for the location: BASEL.
 
 ~~~
@@ -178,7 +177,7 @@ model.compile(optimizer='adam',
 Now that we created and compiled our dense neural network, we can start training it.
 ~~~
 history = model.fit(X_train, y_train,
-                    batch_size=10,
+                    batch_size=32,
                     epochs=200,
                     verbose=2)
 ~~~
@@ -261,7 +260,7 @@ model.compile(optimizer='adam',
 But now we train it with the small addition of also passing it our validation set:
 ~~~
 history = model.fit(X_train, y_train,
-                    batch_size=10,
+                    batch_size=32,
                     epochs=200,
                     validation_data=(X_val, y_val),
                     verbose=2)
@@ -340,7 +339,7 @@ Most similar to classical machine learning might to **reduce the number of param
               loss='mse',
               metrics=[keras.metrics.RootMeanSquaredError()])
 > > history = model.fit(X_train, y_train,
-> >                     batch_size = 50,
+> >                     batch_size = 32,
 > >                     epochs = 200,
 > >                     validation_data=(X_val, y_val), verbose = 2)
 > >                     
@@ -392,7 +391,7 @@ earlystopper = EarlyStopping(
     )
 
 history = model.fit(X_train, y_train,
-                    batch_size = 50,
+                    batch_size = 32,
                     epochs = 200,
                     validation_data=(X_val, y_val),
                     callbacks=[earlystopper],
@@ -489,7 +488,7 @@ Now, let's train our new model and plot the losses:
 
 ~~~
 history = model.fit(X_train, y_train,
-                    batch_size = 50,
+                    batch_size = 32,
                     epochs = 1000,
                     validation_data=(X_val, y_val),
                     callbacks=[earlystopper],
@@ -548,7 +547,7 @@ model.summary()
 Which is then trained as above:
 ~~~
 history = model.fit(X_train, y_train,
-                    batch_size = 50,
+                    batch_size = 32,
                     epochs = 1000,
                     validation_data=(X_val, y_val),
                     callbacks=[earlystopper],
@@ -636,7 +635,7 @@ model.compile(loss='mse', optimizer=Adam(1e-4), metrics=[tf.keras.metrics.RootMe
 Model training remains entirely unchanged:
 ~~~
 history = model.fit(X_train, y_train,
-                    batch_size = 50,
+                    batch_size = 32,
                     epochs = 1000,
                     validation_data=(X_val, y_val),
                     callbacks=[earlystopper],
