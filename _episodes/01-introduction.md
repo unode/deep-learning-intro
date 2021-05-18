@@ -69,7 +69,7 @@ The image below shows the architecture of a traditional "shallow" network (top) 
 
 Deep learning needs a lot of computational power, for this reason it often relies on specialist hardware like graphical processing units (GPUs). Many computational problems can be solved using less intensive techniques, but could still technically be solved with deep learning.
 
-The following could technically be achieved using deep learning, but it would probably be a very wasteful way to do it:
+The following could technically be achieved using deep learning, but it would probably be very wasteful way to do it:
 
 * Logic operations, such as computing totals, averages, ranges etc. (see [this example](https://joelgrus.com/2016/05/23/fizz-buzz-in-tensorflow) applying deep learning to solve the "FizzBuzz" problem often used for programming interviews)
 * Modelling well defined systems, where the equations governing them are known and understood.
@@ -211,7 +211,7 @@ Follow the instructions in the [setup]({{ page.root }}//setup) document to insta
 {:.challenge}
 
 > ## Testing Seaborn Installation
-> Lets check you have a suitable version of Keras installed.
+> Lets check you have a suitable version of seaborn installed.
 > In your Jupyter notebook or interactive python console run the following commands:
 > ~~~
 > seaborn
@@ -229,7 +229,7 @@ Follow the instructions in the [setup]({{ page.root }}//setup) document to insta
 
 
 > ## Testing Sklearn Installation
-> Lets check you have a suitable version of Keras installed.
+> Lets check you have a suitable version of sklearn installed.
 > In your Jupyter notebook or interactive python console run the following commands:
 > ~~~
 > import sklearn
