@@ -579,17 +579,24 @@ plt.ylabel("true sunshine hours")
 
 Well... certainly not perfect. But how good or bad is this? Maybe not good enough to plan your picnic for tomorrow.
 But let's better compare it to a naive baseline.
-Maybe the simplest prediction to make would be to say: Tomorrow we will have the same number of sunshine hours as today. Let's compare to this.
 
-~~~
-plt.figure(figsize=(5, 5), dpi=100)
-plt.scatter(X_test["BASEL_sunshine"], y_test, s=10, alpha=0.5)
-plt.xlabel("sunshine hours yesterday")
-plt.ylabel("true sunshine hours")
-~~~
-{: .language-python} 
-
-![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
+> # Create a similar scatter plot as above for a reasonable baseline
+>
+> What can we take as a baseline? 
+> Maybe the simplest prediction to make would be to say: Tomorrow we will have the same number of sunshine hours as today.
+> Let's compare to this.
+> 
+> > # Solution
+> > We can here just take the `BASEL_sunhine` column of our data, because this contains the sunshine hours from one day before what we have as a label.
+> > ~~~
+> > plt.figure(figsize=(5, 5), dpi=100)
+> > plt.scatter(X_test["BASEL_sunshine"], y_test, s=10, alpha=0.5)
+> > plt.xlabel("sunshine hours yesterday")
+> > plt.ylabel("true sunshine hours")
+> > ~~~
+> > {: .language-python} 
+> > 
+> > ![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
 
 ## Optional part - prediction uncertainty using Monte-Carlo Dropout
 Depending on the data and the question asked, model predictions can be highly accuracte. Or, as in the present case, show a high degree of error.
