@@ -331,16 +331,16 @@ Most similar to classical machine learning might to **reduce the number of param
 > > ~~~
 > > def create_nn(n_features, n_predictions, nodes1, nodes2):
 > >     # Input layer
-> >     input = Input(shape=(n_features,), name='input')
+> >     input = keras.layers.Input(shape=(n_features,), name='input')
 > > 
 > >     # Dense layers
-> >     layers_dense = Dense(nodes1, 'relu')(input)
-> >     layers_dense = Dense(nodes2, 'relu')(layers_dense)
+> >     layers_dense = keras.layers.Dense(nodes1, 'relu')(input)
+> >     layers_dense = keras.layers.Dense(nodes2, 'relu')(layers_dense)
 > > 
 > >     # Output layer
-> >     output = Dense(n_predictions)(layers_dense)
+> >     output = keras.layers.Dense(n_predictions)(layers_dense)
 > > 
-> >     return Model(inputs=input, outputs=output, name="model_small")
+> >     return keras.Model(inputs=input, outputs=output, name="model_small")
 > > 
 > > model = create_nn(X_data.shape[1], 1, 10, 5)
 > > model.summary()
@@ -466,23 +466,21 @@ In practice, however, dropout is computationally a very elegant solution which d
 Let's add dropout to our neural network which we will do by using keras `Dropout` layer (documentation & reference: https://keras.io/api/layers/regularization_layers/dropout/).
 One additional change that we will make here is to lower the learning rate because in the last training example the losses seemed to fluctuate a lot.
 ~~~
-from tensorflow.keras.layers import Dropout
-
 def create_nn(n_features, n_predictions):
     # Input layer
-    layers_input = Input(shape=(n_features,), name='input')
+    layers_input = keras.layers.Input(shape=(n_features,), name='input')
 
     # Dense layers
-    layers_dense = Dense(100, 'relu')(layers_input)
-    layers_dense = Dropout(rate=0.2)(layers_dense)
-    layers_dense = Dense(50, 'relu')(layers_dense)
-    layers_dense = Dropout(rate=0.2)(layers_dense)
+    layers_dense = keras.layers.Dense(100, 'relu')(layers_input)
+    layers_dense = keras.layers.Dropout(rate=0.2)(layers_dense)
+    layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
+    layers_dense = keras.layers.Dropout(rate=0.2)(layers_dense)
 
     # Output layer
-    layers_output = Dense(n_predictions)(layers_dense)
+    layers_output = keras.layers.Dense(n_predictions)(layers_dense)
 
     # Defining the model and compiling it
-    return Model(inputs=layers_input, outputs=layers_output, name="model_dropout")
+    return keras.Model(inputs=layers_input, outputs=layers_output, name="model_dropout")
 
 model = create_nn(X_data.shape[1], 1)
 model.compile(loss='mse', optimizer=keras.optimizers.Adam(1e-4), metrics=[tf.keras.metrics.RootMeanSquaredError()])
@@ -556,20 +554,20 @@ from tensorflow.keras.layers import BatchNormalization
 ~~~
 def create_nn(n_features, n_predictions):
     # Input layer
-    layers_input = Input(shape=(n_features,), name='input')
+    layers_input = keras.layers.Input(shape=(n_features,), name='input')
 
     # Dense layers
-    layers_dense = BatchNormalization()(layers_input)
-    layers_dense = Dense(100, 'relu')(layers_dense)
-    layers_dense = Dropout(rate=0.2)(layers_dense)
-    layers_dense = Dense(50, 'relu')(layers_dense)
-    layers_dense = Dropout(rate=0.2)(layers_dense)
+    layers_dense = keras.layers.BatchNormalization()(layers_input)
+    layers_dense = keras.layers.Dense(100, 'relu')(layers_dense)
+    layers_dense = keras.layers.Dropout(rate=0.2)(layers_dense)
+    layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
+    layers_dense = keras.layers.Dropout(rate=0.2)(layers_dense)
 
     # Output layer
-    layers_output = Dense(n_predictions)(layers_dense)
+    layers_output = keras.layers.Dense(n_predictions)(layers_dense)
 
     # Defining the model and compiling it
-    return Model(inputs=layers_input, outputs=layers_output, name="model_dropout_batchnorm")
+    return keras.Model(inputs=layers_input, outputs=layers_output, name="model_dropout_batchnorm")
 
 model = create_nn(X_data.shape[1], 1)
 model.compile(loss='mse', optimizer=Adam(1e-4), metrics=[tf.keras.metrics.RootMeanSquaredError()])
@@ -652,20 +650,20 @@ A simple (and a bit hacky) way to enforce dropout layers to remain active is to 
 ~~~
 def create_nn(n_features, n_predictions):
     # Input layer
-    layers_input = Input(shape=(n_features,), name='input')
+    layers_input = keras.layers.Input(shape=(n_features,), name='input')
 
     # Dense layers
-    layers_dense = BatchNormalization()(layers_input)
-    layers_dense = Dense(100, 'relu')(layers_dense)
-    layers_dense = Dropout(rate=0.2)(layers_dense, training=True)
-    layers_dense = Dense(50, 'relu')(layers_dense)
-    layers_dense = Dropout(rate=0.2)(layers_dense, training=True)
+    layers_dense = keras.layers.BatchNormalization()(layers_input)
+    layers_dense = keras.layers.Dense(100, 'relu')(layers_dense)
+    layers_dense = keras.layers.Dropout(rate=0.2)(layers_dense, training=True)
+    layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
+    layers_dense = keras.layers.Dropout(rate=0.2)(layers_dense, training=True)
 
     # Output layer
-    layers_output = Dense(n_predictions)(layers_dense)
+    layers_output = keras.layers.Dense(n_predictions)(layers_dense)
 
     # Defining the model and compiling it
-    return Model(inputs=layers_input, outputs=layers_output, name="model_monte_carlo_dropout")
+    return keras.Model(inputs=layers_input, outputs=layers_output, name="model_monte_carlo_dropout")
 
 model = create_nn(X_data.shape[1], 1)
 model.compile(loss='mse', optimizer=Adam(1e-4), metrics=[tf.keras.metrics.RootMeanSquaredError()])
