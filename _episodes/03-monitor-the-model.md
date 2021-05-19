@@ -130,8 +130,9 @@ The network should hence output a single float value which is why the last layer
 >
 > > ## Solution
 > > ~~~
+> > from tensorflow import keras
+> > 
 > > def create_nn(n_features, n_predictions):
-> >     from tensorflow import keras
 > >     # Input layer
 > >     input = keras.Input(shape=(n_features,), name='input')
 > > 
