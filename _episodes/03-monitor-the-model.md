@@ -184,7 +184,7 @@ When compiling the model we can define a few very important aspects.
 ### Loss function:
 The loss is what the neural network will be optimized on during training, so chosing a suitable loss function is crucial for training neural networks.
 In the given case we want to stimulate that the prodicted values are as close as possible to the true values. This is commonly done by using the *mean squared error* (mse) or the *mean absolute error* (mae), both of which should work OK in this case. Often, mse is prefered over mae because it "punishes" large prediction errors more severely.
-In keras this is implemented in the `keras.losses.MeanSquaredError` class.
+In keras this is implemented in the `keras.losses.MeanSquaredError` class (see keras documentation: https://keras.io/api/losses/).
 
 ### Optimizer:
 Somewhat coupled to the loss function is the *optimizer* that we want to use. 
