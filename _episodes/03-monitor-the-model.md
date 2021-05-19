@@ -40,6 +40,38 @@ data.head()
 |4| 	20000105 	|1 	|5 	|0.90 	|1.0246|... |
 {: .output}
 
+### Brief exploration of the data
+Let us start with a quick look at the type of features that we find in the data.
+~~~
+data.columns
+~~~
+{:.language-python}
+
+~~~
+Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
+       'BASEL_pressure', 'BASEL_global_radiation', 'BASEL_precipitation',
+       'BASEL_sunshine', 'BASEL_temp_mean', 'BASEL_temp_min',
+       ...
+       'STOCKHOLM_temp_min', 'STOCKHOLM_temp_max', 'TOURS_wind_speed',
+       'TOURS_humidity', 'TOURS_pressure', 'TOURS_global_radiation',
+       'TOURS_precipitation', 'TOURS_temp_mean', 'TOURS_temp_min',
+       'TOURS_temp_max'],
+      dtype='object', length=165)
+~~~
+{:.output}
+
+~~~
+print({x.split("_")[-1] for x in data.columns})
+~~~
+{:.language-python}
+
+~~~
+{'humidity', 'radiation', 'sunshine', 'gust', 'mean', 'max', 'MONTH', 'precipitation', 'pressure', 'cover', 'min', 'speed', 'DATE'}
+~~~
+{:.output}
+
+
+
 ### Select a subset and split into data (X) and labels (y)
 The full dataset comprises 10 years (3654 days) from which we here will only select the first 3 years.
 We will then define what exactly we want to predict from this data. A very common task with weather data is to make a predicion about the weather somewhere in the future, say the next day. The present dataset is sorted by "DATE", so for each row `*i*` in the table we can simply pick a corresponding feature and location from row `*i+1*` that we later want to predict with our model.
