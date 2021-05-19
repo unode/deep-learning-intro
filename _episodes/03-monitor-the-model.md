@@ -232,7 +232,7 @@ This looks very promising! Our metric ("RMSE") is dropping nicely and while it m
 But the *RMSE* is just the root *mean* squared error, so we might want to look a bit more in detail how well our just trained model does in predicting the sunshine hours.
 
 ## Evaluate our model
-There is not a single way to evaluate how a model performs. But there is at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly. For the present *regression task* however, it makes more sense to compare true and predicted values in simple scatter plot.
+There is not a single way to evaluate how a model performs. But there is at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly. For the present *regression task* however, it makes more sense to compare true and predicted values in simple scatter plot. Hint: use `plt.scatter()`.
 
 First, we will do the actual prediction step. 
 > ## Predict the labels for both training and test set and compare to the true values
