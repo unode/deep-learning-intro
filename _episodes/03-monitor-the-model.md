@@ -369,8 +369,8 @@ Most similar to classical machine learning might to **reduce the number of param
 > >
 > > ~~~
 > > model.compile(optimizer='adam',
-              loss='mse',
-              metrics=[keras.metrics.RootMeanSquaredError()])
+> >               loss='mse',
+> >               metrics=[keras.metrics.RootMeanSquaredError()])
 > > history = model.fit(X_train, y_train,
 > >                     batch_size = 32,
 > >                     epochs = 200,
@@ -407,7 +407,7 @@ To better study the effect, we can now savely go back to models with many (too m
 model = create_nn(X_data.shape[1], 1, 100, 50)
 model.compile(optimizer='adam',
               loss='mse',
-              metrics=[tf.keras.metrics.RootMeanSquaredError()])
+              metrics=[keras.metrics.RootMeanSquaredError()])
 ~~~
 {: .language-python}
 
@@ -483,7 +483,7 @@ def create_nn(n_features, n_predictions):
     return keras.Model(inputs=layers_input, outputs=layers_output, name="model_dropout")
 
 model = create_nn(X_data.shape[1], 1)
-model.compile(loss='mse', optimizer=keras.optimizers.Adam(1e-4), metrics=[tf.keras.metrics.RootMeanSquaredError()])
+model.compile(loss='mse', optimizer=keras.optimizers.Adam(1e-4), metrics=[keras.metrics.RootMeanSquaredError()])
 model.summary()
 ~~~
 {: .language-python}
@@ -570,7 +570,7 @@ def create_nn(n_features, n_predictions):
     return keras.Model(inputs=layers_input, outputs=layers_output, name="model_dropout_batchnorm")
 
 model = create_nn(X_data.shape[1], 1)
-model.compile(loss='mse', optimizer=Adam(1e-4), metrics=[tf.keras.metrics.RootMeanSquaredError()])
+model.compile(loss='mse', optimizer=Adam(1e-4), metrics=[keras.metrics.RootMeanSquaredError()])
 model.summary()
 ~~~
 {: .language-python}      
@@ -666,7 +666,7 @@ def create_nn(n_features, n_predictions):
     return keras.Model(inputs=layers_input, outputs=layers_output, name="model_monte_carlo_dropout")
 
 model = create_nn(X_data.shape[1], 1)
-model.compile(loss='mse', optimizer=Adam(1e-4), metrics=[tf.keras.metrics.RootMeanSquaredError()])
+model.compile(loss='mse', optimizer=Adam(1e-4), metrics=[keras.metrics.RootMeanSquaredError()])
 ~~~
 {: .language-python} 
 
