@@ -145,8 +145,7 @@ Hyperparameters are all the parameters set by the person configuring the machine
 
 ### 8. Measure Performance
 
-Once we think the network is performing well we want to measure its performance. To do this we might use the validation set of data that we put aside earlier and didn't use as part of the training process. There are many different methods available for doing this and which one is best depends on the type of task we are attempting.
-
+Once we think the network is performing well we want to measure its performance. To do this we might use the validation set of data that we put aside earlier and didn't use as part of the training process. There are many different methods available for doing this and which one is best depends on the type of task we are attempting. These metrics are often published as an indication of how well our network performs. This helps to compare it with other networks or other methods for performing the same prediction or classification task.
 
 ### 9. Perform a Prediction/Classification
 
