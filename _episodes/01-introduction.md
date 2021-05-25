@@ -136,8 +136,8 @@ Before we can train the model we have one final component to decide upon, the op
 
 Now that we've set the optimizer function we can go ahead and start training our network. We'll probably keep doing this for a given number of iterations or epochs or until the loss function gives a value under a certain threshold. The graphs below shows the loss (generally) reducing as the number of epochs increases. Notice that on a few occasions it goes up instead of down. In the first graph it appears to have reached a plateau of near zero by the 500th epoch. The second graph shows the 500th to 1500th epoch and we can see that its still going down, but frequently rises a little before dropping again.
 
-![A graph showing loss over the first 1500 epochs of training an example network.](../fig/optimization-0_to_1500.svg)
-![A graph showing loss over the 500th to 1500th epoch of training an example network.](../fig/optimization-500_to_1500.svg)
+![A graph showing loss over the first 1500 epochs of training an example network.](../fig/training-0_to_1500.svg)
+![A graph showing loss over the 500th to 1500th epoch of training an example network.](../fig/training-500_to_1500.svg)
 
 ### 7. Tune Hyperparameters
 
