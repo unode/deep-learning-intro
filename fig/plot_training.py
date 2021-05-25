@@ -26,10 +26,10 @@ def plot_graph(data, filename):
 
 
 # load data
-data = pandas.read_csv("optimization.csv")
+data = pandas.read_csv("training.csv")
 
 # draw graph of first 1500 epochs
-plot_graph(data[0:1501], "optimization-0_to_1500.svg")
+plot_graph(data[0:1501], "training-0_to_1500.svg")
 
 # draw graph of the 500th to 1500th epoch
-plot_graph(data[500:1501], "optimization-500_to_1500.svg")
+plot_graph(data[500:1501], "training-500_to_1500.svg")
