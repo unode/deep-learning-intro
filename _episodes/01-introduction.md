@@ -134,9 +134,10 @@ The loss function tells the training algorithm how far away the predicted value 
 
 Before we can train the model we have one final component to decide upon, the optimizer. The optimizer is responsible for taking the output of the loss function and then applying some changes to weights within the network. We can think of the training process as like trying to gradually descend a (very jagged looking) curve on a graph (that looks more like a rocky mountain side than a smooth curve) and find the bottom of it, without knowing in advance where that bottom is. Along the way we might hit some flat or even rising parts of the curve that make it look like we've reached the bottom when we haven't, we call these local minima. Different optimizers and optimizer parameters can help prevent us getting stuck in local minima. As with the loss function the best choice may depend on the kind of data and network architecture that we're using.
 
-Now that we've set the optimizer function we can go ahead and start training our network. We'll probably keep doing this for a given number of iterations or epochs or until the loss function gives a value under a certain threshold.
+Now that we've set the optimizer function we can go ahead and start training our network. We'll probably keep doing this for a given number of iterations or epochs or until the loss function gives a value under a certain threshold. The graphs below shows the loss (generally) reducing as the number of epochs increases. Notice that on a few occasions it goes up instead of down. In the first graph it appears to have reached a plateau of near zero by the 500th epoch. The second graph shows the 500th to 1500th epoch and we can see that its still going down, but frequently rises a little before dropping again.
 
-[//]: # "is a graph of a reduction in loss sensible here?"
+![A graph showing loss over the first 1500 epochs of training an example network.](../fig/optimization-0_to_1500.svg)
+![A graph showing loss over the 500th to 1500th epoch of training an example network.](../fig/optimization-500_to_1500.svg)
 
 ### 7. Tune Hyperparameters
 
@@ -144,12 +145,7 @@ Hyperparameters are all the parameters set by the person configuring the machine
 
 ### 8. Measure Performance
 
-Once we think the network is performing well we want to measure its performance. To do this we might use the validation set of data that we put aside earlier and didn't use as part of the training process. For a classification task we can often evaluate four different measures for each possible class in the data:
-
-1. True Positives: Where we correctly classified something as belonging to this class.
-2. True Negatives: Where we correctly classified that something wasn't a member of this class.
-3. False Positives: Where we incorrectly classified something as belonging to this class when it doesn't.
-4. False Negatives: Where we incorrectly classified something as not belonging to this class when it does.
+Once we think the network is performing well we want to measure its performance. To do this we might use the validation set of data that we put aside earlier and didn't use as part of the training process. There are many different methods available for doing this and which one is best depends on the type of task we are attempting.
 
 There are a number of metrics which combine some of these four measures. For example accuracy is defined as the number of true positives plus the number of true Negatives divided by the total number of samples (TP+TN/n). Exactly which of these we want to optimize may depend upon the task we are trying to achieve and how acceptable miss-classification is.
 
