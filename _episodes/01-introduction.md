@@ -147,7 +147,6 @@ Hyperparameters are all the parameters set by the person configuring the machine
 
 Once we think the network is performing well we want to measure its performance. To do this we might use the validation set of data that we put aside earlier and didn't use as part of the training process. There are many different methods available for doing this and which one is best depends on the type of task we are attempting.
 
-There are a number of metrics which combine some of these four measures. For example accuracy is defined as the number of true positives plus the number of true Negatives divided by the total number of samples (TP+TN/n). Exactly which of these we want to optimize may depend upon the task we are trying to achieve and how acceptable miss-classification is.
 
 ### 9. Perform a Prediction/Classification
 
