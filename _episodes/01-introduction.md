@@ -87,7 +87,7 @@ The following could technically be achieved using deep learning, but it would pr
 > > ## Solution
 > >
 > > 1.  and 5 are the sort of tasks often solved with deep learning.
-> > 2. is technically possible but deep learning is massively overkill, you could do the same with much less computing power using traditional techniques.
+> > 2. is technically possible but solving this with deep learning would be extremely wasteful, you could do the same with much less computing power using traditional techniques.
 > > 3. will probably fail because there's not enough training data.
 > > 4. will fail because the deep learning system only knows what cats and dogs look like, it might accidentally classify the people as cats or dogs.
 > {: .solution}
