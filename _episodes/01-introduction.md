@@ -8,7 +8,7 @@ questions:
 - "When is it successful?"
 - "What are the tools involved?"
 - "What is the workflow for deep learning?"
-- "Why we chose Keras"
+- "Why did we choose to use Keras in this lesson?"
 objectives:
 - "Recall the sort of problems for which Deep learning is a useful tool"
 - "List some of the available tools for Deep Learning"
