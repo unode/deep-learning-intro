@@ -61,7 +61,7 @@ The image below shows the architecture of a traditional "shallow" network (top) 
 
 ### What sort of problems can't deep learning solve?
 
-* Where only small amounts of training data is available.
+* Any case where only a small amount of training data is available.
 * Tasks requiring an explanation of how the answer was arrived at.
 * Being asked to classify things which are nothing like their training data.
 
