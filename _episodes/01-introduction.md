@@ -63,7 +63,7 @@ The image below shows the architecture of a traditional "shallow" network (top) 
 
 * Any case where only a small amount of training data is available.
 * Tasks requiring an explanation of how the answer was arrived at.
-* Being asked to classify things which are nothing like their training data.
+* Classifying things which are nothing like their training data.
 
 ### What sort of problems can deep learning solve, but shouldn't be used for?
 
