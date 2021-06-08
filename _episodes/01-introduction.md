@@ -101,7 +101,7 @@ To apply deep learning to a problem there are several steps we need to go throug
 
 ### 1. Formulate/ Outline the problem
 
-Firstly we must decide what it is we want the our deep learning system to do. Is it going to classify some data into one of a few categories? For example if we have an image of some hand written characters, the neural network could classify which character it is being shown. Or is it going to perform a prediction? For example trying to predict what the price of something will be tomorrow given some historical data on pricing and current trends.
+Firstly we must decide what it is we want our deep learning system to do. Is it going to classify some data into one of a few categories? For example if we have an image of some hand written characters, the neural network could classify which character it is being shown. Or is it going to perform a prediction? For example trying to predict what the price of something will be tomorrow given some historical data on pricing and current trends.
 
 [//]: # "What about pattern association tasks like language translation?"
 
