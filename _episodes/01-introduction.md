@@ -57,7 +57,7 @@ The image below shows the architecture of a traditional "shallow" network (top) 
 * Segmenting images (or any data)
 * Translating between one set of data and another, for example natural language translation.
 * Generating new data that looks similar to the training data, often used to create synthetic datasets, art or even "deepfake" videos.
-  * This can also be used to give the illusion of enhancing data, for example making images look sharper, video look smoother or adding colour to black and white images. But beware of this, its not an accurate recreation of the original data, but a recreation based on something statistically similar, effectively a digital imagination of what that data could look like.
+  * This can also be used to give the illusion of enhancing data, for example making images look sharper, video look smoother or adding colour to black and white images. But beware of this, it is not an accurate recreation of the original data, but a recreation based on something statistically similar, effectively a digital imagination of what that data could look like.
 
 ### What sort of problems can't deep learning solve?
 
