@@ -9,7 +9,7 @@ questions:
 - "How can we avoid overfitting?"
 objectives:
 - "Understand why convolutional and pooling layers are useful for image data"
-- "Use normalization as preparation step for deep learning"
+- "Use normalization as preparation step for Deep Learning"
 - "Implement a convolutional neural network on an image dataset"
 - "Plot and interpret the training process"
 - "Do a visual inspection of the results of your neural network"
@@ -22,7 +22,7 @@ keypoints:
 ---
 
 ## Different types of layers
-'Network are like onions': a typical neural network consists of many layers. In fact, the word *deep* in *deep learning*
+'Network are like onions': a typical neural network consists of many layers. In fact, the word *deep* in *Deep Learning*
 refers to the many layers that make the network deep.
 
 So far, we have seen one type of layer, namely the **fully connected**, or **dense** layer. This layer is called fully connected, because all input neurons are 'seen' by all output neurons. The number of parameters that need to be learned by the network, is thus in the order of magnitude of the number of input neurons times the number of hidden neurons.
@@ -142,7 +142,7 @@ plt.show()
 ![Output of plotting sample](../fig/04_cifar10.png)
 
 ## Convolutional layers
-In the previous episodes, we used 'fully connected keras.layers' , that connected all input values to all hidden nodes. This results in many connections, and thus weights to be learned, in the network. Note that our input dimension is now quite high (even with small pictures), we have:
+In the previous episodes, we used 'fully connected layers' , that connected all input values to all hidden nodes. This results in many connections, and thus weights to be learned, in the network. Note that our input dimension is now quite high (even with small pictures), we have:
 
 
 ~~~
@@ -200,16 +200,16 @@ print(dim)
 
 Of course, we can decrease the number of units in our hidden layer, but this also decreases the number of patterns our network can remember. Moreover, if we increase the image size, this number of weights will explode, even though the task of recognizing large images is not necessarily more difficult than the task of recognizing small images.
 
-The solution is that we make the network learn in a 'smart' way. The features that we learn should be similar both for small and large images, and similar features (e.g. edges, corners) can appear anywhere in the image (in mathematical terms: *translation invariant*). We do this by making use of a concepts from image processing that preceed deep learning.
+The solution is that we make the network learn in a 'smart' way. The features that we learn should be similar both for small and large images, and similar features (e.g. edges, corners) can appear anywhere in the image (in mathematical terms: *translation invariant*). We do this by making use of a concepts from image processing that precede Deep Learning.
 
-A **convolution matrix**, or **kernel**, is a matrix transformation that we 'slide' over the image to calculate features at each position of the image. For ech pixel, we calculate the matrix product between the kernel and the pixel with its surroundings. A kernel is typically small, between 3x3 and 7x7 pixels. We can for example think of the simple 3x3 kernel:
+A **convolution matrix**, or **kernel**, is a matrix transformation that we 'slide' over the image to calculate features at each position of the image. For each pixel, we calculate the matrix product between the kernel and the pixel with its surroundings. A kernel is typically small, between 3x3 and 7x7 pixels. We can for example think of the simple 3x3 kernel:
 ~~~
 [[0, 0, 0,],
  [1, 1, 1],
  [0, 0, 0]]
 ~~~
 {: .language-python}
-This kernel will give a high value to a pixle if it's in the middle of a horizontal edge.
+This kernel will give a high value to a pixel if it's in the middle of a horizontal edge.
 Note that for RGB images, the kernel should also have a depth of 3.
 
 In our **convolutional layer** our hidden units are a number of convolutional matrices (or kernels), where the values of the matrices are the weights that we learn in the training process. The output of a convolutional layer is an 'image' for each of the kernels, that gives the output of the kernel applied to each pixel.
@@ -426,7 +426,7 @@ It seems that the model is overfitting somewhat, because the validation accuracy
 
 ## Dropout
 
-Note that the training loss continues to decrease, while the validation loss stagnates, and even starts to increase over the course of the epochs. Similarily, the accuracy for the validation set does not improve anymore after some epochs. This means we are overfitting on our training data set.
+Note that the training loss continues to decrease, while the validation loss stagnates, and even starts to increase over the course of the epochs. Similarly, the accuracy for the validation set does not improve anymore after some epochs. This means we are overfitting on our training data set.
 
 Techniques to avoid overfitting, or to improve model generalization, are termed **regularization techniques**.
 One of the most versatile regularization technique is **dropout** ([Srivastava et al., 2014](https://jmlr.org/papers/v15/srivastava14a.html)).
