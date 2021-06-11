@@ -38,6 +38,7 @@ Current maintainers of this lesson are
 * Dafne van Kuppevelt
 * Peter Steinbach
 * Berend Weel
+* Colin Sauze
 
 
 ## Authors
