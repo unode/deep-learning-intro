@@ -428,12 +428,17 @@ It seems that the model is overfitting somewhat, because the validation accuracy
 
 Note that the training loss continues to decrease, while the validation loss stagnates, and even starts to increase over the course of the epochs. Similarily, the accuracy for the validation set does not improve anymore after some epochs. This means we are overfitting on our training data set.
 
-There are several ways of preventing overfitting, called *regularization methods*.
-One common and simple but remarkebly effective method is Dropout ([Srivastava et al., 2014](https://jmlr.org/papers/v15/srivastava14a.html)).
+Techniques to avoid overfitting, or to improve model generalization, are termed **regularization techniques**.
+One of the most versatile regularization technique is **dropout** ([Srivastava et al., 2014](https://jmlr.org/papers/v15/srivastava14a.html)).
+Dropout essentially means that during each training cycle a random fraction of the dense layer nodes are turned off. This is described with the dropout rate between 0 and 1 which determines the fraction of nodes to silence at a time.
+![Dropout sketch](../fig/neural_network_sketch_dropout.png)
+The intuition behind dropout is that it enforces redundancies in the network by constantly removing different elements of a network. The model can no longer rely on individual nodes and instead must create multiple "paths". In addition, the model has to make predictions with much fewer nodes and weights (connections between the nodes).
+As a result, it becomes much harder for a network to memorize particular features. At first this might appear a quiet drastic approach which affects the network architecture strongly.
+In practice, however, dropout is computationally a very elegant solution which does not affet training speed. And it frequently works very well.
 
-In the Dropout layer, a random portion of the nodes in the previous layer is ignored during training time.
-TODO: explain why this works
-Let's add one dropout layer towards the end of the network, that randomly drops 20% of the input units
+**Important to note:** Dropout layers will only randomly silence nodes during training! During a predictions step, all nodes remain active (dropout is off).
+
+Let's add one dropout layer towards the end of the network, that randomly drops 20% of the input units.
 
 
 ~~~
