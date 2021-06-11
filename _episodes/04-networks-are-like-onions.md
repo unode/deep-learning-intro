@@ -214,8 +214,6 @@ Note that for RGB images, the kernel should also have a depth of 3.
 
 In our **convolutional layer** our hidden units are a number of convolutional matrices (or kernels), where the values of the matrices are the weights that we learn in the training process. The output of a convolutional layer is an 'image' for each of the kernels, that gives the output of the kernel applied to each pixel.
 
-TODO: add image to show the effect of a convolution
-
 > ## Border pixels
 >
 > What, do you think, happens to the border pixels when applying a convolution?
@@ -240,7 +238,7 @@ TODO: add image to show the effect of a convolution
 {: .challenge}
 
 
-Another type of layer is the **Pooling layer**. As opposed to the convolutional layer, the pooling layer actually alters the dimensions of the image and reduces it by a scaling factor. It is basically decreasing the resolution of your picture. The rationale behind this is that higher layers of the network should focus on higher-level features of the image. By introducing a pooling layer, the subsequent convolutional layer has a broader 'view' on the original image. (TODO Include illustration here?)
+Another type of layer is the **Pooling layer**. As opposed to the convolutional layer, the pooling layer actually alters the dimensions of the image and reduces it by a scaling factor. It is basically decreasing the resolution of your picture. The rationale behind this is that higher layers of the network should focus on higher-level features of the image. By introducing a pooling layer, the subsequent convolutional layer has a broader 'view' on the original image.
 
 Let's put it into practice. We compose a Convolutional network with two convolutional layers and two pooling layers.
 
@@ -420,7 +418,7 @@ It seems that the model is overfitting somewhat, because the validation accuracy
 > data than image data. Whenever the data is ordered in a (spatial) dimension,
 > and *translation invariant* features are expected to be useful, convolutions
 > can be used. Think for example of time series data from an accelerometer,
-> speech recognition, or chemical structures (TODO: add some references).
+> audio data for speech recognition, or 3d structures of chemical compounds.
 >
 {: .callout}
 
