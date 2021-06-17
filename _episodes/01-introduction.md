@@ -59,6 +59,17 @@ The image below shows the architecture of a traditional "shallow" network (top) 
 * Generating new data that looks similar to the training data, often used to create synthetic datasets, art or even "deepfake" videos.
   * This can also be used to give the illusion of enhancing data, for example making images look sharper, video look smoother or adding colour to black and white images. But beware of this, it is not an accurate recreation of the original data, but a recreation based on something statistically similar, effectively a digital imagination of what that data could look like.
 
+#### Examples of Deep Learning in Research
+
+Here are just a few examples of how deep learning has been applied to some research problems. Note: some of these articles might be behind paywalls.
+
+[Detecting COVID-19 in chest X-ray images](https://arxiv.org/abs/2003.09871)
+[Forecasting building energy load](https://ieeexplore.ieee.org/document/7793413)
+[Protein function prediction](https://pubmed.ncbi.nlm.nih.gov/29039790/)
+[Simulating Chemical Processes](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.98.146401)
+[Help to restore ancient murals](https://heritagesciencejournal.springeropen.com/articles/10.1186/s40494-020-0355-x)
+
+
 ### What sort of problems can't Deep Learning solve?
 
 * Any case where only a small amount of training data is available.
