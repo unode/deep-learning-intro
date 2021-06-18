@@ -427,7 +427,7 @@ However, since we have seen quiet some fluctuation of the losses during training
 from tensorflow.keras.callbacks import EarlyStopping
 
 earlystopper = EarlyStopping(
-    monitor='val_loss', mode="min",
+    monitor='val_loss',
     patience=10,
     verbose=1
     )
