@@ -75,7 +75,7 @@ If you run into any difficulties, please request help before the workshop begins
 Open a terminal and type the command (note that installing tensorflow causes keras to
 be installed too):
 ~~~
-$ conda install tensorflow seaborn scikit-learn
+$ conda install tensorflow seaborn scikit-learn pandas
 ~~~
 {: .language-bash}
 
