@@ -61,7 +61,7 @@ The image below shows the architecture of a traditional "shallow" network (top) 
 
 #### Examples of Deep Learning in Research
 
-Here are just a few examples of how deep learning has been applied to some research problems. Note: some of these articles might be behind paywalls.
+Here are just a few examples of how Deep Learning has been applied to some research problems. Note: some of these articles might be behind paywalls.
 
 [Detecting COVID-19 in chest X-ray images](https://arxiv.org/abs/2003.09871)
 [Forecasting building energy load](https://ieeexplore.ieee.org/document/7793413)
