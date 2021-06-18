@@ -25,7 +25,7 @@ keypoints:
 - keras.layers.Dense is an implement of a fully connected layer, you can set the number of neurons in the layer and the activation function used.
 - To train a neural network with Keras we need to first define the network using layers and the Model class. Then we can train it using the model.fit function.
 - Plotting the loss curve can be used to identify and troubleshoot the training process.
-- The loss curve does not provide any information on how well a network performs in a real setting.
+- The loss curve on the training set does not provide any information on how well a network performs in a real setting.
 - Creating a confusion matrix with results from a test set gives better insight into the networks performance.
 ---
 
