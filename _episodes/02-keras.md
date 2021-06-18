@@ -87,7 +87,7 @@ This will give you a pandas dataframe which contains the penguin data.
 
 > ## Penguin Dataset
 >
-> Use seaborn to load the dataset and inspect the mentioned attributes.
+> Inspect the penguins dataset.
 > 1. What are the different features called in the dataframe?
 > 2. Are the target classes of the dataset stored as numbers or strings?
 > 3. How many samples does this dataset have?
@@ -162,19 +162,19 @@ One nice visualization for datasets with relatively few attributes is the Pair P
 This can be created using `sns.pairplot(...)`. It shows a scatterplot of each attribute plotted against each of the other attributes.
 By using the `hue='species'` setting for the pairplot the graphs on the diagonal are layered kernel density estimate plots for the different values of the `species` column.
 
-> ## Create the pairplot using Seaborn
+~~~
+sns.pairplot(penguins, hue="species")
+~~~
+{:.language-python}
+![Pair plot showing the separability of the three species of penguin][pairplot]
+
+> ## Pairplot
 >
-> Use the seaborn pairplot function to create a pairplot
+> Take a look at the pairplot we created
 > * Is there any class that is easily distinguishable from the others?
 > * Which combination of attributes shows the best separation?
 >
 > > ## Solution
-> > ~~~
-> > sns.pairplot(penguins, hue="species")
-> > ~~~
-> > {:.language-python}
-> > ![Pair plot showing the separability of the three species of penguin][pairplot]
-> >
 > > The plots show that the green class, Gentoo is somewhat more easily distinguishable from the other two.
 > > The other two seem to be most easily separated by a combination of bill length and bill
 > > depth.
@@ -282,8 +282,7 @@ X_train, X_test, y_train, y_test = train_test_split(penguin_features, target,tes
 
 > ## Training and Test sets
 >
-> Using the information above, clean the dataset and split
-> it into a training and test set.
+> Take a look at the training and test set we created.
 > - How many samples do the training and test sets have?
 > - Is the training set well balanced?
 >
@@ -306,15 +305,31 @@ X_train, X_test, y_train, y_test = train_test_split(penguin_features, target,tes
 > {:.solution}
 {:.challenge}
 
-> ## Keras for Neural Networks
-> For this lesson we will be using [Keras](https://keras.io/) to define and train our neural network
-> models.
-> Keras is a machine learning framework with ease of use as one of its main features.
-> It is part of the tensorflow python package and can be imported using `from tensorflow import keras`.
->
-> Keras includes functions, classes and definitions to define deep learning models, cost functions and
-> optimizers (optimizers are used to train a model).
-{:.callout}
+## Keras for Neural Networks
+For this lesson we will be using [Keras](https://keras.io/) to define and train our neural network
+models.
+Keras is a machine learning framework with ease of use as one of its main features.
+It is part of the tensorflow python package and can be imported using `from tensorflow import keras`.
+
+Keras includes functions, classes and definitions to define deep learning models, cost functions and optimizers (optimizers are used to train a model).
+
+Before we move on to the next section of the workflow we need to make sure we have Keras imported.
+We do this as follows:
+~~~
+from tensorflow import keras
+~~~
+{:.language-python}
+
+For this class it is usefule if everyone gets the same results from their training.
+Keras uses a random number generator at certain points during its execution.
+Therefore we will need to set two random seeds, one for numpy and one for tensorflow:
+~~~
+from numpy.random import seed
+seed(1)
+from tensorflow import set_random_seed
+set_random_seed(2)
+~~~
+{:.language-python}
 
 ## 4. Choose a pretrained model or start building architecture from scratch
 Now we will build a neural network from scratch, and although this sounds like
@@ -336,9 +351,6 @@ This means we need to let Keras now how big our input is going to be.
 We do this by instantiating a `keras.Input` class and tell it how big our input is.
 
 ~~~
-# Make sure keras is imported
-from tensorflow import keras
-
 inputs = keras.Input(shape=X_train.shape[1])
 ~~~
 {:.language-python}
@@ -492,15 +504,20 @@ Using seaborn we can do this as follow:
 sns.lineplot(x=history.epoch, y=history.history['loss'])
 ~~~
 {:.language-python}
+![Training loss curve of the neural network training][training_curve]
 
-> ## Train the neural network and plot the training curve
+> ## The Training Curve
 >
-> Using the `compile` and `fit` functions train a neural network
-> and plot the training loss.
+> Looking at the training curve we have just made.
+> 1. How does the training progress?
+>   * Is it fast or slow?
+>   * Is the graph look very jittery?
+> 2. Do you think the resulting trained network will work well on the test set?
 >
 > > ## Solution
-> > The training loss curve should look something like this:
-> > ![Training loss curve of the neural network training][training_curve]
+> > 1. The loss curve should drop quite quickly in a smooth line with little jitter
+> > 2. The results of the training give very little information on its performance on a test set.
+> >    You should be careful not to use it as an indication of a well trained network.
 > {:.solution}
 {:.challenge}
 
@@ -530,6 +547,22 @@ prediction = pd.DataFrame(y_pred, columns=target.columns)
 prediction
 ~~~
 {:.language-python}
+> ## Output
+>
+> | --- | -------- | --------- | -------- |
+> | 0   | 0.304484 | 0.192893  | 0.502623 |
+> | 1   | 0.527107 | 0.095888  | 0.377005 |
+> | 2   | 0.373989 | 0.195604  | 0.430406 |
+> | 3   | 0.493643 | 0.154104  | 0.352253 |
+> | 4   | 0.309051 | 0.308646  | 0.382303 |
+> | ... | ...      | ...       | ...      |
+> | 64  | 0.406074 | 0.191430  | 0.402496 |
+> | 65  | 0.645621 | 0.077174  | 0.277204 |
+> | 66  | 0.356284 | 0.185958  | 0.457758 |
+> | 67  | 0.393868 | 0.159575  | 0.446557 |
+> | 68  | 0.509837 | 0.144219  | 0.345943 |
+>
+{:.solution}
 
 Remember that the output of the network uses the `softmax` activation function and has three
 outputs, one for each species. This dataframe shows this nicely.
@@ -544,6 +577,23 @@ predicted_species = prediction.idxmax(axis="columns")
 predicted_species
 ~~~
 {:.language-python}
+> ## Output
+> ~~~
+> 0     Gentoo
+> 1     Adelie
+> 2     Gentoo
+> 3     Adelie
+> 4     Gentoo
+>        ...
+> 64    Adelie
+> 65    Adelie
+> 66    Gentoo
+> 67    Gentoo
+> 68    Adelie
+> Length: 69, dtype: object
+> ~~~
+> {:.output}
+{:.solution}
 
 ### Confusion matrix
 With the predicted species we can now create a confusion matrix and display it
@@ -563,6 +613,12 @@ matrix = confusion_matrix(true_species, predicted_species)
 print(matrix)
 ~~~
 {:.language-python}
+~~~
+[[22  0  8]
+ [ 5  0  9]
+ [ 6  0 19]]
+~~~
+{:.output}
 
 Unfortunately, this matrix is kinda hard to read. Its not clear which column and which row
 corresponds to which species.
@@ -576,8 +632,6 @@ confusion_df = pd.DataFrame(matrix, index=y_test.columns.values, columns=y_test.
 # Set the names of the x and y axis, this helps with the readability of the heatmap.
 confusion_df.index.name = 'True Label'
 confusion_df.columns.name = 'Predicted Label'
-
-sns.heatmap(confusion_df, annot=True)
 ~~~
 {:.language-python}
 
@@ -590,6 +644,7 @@ the heatmap.
 sns.heatmap(confusion_df, annot=True)
 ~~~
 {:.language-python}
+![Confusion matrix of the test set][confusion_matrix]
 
 > ## Confusion Matrix
 >
@@ -601,8 +656,6 @@ sns.heatmap(confusion_df, annot=True)
 > - What could we do to improve the performance?
 >
 > > ## Solution
-> > The confusion matrix look similar to this:
-> > ![Confusion matrix of the test set][confusion_matrix]
 > >
 > > The confusion matrix shows that the predictions for Adelie and Gentoo
 > > are decent, but could be improved. However, Chinstrap is not predicted
@@ -652,6 +705,24 @@ pretrained_predicted_species = pretrained_prediction.idxmax(axis="columns")
 print(pretrained_predicted_species)
 ~~~
 {:.language-python}
+> ## Output
+>
+> ~~~
+> 0     Adelie
+> 1     Gentoo
+> 2     Adelie
+> 3     Gentoo
+> 4     Gentoo
+>        ...
+> 64    Gentoo
+> 65    Gentoo
+> 66    Adelie
+> 67    Adelie
+> 68    Gentoo
+> Length: 69, dtype: object
+> ~~~
+> {:.output}
+{:.solution}
 
 ## Conclusion
 
@@ -670,7 +741,7 @@ print(pretrained_predicted_species)
 {: width="66%"}
 
 [training_curve]: ../fig/training_curve.png "Training Curve"
-{: width="66%"}
+{: width="50%"}
 
 [confusion_matrix]: ../fig/confusion_matrix.png "Confusion Matrix"
-{: width="50%"}
+{: width="25%"}

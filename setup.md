@@ -3,19 +3,6 @@ layout: page
 title: "Setup"
 permalink: /setup/
 ---
-# Python
-For this lesson we will be using Python 3, the lessons are created assuming at least version 3.7.
-To install python we recommend using a virtual environment such as pyenv or anaconda.
-
-## Packages
-In this lesson we will be using the following python packages: sklearn tensorflow numpy pandas seaborn matplotlib.
-
-These can be installed with pip as follows
-~~~
-$ pip3 install sklearn tensorflow jupyter numpy pandas seaborn matplotlib
-~~~
-{:.language-bash}
-
 
 ## Installing Python Using Anaconda
 
@@ -88,7 +75,7 @@ If you run into any difficulties, please request help before the workshop begins
 Open a terminal and type the command (note that installing tensorflow causes keras to
 be installed too):
 ~~~
-$ conda install tensorflow seaborn scikit-learn
+$ conda install tensorflow seaborn scikit-learn pandas
 ~~~
 {: .language-bash}
 
