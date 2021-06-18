@@ -209,13 +209,17 @@ The solution is that we make the network learn in a 'smart' way. The features th
 
 A **convolution matrix**, or **kernel**, is a matrix transformation that we 'slide' over the image to calculate features at each position of the image. For each pixel, we calculate the matrix product between the kernel and the pixel with its surroundings. A kernel is typically small, between 3x3 and 7x7 pixels. We can for example think of the 3x3 kernel:
 ~~~
-[[0, 0, 0,],
- [1, 1, 1],
- [0, 0, 0]]
+[[-1, -1, -1],
+ [0, 0, 0]
+ [1, 1, 1]]
 ~~~
 {: .language-python}
-This kernel will give a high value to a pixel if it's in the middle of a horizontal edge.
+This kernel will give a high value to a pixel if it's on a horizontal border between dark and light areas.
 Note that for RGB images, the kernel should also have a depth of 3.
+
+In the following image, we see the effect of such a kernel on the values of a single-channel image. The red cell in the output matrix is the result of multiplying and summing the values of the red square in the input, and the kernel. Applying this kernel to a real image shows that it indeed detects horizontal edges.
+![Convolution on matrix](../fig/04_conv_matrix.png)
+![Convolution on image](../fig/04_conv_image.png)
 
 In our **convolutional layer** our hidden units are a number of convolutional matrices (or kernels), where the values of the matrices are the weights that we learn in the training process. The output of a convolutional layer is an 'image' for each of the kernels, that gives the output of the kernel applied to each pixel.
 
