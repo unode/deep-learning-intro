@@ -1,5 +1,5 @@
 ---
-title: "Network are like onions"
+title: "Networks are like onions"
 teaching: 0
 exercises: 0
 questions:
@@ -22,15 +22,15 @@ keypoints:
 ---
 
 ## Different types of layers
-'Network are like onions': a typical neural network consists of many layers. In fact, the word *deep* in *Deep Learning*
+'Networks are like onions': a typical neural network consists of many layers. In fact, the word *deep* in *Deep Learning*
 refers to the many layers that make the network deep.
 
-So far, we have seen one type of layer, namely the **fully connected**, or **dense** layer. This layer is called fully connected, because all input neurons are 'seen' by all output neurons. The number of parameters that need to be learned by the network, is thus in the order of magnitude of the number of input neurons times the number of hidden neurons.
+So far, we have seen one type of layer, namely the **fully connected**, or **dense** layer. This layer is called fully connected, because all input neurons are taken into account by each output neuron. The number of parameters that need to be learned by the network, is thus in the order of magnitude of the number of input neurons times the number of hidden neurons.
 
 However, there are many different types of layers that perform different calculations and take different inputs. In this episode we will take a look at **convolutional layers** and **dropout layers**, which are useful in the context of image data, but also in many other types of (structured) data.
 
 ## Image classification
-Keras comes with a few prepared dataset. We have a look at the [CIFAR10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html),
+Keras comes with a few prepared datasets. We have a look at the [CIFAR10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html),
 which is a widely known dataset for image classification.
 ~~~
 from tensorflow import keras
@@ -49,7 +49,7 @@ train_labels = train_labels[:n]
 
 > ## Explore the data
 >
-> Familiarize yourself with the data. You can try to answer the following questions:
+> Familiarize yourself with the CIFAR10 dataset. To start, consider the following questions:
 > - What is the dimension of your input data? What do you think the dimensions mean?
 > - What is the range of values of your input data?
 > - What is the shape of the labels, and how many labels do we have?
@@ -65,11 +65,11 @@ train_labels = train_labels[:n]
 > > (5000, 32, 32, 3)
 > > ~~~
 > > {: .output}
-> > The first value, 5000, is the number of traning images that we have.
-> > That means that the remainder of the shape, namely (32, 32, 3), denotes
+> > The first value, `5000`, is the number of training images that we have selected.
+> > The remainder of the shape, namely `32, 32, 3)`, denotes
 > > the dimension of one image. The last value 3 is typical for color images,
-> > and stands for the three color channels r,g,b.
-> > That means the width and height of our images are both 32 pixels.
+> > and stands for the three color channels **R**ed, **G**reen, **B**lue.
+> > We are left with `32, 32`. This denotes the width and height of our input image in number of pixels. By convention, the first entry refers to the height, the second to the width of the image. In this case, we observe a quadratic image where height equals width.
 > >
 > > We can find out the range of values of our input data as follows:
 > > ~~~
@@ -80,7 +80,7 @@ train_labels = train_labels[:n]
 > > (0, 255)
 > > ~~~
 > > {: .output}
-> > So the values of the three channels range between 0 and 255.
+> > So the values of the three channels range between `0` and `255`.
 > >
 > > Lastly, we inspect the dimension of the labels:
 > > ~~~
@@ -101,12 +101,12 @@ train_labels = train_labels[:n]
 > > (0, 9)
 > > ~~~
 > > {: .output}
-> > The values of the labels range between 0 and 9, denoting 10 different classes.
+> > The values of the labels range between `0` and `9`, denoting 10 different classes.
 > {: .solution}
 {: .challenge}
 
 
-The train set consists of 50000 images of 32x32 pixels, with 3 channels (r,g,b values). The r,g,b values are between 0 and 255. For input of Neural networks, it is better to have small input values. So we normalize our data between 0 and 1:
+The training set consists of 50000 images of `32x32` pixels and 3 channels (RGB values). The RGB values are between `0` and `255`. For input of neural networks, it is better to have small input values. So we normalize our data between `0` and `1`:
 
 
 ~~~
@@ -115,7 +115,7 @@ test_images = test_images / 255.0
 ~~~
 {: .language-python}
 
-The labels are single numbers denoting the class:
+The labels are single numbers denoting the class.
 We map the class numbers back to the class names, taken from the documentation:
 
 ~~~
@@ -142,7 +142,7 @@ plt.show()
 ![Output of plotting sample](../fig/04_cifar10.png)
 
 ## Convolutional layers
-In the previous episodes, we used 'fully connected layers' , that connected all input values to all hidden nodes. This results in many connections, and thus weights to be learned, in the network. Note that our input dimension is now quite high (even with small pictures), we have:
+In the previous episodes, we used 'fully connected layers' , that connected all input values of a layer to all outputs of a layer. This results in many connections, and thus weights to be learned, in the network. Note that our input dimension is now quite high (even with small pictures of `32x32` pixels), we have:
 
 
 ~~~
@@ -198,11 +198,11 @@ print(dim)
 
 
 
-Of course, we can decrease the number of units in our hidden layer, but this also decreases the number of patterns our network can remember. Moreover, if we increase the image size, this number of weights will explode, even though the task of recognizing large images is not necessarily more difficult than the task of recognizing small images.
+We can decrease the number of units in our hidden layer, but this also decreases the number of patterns our network can remember. Moreover, if we increase the image size, the number of weights will 'explode', even though the task of recognizing large images is not necessarily more difficult than the task of recognizing small images.
 
 The solution is that we make the network learn in a 'smart' way. The features that we learn should be similar both for small and large images, and similar features (e.g. edges, corners) can appear anywhere in the image (in mathematical terms: *translation invariant*). We do this by making use of a concepts from image processing that precede Deep Learning.
 
-A **convolution matrix**, or **kernel**, is a matrix transformation that we 'slide' over the image to calculate features at each position of the image. For each pixel, we calculate the matrix product between the kernel and the pixel with its surroundings. A kernel is typically small, between 3x3 and 7x7 pixels. We can for example think of the simple 3x3 kernel:
+A **convolution matrix**, or **kernel**, is a matrix transformation that we 'slide' over the image to calculate features at each position of the image. For each pixel, we calculate the matrix product between the kernel and the pixel with its surroundings. A kernel is typically small, between 3x3 and 7x7 pixels. We can for example think of the 3x3 kernel:
 ~~~
 [[0, 0, 0,],
  [1, 1, 1],
