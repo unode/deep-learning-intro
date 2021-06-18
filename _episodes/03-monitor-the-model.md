@@ -304,19 +304,24 @@ history = model.fit(X_train, y_train,
 ~~~
 {: .language-python}
 
-As before the history allows plotting the training progress.
-~~~
-history_df = pd.DataFrame.from_dict(history.history)
-sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
-plt.xlabel("epochs")
-plt.ylabel("RMSE")
-~~~
-{: .language-python}
-![Output of plotting sample](../fig/03_training_history_2_rmse.png)
-
-This clearly shows that something is not completely right here. 
-The model predictions on the validation set quickly seem to reach a plateau while the performance on the training set keeps improving.
-That is a clear signature of overfitting.
+> ## Quick exercise: plot the training progress.
+> 
+> As before the history allows plotting the training progress. But now we can plot both the performance on the training data and on the validation data!
+> * Is there a difference between the training and validation data? And if so, what would this imply?
+> 
+> > ## Solution
+> > ~~~
+> > history_df = pd.DataFrame.from_dict(history.history)
+> > sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+> > plt.xlabel("epochs")
+> > plt.ylabel("RMSE")
+> > ~~~
+> > {: .language-python}
+> > ![Output of plotting sample](../fig/03_training_history_2_rmse.png)
+> > 
+> > This clearly shows that something is not completely right here. 
+> > The model predictions on the validation set quickly seem to reach a plateau while the performance on the training set keeps improving.
+> > That is a clear signature of overfitting.
 
 ## Counteract model overfitting
 Overfitting is a very common issue and there are many strategies to handle it.
