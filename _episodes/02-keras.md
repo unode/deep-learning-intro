@@ -8,14 +8,25 @@ questions:
 - "How do I train this network on a dataset"
 - "How do I get insight into learning process"
 - "How do I measure the performance of the network"
-
 objectives:
-- "Explain what a classification task is"
+- "Use the deep learning workflow to structure the notebook"
+- "Explore the dataset using pandas and seaborn"
 - "Use one-hot-encoding to prepare data for classification in Keras"
 - "Describe a fully connected layer"
 - "Implement a fully connected layer with Keras"
 - "Use Keras to train a small fully connected network on prepared data"
 - "Plot the loss curve of the training process"
+- "Use a confusion matrix to measure the trained networks' performance on a test set"
+keypoints:
+- The deep learning workflow is a useful tool to structure your approach, it helps to make sure you do not forget any important steps.
+- Exploring the data is an important step to familiarize yourself with the problem and to help you determine the relavent inputs and outputs.
+- One-hot-encoding is a preprocessing step to prepare labels for classification in Keras.
+- A fully connected layer is a layer which has connections to all neurons in the previous and subsequent layers.
+- keras.layers.Dense is an implement of a fully connected layer, you can set the number of neurons in the layer and the activation function used.
+- To train a neural network with Keras we need to first define the network using layers and the Model class. Then we can train it using the model.fit function.
+- Plotting the loss curve can be used to identify and troubleshoot the training process.
+- The loss curve does not provide any information on how well a network performs in a real setting.
+- Creating a confusion matrix with results from a test set gives better insight into the networks performance.
 ---
 
 
@@ -506,11 +517,15 @@ sns.lineplot(x=history.epoch, y=history.history['loss'])
 {:.language-python}
 ![Training loss curve of the neural network training][training_curve]
 
+This plot can be used to identify whether the training is well configured or whether there
+are problems that need to be adressed.
+
 > ## The Training Curve
 >
 > Looking at the training curve we have just made.
 > 1. How does the training progress?
->   * Is it fast or slow?
+>   * Does the training loss increase or decrease?
+>   * Does it change fast or slowly?
 >   * Is the graph look very jittery?
 > 2. Do you think the resulting trained network will work well on the test set?
 >
@@ -723,8 +738,6 @@ print(pretrained_predicted_species)
 > ~~~
 > {:.output}
 {:.solution}
-
-## Conclusion
 
 {% include links.md %}
 
