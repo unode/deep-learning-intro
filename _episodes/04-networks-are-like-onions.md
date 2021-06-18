@@ -50,8 +50,8 @@ train_labels = train_labels[:n]
 > ## Explore the data
 >
 > Familiarize yourself with the CIFAR10 dataset. To start, consider the following questions:
-> - What is the dimension of your input data? What do you think the dimensions mean?
-> - What is the range of values of your input data?
+> - What is the dimension of a single data point? What do you think the dimensions mean?
+> - What is the range of values that your input data takes?
 > - What is the shape of the labels, and how many labels do we have?
 >
 > > ## Solution
@@ -157,13 +157,18 @@ print(dim)
 
 > ## Number of parameters
 >
-> Suppose we create a Dense (fully connected) layer with 100 hidden units as input units, how many parameters does this layer have?
+> Suppose we create a single Dense (fully connected) layer with 100 hidden units that connect to the input pixels, how many parameters does this layer have?
 >
 > > ## Solution
 > >
-> > Each of the *dim* inputs is connected with 100 hidden units, and each of the hidden units has a bias. So we have *dim * 100 + 100* weights to learn.
+> > Each entry of the input dimensions, i.e. the `shape` of one signal data point, is connected with 100 neurons of our hidden layer, and each of these neurons has a bias term associated to it. So we have `307300` parameters to learn.
 > > ~~~
-> > dim * 100 + 100
+> > width, height = (32, 32)
+> > n_hidden_neurons = 100
+> > n_bias = 100
+> > n_input_items = width * height
+> > n_parameters = (n_input_items * n_hidden_neurons) + n_bias
+> > n_parameters
 > > ~~~
 > > {: .language-python}
 > > ~~~
