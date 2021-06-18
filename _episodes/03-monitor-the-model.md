@@ -458,92 +458,10 @@ Instead of comparing training runs for different number of epochs, early stoppin
 
 What might be a bit unintuitive is that the training runs might now end very rapidly (in particular when the learning rate is high).
 This might spark the question: have we really reached an optimum yet?
-And often the answer this this is "no", which is my frequently other approaches to hinder overfitting from happening are combined with early stopping.
-
-## Dropout: make it harder to memorize things
+And often the answer to this is "no", which is why early stopping frequently is combined with other approaches to hinder overfitting from happening.
 Overfitting means that a model (seemingly) performs better on seen data compared to unseen data. One then often also says that it does not "generalize" well.
-Techniques to avoid overfitting, or to improve model generalization, are termed **regularization techniques**. 
-One of the most versatile regularization technique is **dropout**.
-Dropout essentially means that during each training cycle a random fraction of the dense layer nodes are turned off. This is described with the dropout rate between 0 and 1 which determines the fraction of nodes to silence at a time. 
-![Dropout sketch](../fig/neural_network_sketch_dropout.png)
-The intuition behind dropout is that it enforces redundancies in the network by constantly removing different elements of a network. The model can no longer rely on individual nodes and instead must create multiple "paths". In addition, the model has to make predictions with much fewer nodes and weights (connections between the nodes). 
-As a result, it becomes much harder for a network to memorize particular features. At first this might appear a quiet drastic approach which affects the network architecture strongly.
-In practice, however, dropout is computationally a very elegant solution which does not affet training speed. And it frequently works very well.
+Techniques to avoid overfitting, or to improve model generalization, are termed **regularization techniques** and we will come back to this in **episode 4**.
 
-**Important to note:** Dropout layers will only randomly silence nodes during training! During a predictions step, all nodes remain active (dropout is off).
-
-Let's add dropout to our neural network which we will do by using keras `Dropout` layer (documentation & reference: https://keras.io/api/layers/regularization_layers/dropout/).
-One additional change that we will make here is to lower the learning rate because in the last training example the losses seemed to fluctuate a lot.
-~~~
-def create_nn(n_features, n_predictions):
-    # Input layer
-    layers_input = keras.layers.Input(shape=(n_features,), name='input')
-
-    # Dense layers
-    layers_dense = keras.layers.Dense(100, 'relu')(layers_input)
-    layers_dense = keras.layers.Dropout(rate=0.2)(layers_dense)
-    layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
-    layers_dense = keras.layers.Dropout(rate=0.2)(layers_dense)
-
-    # Output layer
-    layers_output = keras.layers.Dense(n_predictions)(layers_dense)
-
-    # Defining the model and compiling it
-    return keras.Model(inputs=layers_input, outputs=layers_output, name="model_dropout")
-
-model = create_nn(X_data.shape[1], 1)
-model.compile(loss='mse', optimizer=keras.optimizers.Adam(1e-4), metrics=[keras.metrics.RootMeanSquaredError()])
-model.summary()
-~~~
-{: .language-python}
-
-~~~
-Model: "model_dropout"
-_________________________________________________________________
-Layer (type)                 Output Shape              Param #   
-=================================================================
-input (InputLayer)           [(None, 163)]             0         
-_________________________________________________________________
-dense_12 (Dense)             (None, 100)               16400     
-_________________________________________________________________
-dropout (Dropout)            (None, 100)               0         
-_________________________________________________________________
-dense_13 (Dense)             (None, 50)                5050      
-_________________________________________________________________
-dropout_1 (Dropout)          (None, 50)                0         
-_________________________________________________________________
-dense_14 (Dense)             (None, 1)                 51        
-=================================================================
-Total params: 21,501
-Trainable params: 21,501
-Non-trainable params: 0
-_________________________________________________________________
-~~~
-{: .output}
-
-Compared to the models above, this required little changes. We add two `Dropout` layers, one after each dense layer and specify the dropout rate.
-Here we use `rate=0.2` which means that at any training step 20% of all nodes will be turned off.
-You can also see that Dropout layers do not add additional parameters.
-Now, let's train our new model and plot the losses:
-
-~~~
-history = model.fit(X_train, y_train,
-                    batch_size = 32,
-                    epochs = 1000,
-                    validation_data=(X_val, y_val),
-                    callbacks=[earlystopper],
-                    verbose = 2)
-
-history_df = pd.DataFrame.from_dict(history.history)
-sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
-plt.xlabel("epochs")
-plt.ylabel("RMSE")
-~~~
-{: .language-python}                  
-
-![Output of plotting sample](../fig/03_training_history_4_rmse_dropout.png)
-
-In this setting overfitting seems to be pervented succesfully. The overall results though have not improved (at least not by much).
 
 ## BatchNorm: the "standard scaler" for deep learning
 A very common step in classical machine learning pipelines is to scale the features, for instance by using sckit-learn's `StandardScaler`.
@@ -568,15 +486,13 @@ def create_nn(n_features, n_predictions):
     # Dense layers
     layers_dense = keras.layers.BatchNormalization()(layers_input)
     layers_dense = keras.layers.Dense(100, 'relu')(layers_dense)
-    layers_dense = keras.layers.Dropout(rate=0.2)(layers_dense)
     layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
-    layers_dense = keras.layers.Dropout(rate=0.2)(layers_dense)
 
     # Output layer
     layers_output = keras.layers.Dense(n_predictions)(layers_dense)
 
     # Defining the model and compiling it
-    return keras.Model(inputs=layers_input, outputs=layers_output, name="model_dropout_batchnorm")
+    return keras.Model(inputs=layers_input, outputs=layers_output, name="model_batchnorm")
 
 model = create_nn(X_data.shape[1], 1)
 model.compile(loss='mse', optimizer=Adam(1e-4), metrics=[keras.metrics.RootMeanSquaredError()])
