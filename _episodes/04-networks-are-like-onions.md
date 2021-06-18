@@ -38,6 +38,12 @@ from tensorflow import keras
 ~~~
 {: .language-python}
 
+> ## CIFAR-10
+>
+> The CIFAR-10 dataset consists of images of 10 different classes: airplanes, cars, birds, cats, deer, dogs, frogs, horses, ships, and trucks.
+> It is widely used as a benchmark dataset for image classification. The low resolution of the images in the dataset allows for quick loading and testing models.
+>
+{: .callout}
 
 We take a small sample of the data as training set for demonstration purposes.
 ~~~
