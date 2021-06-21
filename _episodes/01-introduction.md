@@ -145,7 +145,7 @@ The optimizer is responsible for taking the output of the loss function and then
 
 ### 6. Train the model
 
-We can now go ahead and start training our neural network. We'll probably keep doing this for a given number of iterations or _epochs_ or until the loss function gives a value under a certain threshold. The graph below show the loss against the number of _epochs_, generally the loss will go down with each _epoch_, but occasionally it will see a small rise.
+We can now go ahead and start training our neural network. We'll probably keep doing this for a given number of iterations through our training dataset (referred to as _epochs_) or until the loss function gives a value under a certain threshold. The graph below show the loss against the number of _epochs_, generally the loss will go down with each _epoch_, but occasionally it will see a small rise.
 
 ![A graph showing loss over the first 1500 epochs of training an example network.](../fig/training-0_to_1500.svg)
 
