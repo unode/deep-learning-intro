@@ -48,7 +48,7 @@ The image below shows the architecture of a traditional "shallow" network (top) 
 
 [//]: # "![An example neural network with ][neural-network][*Glosser.ca, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons*](https://commons.wikimedia.org/wiki/File:Colored_neural_network.svg)"
 
-![An example of a neural network](../fig/ML_DL_draft.png)
+![An example of a neural network](../fig/ML_DL_draft.png){: width="600px" }
 
 
 ### What sort of problems can Deep Learning solve?
