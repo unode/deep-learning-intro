@@ -105,6 +105,12 @@ $ python
 ~~~
 {: .language-bash}
 
+## Downloading the required datasets
+
+Download the [penguin dataset][penguindata].
+
+Download the [weather dataset][weatherdata]
+
 [anaconda]: https://www.continuum.io/anaconda
 [continuum-mac]: http://continuum.io/downloads#_macosx
 [continuum-linux]: http://continuum.io/downloads#_unix
@@ -114,3 +120,4 @@ $ python
 [python]: https://python.org
 [video-mac]: https://www.youtube.com/watch?v=TcSAln46u9U
 [video-windows]: https://www.youtube.com/watch?v=xxQ0mzZ8UvA
+[penguindata]: https://zenodo.org/record/3960218/files/allisonhorst/palmerpenguins-v0.1.0.zip?download=1
