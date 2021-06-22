@@ -63,11 +63,11 @@ The image below shows the architecture of a traditional "shallow" network (top) 
 
 Here are just a few examples of how Deep Learning has been applied to some research problems. Note: some of these articles might be behind paywalls.
 
-[Detecting COVID-19 in chest X-ray images](https://arxiv.org/abs/2003.09871)
-[Forecasting building energy load](https://ieeexplore.ieee.org/document/7793413)
-[Protein function prediction](https://pubmed.ncbi.nlm.nih.gov/29039790/)
-[Simulating Chemical Processes](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.98.146401)
-[Help to restore ancient murals](https://heritagesciencejournal.springeropen.com/articles/10.1186/s40494-020-0355-x)
+* [Detecting COVID-19 in chest X-ray images](https://arxiv.org/abs/2003.09871)
+* [Forecasting building energy load](https://ieeexplore.ieee.org/document/7793413)
+* [Protein function prediction](https://pubmed.ncbi.nlm.nih.gov/29039790/)
+* [Simulating Chemical Processes](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.98.146401)
+* [Help to restore ancient murals](https://heritagesciencejournal.springeropen.com/articles/10.1186/s40494-020-0355-x)
 
 
 ### What sort of problems can't Deep Learning solve?
