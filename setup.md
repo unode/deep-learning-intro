@@ -109,7 +109,7 @@ $ python
 
 Download the [penguin dataset][penguindata].
 
-Download the [weather dataset][weatherdata]
+Download the [weather dataset prediction csv][weatherdata] and [BBQ labels][weatherbbqdata].
 
 [anaconda]: https://www.continuum.io/anaconda
 [continuum-mac]: http://continuum.io/downloads#_macosx
@@ -121,3 +121,5 @@ Download the [weather dataset][weatherdata]
 [video-mac]: https://www.youtube.com/watch?v=TcSAln46u9U
 [video-windows]: https://www.youtube.com/watch?v=xxQ0mzZ8UvA
 [penguindata]: https://zenodo.org/record/3960218/files/allisonhorst/palmerpenguins-v0.1.0.zip?download=1
+[weatherdata]: https://zenodo.org/record/4980359/files/weather_prediction_dataset.csv?download=1
+[weatherbbqdata]: https://zenodo.org/record/4980359/files/weather_prediction_bbq_labels.csv?download=1
