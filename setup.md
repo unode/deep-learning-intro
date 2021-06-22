@@ -107,8 +107,6 @@ $ python
 
 ## Downloading the required datasets
 
-Download the [penguin dataset][penguindata].
-
 Download the [weather dataset prediction csv][weatherdata] and [BBQ labels][weatherbbqdata].
 
 [anaconda]: https://www.continuum.io/anaconda
