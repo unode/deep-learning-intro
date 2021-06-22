@@ -302,7 +302,7 @@ X_train, X_test, y_train, y_test = train_test_split(penguin_features, target,tes
 > > samples and y_test has 69 samples.
 > >
 > > We can check the balance of classes by using the `value_counts` function from pandas
-> > which shows the training set has 117 Adelie, 95 Gentoo and 54 Chinstrap samples.
+> > which shows the training set has 121 Adelie, 98 Gentoo and 54 Chinstrap samples.
 > > ~~~
 > > Adelie  Chinstrap  Gentoo
 > > 1       0          0         121
