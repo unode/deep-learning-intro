@@ -61,7 +61,7 @@ The image below shows the architecture of a traditional "shallow" network (top) 
 
 #### Examples of Deep Learning in Research
 
-Here are just a few examples of how deep learning has been applied to some research problems. Note: some of these articles might be behind paywalls.
+Here are just a few examples of how Deep Learning has been applied to some research problems. Note: some of these articles might be behind paywalls.
 
 [Detecting COVID-19 in chest X-ray images](https://arxiv.org/abs/2003.09871)
 [Forecasting building energy load](https://ieeexplore.ieee.org/document/7793413)
@@ -118,49 +118,49 @@ Firstly we must decide what it is we want our Deep Learning system to do. Is it 
 
 ### 2. Identify inputs and outputs
 
-Next we need to identify what the inputs and outputs of the neural network will be. This might require looking at our data and deciding what features of the data we can use as inputs. If the data is images then the inputs could be the individual pixels of the images. Depending upon the data we're dealing with it might help to visualize the data or perform some kind of exploration to discover what features we have available.
+Next we need to identify what the inputs and outputs of the neural network will be. This might require looking at our data and deciding what features of the data we can use as inputs. If the data is images then the inputs could be the individual pixels of the images.
 
-For the outputs we'll need to look at what we want to identify from the data. If we are performing a classification problem then typically we will have one output for each potential class. The classification that the network identifies will have its output set to one and the other classes will output zero. Some networks might make this a probability and use numbers between zero and one to indicate the probability of each class.
+For the outputs we'll need to look at what we want to identify from the data. If we are performing a classification problem then typically we will have one output for each potential class.
 
 
 ### 3. Prepare data
 
-Many datasets aren't ready for immediate use in a neural network and will require some preparation. Neural networks can only really deal with numerical data, so any non-numerical data (for example words) will have to be somehow converted to numerical data. Many datasets will also have missing data and we will need to clean up our data and remove items with missing data or find a way to convert them to sensible values.
+Many datasets aren't ready for immediate use in a neural network and will require some preparation. Neural networks can only really deal with numerical data, so any non-numerical data (for example words) will have to be somehow converted to numerical data.
 
-Next we'll need to divide the data into multiple sets. One of these will be used by the training process and we'll call it the training set. Another will be used to evaluate the accuracy of the training and we'll call that one the test set. Sometimes we'll also use a 3rd set known as a validation set to check our results after training is complete. Typically 80-90% of the data will be used as the training set and 10-20% for the test set and another 10% for the validation set (if we have one). We should split the data in such a way that the training and test set are similar, for example by randomising which items go in which set instead of just taking the first 90% as the training set and the remaining 10% as the test set, especially if the last 10% of the data is very different to the previous 90%.
+Next we'll need to divide the data into multiple sets. One of these will be used by the training process and we'll call it the training set. Another will be used to evaluate the accuracy of the training and we'll call that one the test set. Sometimes we'll also use a 3rd set known as a validation set to check our results after training is complete.
 
 ### 4. Choose a pre-trained model or build a new architecture from scratch
 
-Often we can use an existing neural network instead of designing one from scratch. Training a network can take a lot of time and computational resources. There are a number of well publicised networks which have been shown to perform well at certain tasks, if you know of one which already does a similar task well then it makes sense to use one of these. This concept can be taken one step further, somebody else might have released a pre-trained network which is already trained on similar data and that can work for our purposes. If there's a network which was trained on similar data but might need a little bit more training on our specific data then this is possible using a technique called transfer learning which we'll talk about in more detail later.
+Often we can use an existing neural network instead of designing one from scratch. Training a network can take a lot of time and computational resources. There are a number of well publicised networks which have been shown to perform well at certain tasks, if you know of one which already does a similar task well then it makes sense to use one of these.
 
 If instead we decide we do want to design our own network then we need to think about how many input neurons it will have, how many hidden layers and how many outputs, what types of layers we use (we'll explore the different types later on). This will probably need some experimentation and we might have to try tweaking the network design a few times before we see acceptable results.
 
 
-### 5. Choose a loss function and metrics
+### 5. Choose a loss function and optimizer
 
-The loss function tells the training algorithm how far away the predicted value was from the true value. There are a number of different types of function we can use here that might be suited to different types of data and network architectures. We'll look at choosing a loss function in more detail later on.
+The loss function tells the training algorithm how far away the predicted value was from the true value. We'll look at choosing a loss function in more detail later on.
+
+The optimizer is responsible for taking the output of the loss function and then applying some changes to the weights within the network. It is through this process that the "learning" (adjustment of the weights) is achieved.
 
 
 ### 6. Train the model
 
-Before we can train the model we have one final component to decide upon, the optimizer. The optimizer is responsible for taking the output of the loss function and then applying some changes to weights within the network. We can think of the training process as like trying to gradually descend a (very jagged looking) curve on a graph (that looks more like a rocky mountain side than a smooth curve) and find the bottom of it, without knowing in advance where that bottom is. Along the way we might hit some flat or even rising parts of the curve that make it look like we've reached the bottom when we haven't, we call these local minima. Different optimizers and optimizer parameters can help prevent us getting stuck in local minima. As with the loss function the best choice may depend on the kind of data and network architecture that we're using.
-
-Now that we've set the optimizer function we can go ahead and start training our network. We'll probably keep doing this for a given number of iterations or _epochs_ or until the loss function gives a value under a certain threshold. The graphs below show the loss (generally) reducing as the number of epochs increases. Notice that on a few occasions it goes up instead of down. In the first graph it appears to have reached a plateau of near zero by the 500th epoch. The second graph shows the 500th to 1500th epoch and we can see that it is still going down, but frequently rises a little before dropping again.
+We can now go ahead and start training our neural network. We'll probably keep doing this for a given number of iterations through our training dataset (referred to as _epochs_) or until the loss function gives a value under a certain threshold. The graph below show the loss against the number of _epochs_, generally the loss will go down with each _epoch_, but occasionally it will see a small rise.
 
 ![A graph showing loss over the first 1500 epochs of training an example network.](../fig/training-0_to_1500.svg)
-![A graph showing loss over the 500th to 1500th epoch of training an example network.](../fig/training-500_to_1500.svg)
+
 
 ### 7. Tune Hyperparameters
 
-Hyperparameters are all the parameters set by the person configuring the machine learning instead of those learned by the algorithm itself. The Hyperparameters include the number of epochs or the parameters for the optimizer. If we are really trying to optimize things then we might even do a sweep through a whole range of Hyperparameters and use the loss function to decide which Hyperparameters performed best.
+Hyperparameters are all the parameters set by the person configuring the machine learning instead of those learned by the algorithm itself. The Hyperparameters include the number of epochs or the parameters for the optimizer. It might be necessary to adjust these and re-run the training many times before we are happy with the result.
 
 ### 8. Measure Performance
 
-Once we think the network is performing well we want to measure its performance. To do this we might use the validation set of data that we put aside earlier and didn't use as part of the training process. There are many different methods available for doing this and which one is best depends on the type of task we are attempting. These metrics are often published as an indication of how well our network performs. This helps to compare it with other networks or other methods for performing the same prediction or classification task.
+Once we think the network is performing well we want to measure its performance. To do this we can use some additional data that wasn't part of the training, this is known as a validation set. There are many different methods available for doing this and which one is best depends on the type of task we are attempting. These metrics are often published as an indication of how well our network performs.
 
 ### 9. Perform a Prediction/Classification
 
-Now that we have a trained network that performs at a level we are happy with we can go and use it on real data to perform a prediction. At this point we might want to consider publishing a file with both the architecture of our network and the weights which it has learned (assuming we didn't use a pre-trained network). This will allow others to use it as as pre-trained network for their own purposes.
+Now that we have a trained network that performs at a level we are happy with we can go and use it on real data to perform a prediction. At this point we might want to consider publishing a file with both the architecture of our network and the weights which it has learned (assuming we didn't use a pre-trained network). This will allow others to use it as as pre-trained network for their own purposes and for them to (mostly) reproduce our result.
 
 
 > ## Deep Learning workflow exercise
