@@ -258,7 +258,7 @@ Fortunately pandas is able to generate this encoding for us.
 ~~~
 import pandas as pd
 
-target = pd.get_dummies(penguin_features['species'])
+target = pd.get_dummies(penguins['species'])
 target.head() # print out the top 5 to see what it looks like.
 ~~~
 {:.language-python}
