@@ -181,9 +181,10 @@ sns.pairplot(penguins, hue="species")
 
 > ## Pairplot
 >
-> Take a look at the pairplot we created
+> Take a look at the pairplot we created. Consider the following questions:
+> 
 > * Is there any class that is easily distinguishable from the others?
-> * Which combination of attributes shows the best separation?
+> * Which combination of attributes shows the best separation for all 3 class labels at once?
 >
 > > ## Solution
 > > The plots show that the green class, Gentoo is somewhat more easily distinguishable from the other two.
