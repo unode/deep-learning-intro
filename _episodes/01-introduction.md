@@ -88,7 +88,7 @@ The following could technically be achieved using Deep Learning, but it would pr
 
 > ## Deep Learning Problems Exercise
 >
-> Which of the following should you apply Deep Learning to?
+> Which of the following would you apply Deep Learning to?
 > 1. Recognising whether or not a picture contains a bird.
 > 2. Calculating the median and interquartile range of a dataset.
 > 3. Identifying MRI images of a rare disease when only one or two example images available for training.
