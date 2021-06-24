@@ -252,8 +252,36 @@ In our **convolutional layer** our hidden units are a number of convolutional ma
 > {: .solution}
 {: .challenge}
 
+So let's look at a network with a few convolutional layers. We need to finish with a Dense layer to connect the output cells of the convolutional layer to the outputs for our classes.
 
-Another type of layer is the **Pooling layer**. As opposed to the convolutional layer, the pooling layer actually alters the dimensions of the image and reduces it by a scaling factor. It is basically decreasing the resolution of your picture. The rationale behind this is that higher layers of the network should focus on higher-level features of the image. By introducing a pooling layer, the subsequent convolutional layer has a broader 'view' on the original image.
+~~~
+inputs = keras.Input(shape=train_images.shape[1:])
+x = keras.layers.Conv2D(32, (3, 3), activation='relu')(inputs)
+x = keras.layers.Conv2D(32, (3, 3), activation='relu')(x)
+x = keras.layers.Flatten()(x)
+outputs = keras.layers.Dense(10)(x)
+
+model = keras.Model(inputs=inputs, outputs=outputs, name="cifar_model_small")
+
+model.summary()
+~~~
+{: .language-python}
+
+> ## Convolutional Neural Network
+>
+> Inspect the network above:
+> * What do you think is the function of the `Flatten` layer?
+> * Which layer has the most parameters? Do you find this intuitive?
+>
+> > ## Solution
+> >
+> > * The Flatten layer converts the 28x28x32 output of the convolutional layer into a single one-dimensional vector, that can be used as input for a dense layer.
+> > * The last dense layer has the most parameters. This layer connects every single output 'pixel' from the convolutional layer to the 10 output classes.
+> >  That results in a large number of connections, so a large number of parameters. This undermines a bit the expressiveness of the convolutional layers, that have much fewer parameters.
+> {: .solution}
+{: .challenge}
+
+Often in convolutional neural networks, the convolutional layers are intertwined with **Pooling layers**. As opposed to the convolutional layer, the pooling layer actually alters the dimensions of the image and reduces it by a scaling factor. It is basically decreasing the resolution of your picture. The rationale behind this is that higher layers of the network should focus on higher-level features of the image. By introducing a pooling layer, the subsequent convolutional layer has a broader 'view' on the original image.
 
 Let's put it into practice. We compose a Convolutional network with two convolutional layers and two pooling layers.
 
