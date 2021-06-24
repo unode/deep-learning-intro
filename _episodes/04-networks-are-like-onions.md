@@ -248,7 +248,7 @@ In our **convolutional layer** our hidden units are a number of convolutional ma
 >
 > > ## Solution
 > >
-> > We have 100 matrices with 3 * 3 * 3 = 27 values each so that gives 27 * 100 = 2700 weights. This is a magnitude of 100 less than the fully connected layer with 100 units!
+> > We have 100 matrices with 3 * 3 * 3 = 27 values each so that gives 27 * 100 = 2700 weights. This is a magnitude of 100 less than the fully connected layer with 100 units! Nevertheless, as we will see, convolutional networks work very well for image data. This illustrates the expressiveness of convolutional layers.
 > {: .solution}
 {: .challenge}
 
@@ -317,6 +317,9 @@ history = model.fit(train_images, train_labels, epochs=10,
 We can plot the training process using the history:
 
 ~~~
+import seaborn as sns
+import pandas as pd
+
 history_df = pd.DataFrame.from_dict(history.history)
 sns.lineplot(data=history_df[['accuracy', 'val_accuracy']])
 ~~~
