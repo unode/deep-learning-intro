@@ -179,3 +179,12 @@ You can also [reach us by email][email].
 [c-site]: https://carpentries.org/
 [lc-site]: https://librarycarpentry.org/
 [lc-issues]: https://github.com/issues?q=user%3Alibrarycarpentry
+
+# Conventions
+
+We below list conventions that we kindly ask all contributors to follow when helping with the content, making fixes or adding/editing lessons. Please consider these hints while you are preparing your pull-requests.
+
+## terminology
+
+We consistently like to use:
+- Deep Learning (both capitalized)
