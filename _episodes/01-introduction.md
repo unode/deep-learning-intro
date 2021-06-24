@@ -40,7 +40,7 @@ A neural network is an artificial intelligence technique loosely based on the wa
 
 Neural networks aren't a new technique, they have been around since the late 1940s. But until around 2010 neural networks tended to be quite small, consisting of only 10s or perhaps 100s of neurons. This limited them to only solving quite basic problems. Around 2010 improvements in computing power and the algorithms for training the networks made much larger and more powerful networks practical. These are known as deep neural networks or Deep Learning.
 
-![An infographics showing the relation of AI, ML, NN and DL](../fig/AI_ML_DL_bubble_square_draft.png)
+![An infographics showing the relation of AI, ML, NN and DL](../fig/AI_ML_DL_bubble_square_draft.png){: width="600px" }
 
 Deep Learning requires extensive training using example data which shows the network what output it should produce for a given input. One common application of Deep Learning is classifying images. Here the network will be trained by being "shown" a series of images and told what they contain. Once the network is trained it should be able to take another image and correctly classify its contents. But we are not restricted to just using images, any kind of data can be learned by a Deep Learning neural network. This makes them able to appear to learn a set of complex rules only by being shown what the inputs and outputs of those rules are instead of being taught the actual rules. Using these approaches Deep Learning networks have been taught to play video games and even drive cars. The data on which networks are trained usually has to be quite extensive, typically including thousands of examples. For this reason they are not suited to all applications and should be considered just one of many machine learning techniques which are available.
 
@@ -48,7 +48,7 @@ The image below shows the architecture of a traditional "shallow" network (top) 
 
 [//]: # "![An example neural network with ][neural-network][*Glosser.ca, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons*](https://commons.wikimedia.org/wiki/File:Colored_neural_network.svg)"
 
-![An example of a neural network](../fig/ML_DL_draft.png)
+![An example of a neural network](../fig/ML_DL_draft.png){: width="600px" }
 
 
 ### What sort of problems can Deep Learning solve?
