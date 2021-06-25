@@ -462,7 +462,7 @@ This still seems to reveal the onset of overfitting, but the training stops befo
 Despite avoiding severe cases of overfitting, early stopping has the additional advantage that the number of training epochs will be regulated automatically.
 Instead of comparing training runs for different number of epochs, early stopping allows to simply set the number of epochs to a desired maximum value.
 
-What might be a bit unintuitive is that the training runs might now end very rapidly (in particular when the learning rate is high).
+What might be a bit unintuitive is that the training runs might now end very rapidly
 This might spark the question: have we really reached an optimum yet?
 And often the answer to this is "no", which is why early stopping frequently is combined with other approaches to hinder overfitting from happening.
 Overfitting means that a model (seemingly) performs better on seen data compared to unseen data. One then often also says that it does not "generalize" well.
