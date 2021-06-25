@@ -14,7 +14,7 @@ objectives:
 
 keypoints:
 - "Separate training, validation, and test sets allows monitoring and evaluating your model."
-- "Dropout is a way to prevent overfitting"
+- "Batchnormalization scales the data as part of the model."
 ---
 
 ## Explore the data
@@ -76,7 +76,7 @@ print({x.split("_")[-1] for x in data.columns})
 
 ### Select a subset and split into data (X) and labels (y)
 The full dataset comprises 10 years (3654 days) from which we here will only select the first 3 years.
-We will then define what exactly we want to predict from this data. A very common task with weather data is to make a predicion about the weather somewhere in the future, say the next day. The present dataset is sorted by "DATE", so for each row `*i*` in the table we can pick a corresponding feature and location from row `*i+1*` that we later want to predict with our model.
+We will then define what exactly we want to predict from this data. A very common task with weather data is to make a predicion about the weather somewhere in the future, say the next day. The present dataset is sorted by "DATE", so for each row `i` in the table we can pick a corresponding feature and location from row `i+1` that we later want to predict with our model.
 Here we will pick a rather difficult-to-predict feature, sunshine hours, which we want to predict for the location: BASEL.
 
 ~~~
@@ -183,7 +183,7 @@ The network should hence output a single float value which is why the last layer
 > {:.solution}
 {:.challenge}
 
-When compiling the model we can define a few very important aspects.
+When compiling the model we can define a few very important aspects. We will discuss them now in more detail.
 
 ### Loss function:
 The loss is what the neural network will be optimized on during training, so chosing a suitable loss function is crucial for training neural networks.
@@ -197,7 +197,7 @@ The *optimizer* here refers to the algorithm with which the model learns to opti
 ### Metrics:
 In our first example (episode 2) we plotted the progression of the loss during training. 
 That is indeed a good first indicator if things are working alright, i.e. if the loss is indeed decreasing as it should. 
-However, when models become more complicated then also the loss functions often become less intuitive (side remark: e.g. when adding L1 or L2 regularization). 
+However, when models become more complicated then also the loss functions often become less intuitive. 
 That is why it is good practice to monitor the training process with additional, more intuitive metrics. 
 They are not used to optimize the model, but are simply recorded during training. 
 With Keras they can simply be added via `metrics=[...]` and can contain one or multiple metrics of interest. 
@@ -241,7 +241,7 @@ There is not a single way to evaluate how a model performs. But there is at leas
 First, we will do the actual prediction step. 
 > ## Predict the labels for both training and test set and compare to the true values
 > Even though we here use a different model architecture and a different task compared to episode 2, the prediction step is mostly identical.
-> Use the model to predict the labels for the training set and the test set and then compare them in a scatter plot to the true labels.
+> Use the model to predict the labels for the training set and the test set and then compare them in a scatter plot to the true labels. Hint: use `plt.scatter()`.
 > 
 > * Is the performance of the model as you expected (or better/worse)? 
 > * Is there a noteable difference between training set and test set? And if so, any idea why?
@@ -266,7 +266,6 @@ First, we will do the actual prediction step.
 > > ~~~
 > > {: .language-python}
 > > ![Scatter plot to evaluate training and test set](../fig/03_regression_training_test_comparison.png)
-> > Maybe that is not exactly what you expected? What is the issue here? Any ideas?
 > > 
 > > The accuracy on the training set is fairly good. 
 > > In fact, considering that the task of predicting the daily sunshine hours is really not easy it might even be surprising how well the model predicts that 
@@ -281,7 +280,7 @@ Overfitting also happens in classical machine learning, but there it is usually 
 In deep learning the situation is slightly different. It can -same as for classical machine learning- also be a sign of having a *too big* model, meaning a model with too many parameters (layers and/or nodes). However, in deep learning higher number of model parameters are often still considered acceptable and models often perform best (in terms of prediction accuracy) when they are at the verge of overfitting. So, in a way, training deep learning models is always a bit like playing with fire...
 
 ## Watch your model training closely
-As we just saw, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a 2nd split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a 2nd test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evalute the model with the *validation set* after every epoch during training, for instance to splot if we see signs of clear overfitting.
+As we just saw, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a second test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evaluate the model with the *validation set* after every epoch during training, for instance to splot if we see signs of clear overfitting.
 
 Let's give this a try!
 
@@ -304,7 +303,7 @@ history = model.fit(X_train, y_train,
 ~~~
 {: .language-python}
 
-> ## Quick exercise: plot the training progress.
+> ## Exercise: plot the training progress.
 > 
 > As before the history allows plotting the training progress. But now we can plot both the performance on the training data and on the validation data!
 > * Is there a difference between the training and validation data? And if so, what would this imply?
@@ -322,6 +321,8 @@ history = model.fit(X_train, y_train,
 > > This clearly shows that something is not completely right here. 
 > > The model predictions on the validation set quickly seem to reach a plateau while the performance on the training set keeps improving.
 > > That is a clear signature of overfitting.
+> {:.solution}
+{:.challenge}
 
 ## Counteract model overfitting
 Overfitting is a very common issue and there are many strategies to handle it.
@@ -478,6 +479,7 @@ from tensorflow.keras.layers import BatchNormalization
 ## Exercise: Add a BatchNormalization layer as the first layer to your neural network.
 (documentation & reference: https://keras.io/api/layers/normalization_layers/batch_normalization/)
 
+Look at the [documentation of the batch normalization layer](https://keras.io/api/layers/normalization_layers/batch_normalization/). Add this as a first layer to the model we defined above. Train the model and compare the performance to the model without batch normalization.
 ~~~
 def create_nn(n_features, n_predictions):
     # Input layer
@@ -536,13 +538,13 @@ plt.ylabel("true sunshine hours")
 Well... certainly not perfect. But how good or bad is this? Maybe not good enough to plan your picnic for tomorrow.
 But let's better compare it to a naive baseline.
 
-> # Create a similar scatter plot as above for a reasonable baseline
+> ## Exercise: Create a similar scatter plot as above for a reasonable baseline
 >
 > What can we take as a baseline? 
 > Maybe the simplest prediction to make would be to say: Tomorrow we will have the same number of sunshine hours as today.
 > Let's compare to this.
 > 
-> > # Solution
+> > ## Solution
 > > We can here just take the `BASEL_sunhine` column of our data, because this contains the sunshine hours from one day before what we have as a label.
 > > ~~~
 > > plt.figure(figsize=(5, 5), dpi=100)
@@ -553,6 +555,8 @@ But let's better compare it to a naive baseline.
 > > {: .language-python} 
 > > 
 > > ![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
+> {:.solution}
+{:.challenge}
 
 
 # Outlook
@@ -571,7 +575,7 @@ Our models get the general trends right, but still predictions vary quiet a bit 
 > * What changes to the model architecture might make sense to explore?
 > * Ignoring changes to the model architecture, what might notably improve the prediction quality?
 > 
-> > # Solution
+> > ## Solution
 > > This is on open question. And we don't actually know how far one could push this sunshine hour prediction (try it out yourself if you like! We're curious!).
 > > But there is a few things that might be worth exploring.
 > > 
