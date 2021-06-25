@@ -481,49 +481,53 @@ from tensorflow.keras.layers import BatchNormalization
 ~~~
 {: .language-python} 
 
-## Exercise: Add a BatchNormalization layer as the first layer to your neural network.
-(documentation & reference: https://keras.io/api/layers/normalization_layers/batch_normalization/)
+> ## Excercise: Add a BatchNormalization layer as the first layer to your neural network.
+> Look at the [documentation of the batch normalization layer](https://keras.io/api/layers/normalization_layers/batch_normalization/). Add this as a first layer to the model we defined above. Then, train the model and compare the performance to the model without batch normalization.
+>
+> > ## Solution
+> > ~~~
+> > def create_nn(n_features, n_predictions):
+> >     # Input layer
+> >     layers_input = keras.layers.Input(shape=(n_features,), name='input')
+> > 
+> >     # Dense layers
+> >     layers_dense = keras.layers.BatchNormalization()(layers_input)
+> >     layers_dense = keras.layers.Dense(100, 'relu')(layers_dense)
+> >     layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
+> > 
+> >     # Output layer
+> >     layers_output = keras.layers.Dense(n_predictions)(layers_dense)
+> > 
+> >     # Defining the model and compiling it
+> >     return keras.Model(inputs=layers_input, outputs=layers_output, name="model_batchnorm")
+> > 
+> > model = create_nn(X_data.shape[1], 1)
+> > model.compile(loss='mse', optimizer='adam', metrics=[keras.metrics.RootMeanSquaredError()])
+> > model.summary()
+> > ~~~
+> > {: .language-python}
+> > 
+> > Which is then trained as above:
+> > ~~~
+> > history = model.fit(X_train, y_train,
+> >                     batch_size = 32,
+> >                     epochs = 1000,
+> >                     validation_data=(X_val, y_val),
+> >                     callbacks=[earlystopper],
+> >                     verbose = 2)
+> > 
+> > history_df = pd.DataFrame.from_dict(history.history)
+> > sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+> > plt.xlabel("epochs")
+> > plt.ylabel("RMSE")
+> > ~~~
+> > {: .language-python}      
+> > 
+> > ![Output of plotting sample](../fig/03_training_history_5_rmse_batchnorm.png)
+> {:.solution}
+{:.challenge}
 
-Look at the [documentation of the batch normalization layer](https://keras.io/api/layers/normalization_layers/batch_normalization/). Add this as a first layer to the model we defined above. Train the model and compare the performance to the model without batch normalization.
-~~~
-def create_nn(n_features, n_predictions):
-    # Input layer
-    layers_input = keras.layers.Input(shape=(n_features,), name='input')
 
-    # Dense layers
-    layers_dense = keras.layers.BatchNormalization()(layers_input)
-    layers_dense = keras.layers.Dense(100, 'relu')(layers_dense)
-    layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
-
-    # Output layer
-    layers_output = keras.layers.Dense(n_predictions)(layers_dense)
-
-    # Defining the model and compiling it
-    return keras.Model(inputs=layers_input, outputs=layers_output, name="model_batchnorm")
-
-model = create_nn(X_data.shape[1], 1)
-model.compile(loss='mse', optimizer='adam', metrics=[keras.metrics.RootMeanSquaredError()])
-model.summary()
-~~~
-{: .language-python}      
-
-Which is then trained as above:
-~~~
-history = model.fit(X_train, y_train,
-                    batch_size = 32,
-                    epochs = 1000,
-                    validation_data=(X_val, y_val),
-                    callbacks=[earlystopper],
-                    verbose = 2)
-
-history_df = pd.DataFrame.from_dict(history.history)
-sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
-plt.xlabel("epochs")
-plt.ylabel("RMSE")
-~~~
-{: .language-python}      
-
-![Output of plotting sample](../fig/03_training_history_5_rmse_batchnorm.png)
 
 ## Run on test set and compare to naive baseline
 It seems that no matter what we add, the overall loss does not decrease much further (we at least avoided overfitting though!).
