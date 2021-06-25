@@ -212,6 +212,10 @@ model.compile(optimizer='adam',
 
 ## Train a dense neural network
 Now that we created and compiled our dense neural network, we can start training it.
+One additional concept we need to introduce though, is the `batch_size`.
+This defines how many samples from the training data will be used to estimate the error gradient before the model weights are updated.
+Larger batches will produce better, more accurate gradient estimates but also less frequent updates of the weights.
+Here we are going to use a batch size of 32 which is a common starting point.
 ~~~
 history = model.fit(X_train, y_train,
                     batch_size=32,
