@@ -7,6 +7,7 @@ questions:
 objectives:
 - "Explain the importance of splitting the training data"
 - "Use the data splits to plot the training process"
+- "Set the training goal for your deep neural network"
 - "Measure the performance of your deep neural network"
 - "Interpret the training plots to recognize overfitting"
 - "Implement basic strategies to prevent overfitting"
@@ -120,7 +121,6 @@ In episode 2 we trained a dense neural network on a *classification task*. For t
 This measured how close the distribution of the neural network outputs corresponds to the distribution of the three values in the one hot encoding.
 Now we want to work on a *regression task*, thus not prediciting the right class for a datapoint but a certain value (could in principle also be several values). In our example we want to predict the sunshine hours in Basel (or any other place in the dataset) for tomorrow based on the weather data of all 18 locations today. 
 
-### Network output layer:
 The network should hence output a single float value which is why the last layer of our network will only consist of a single node. 
 
 > ## Create the neural network
@@ -332,6 +332,7 @@ Most similar to classical machine learning might to **reduce the number of param
 >
 > We can keep the network architecture unchanged (2 dense layers + a one-node output layer) and only play with the number of nodes per layer.
 > Try to lower the number of nodes in one or both of the two dense layers and observe the changes to the training and validation losses.
+> If time is short: Suggestion is to run one network with only 10 and 5 nodes in the first and second layer.
 >
 > * Is it possible to get rid of overfitting this way?
 > * Does the overall performance suffer or does it mostly stay the same?
