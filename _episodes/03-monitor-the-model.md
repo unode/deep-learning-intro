@@ -502,7 +502,7 @@ def create_nn(n_features, n_predictions):
     return keras.Model(inputs=layers_input, outputs=layers_output, name="model_batchnorm")
 
 model = create_nn(X_data.shape[1], 1)
-model.compile(loss='mse', optimizer=Adam(1e-4), metrics=[keras.metrics.RootMeanSquaredError()])
+model.compile(loss='mse', optimizer='adam', metrics=[keras.metrics.RootMeanSquaredError()])
 model.summary()
 ~~~
 {: .language-python}      
