@@ -219,7 +219,7 @@ Follow the instructions in the [setup]({{ page.root }}//setup) document to insta
 > Lets check you have a suitable version of seaborn installed.
 > In your Jupyter notebook or interactive python console run the following commands:
 > ~~~
-> seaborn
+> import seaborn
 > print(seaborn.__version__)
 > ~~~
 > {:.language-python}
