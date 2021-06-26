@@ -28,6 +28,9 @@ jobs:
         run: |
           python3 -m pip install --upgrade git+https://github.com/bpmweel/cce.git#egg=cce
 
+      - name: Checkout the lesson
+        uses: actions/checkout@v2
+
       - name: Run code checkeer
         run: |
           echo $PWD
