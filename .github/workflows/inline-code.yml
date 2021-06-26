@@ -27,6 +27,7 @@ jobs:
       - name: Get Code Checker
         run: |
           git clone https://github.com/bpmweel/cce.git
+        working-directory: ${{ github.workspace }}
 
       - name: Install Code Checker
         run: |
@@ -43,4 +44,3 @@ jobs:
             echo "Checking $f"
             cce -f "$f"
           done
-        working-directory: ${{ github.workspace }}
