@@ -4,12 +4,12 @@ on:
     branches:
       - gh-pages
       - main
+      - code-check-action
   pull_request: []
 jobs:
   code-check:
     runs-on: ubuntu-20.04
     env:
-      RSPM: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     defaults:
       run:
