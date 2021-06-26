@@ -24,20 +24,14 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip setuptools wheel pyyaml==5.3.1 requests tensorflow seaborn scikit-learn pandas
 
-      - name: Get Code Checker
-        run: |
-          git clone https://github.com/bpmweel/cce.git
-        working-directory: ${{ github.workspace }}
-
       - name: Install Code Checker
         run: |
-          python3 -m pip install --upgrade .
-        working-directory: ${{ github.workspace }}/cce
+          python3 -m pip install --upgrade git+https://github.com/bpmweel/cce.git#egg=cce
 
       - name: Run code checkeer
         run: |
           echo $PWD
-          ls
+          ls -la
           FILES="_episodes/*"
           for f in $FILES
           do
