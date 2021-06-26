@@ -35,5 +35,12 @@ jobs:
 
       - name: Run code checkeer
         run: |
-          cce -f _episodes/02-keras.md
+          echo $PWD
+          ls
+          FILES="_episodes/*"
+          for f in $FILES
+          do
+            echo "Checking $f"
+            cce -f "$f"
+          done
         working-directory: ${{ github.workspace }}
