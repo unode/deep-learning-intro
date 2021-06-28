@@ -182,7 +182,7 @@ sns.pairplot(penguins, hue="species")
 > ## Pairplot
 >
 > Take a look at the pairplot we created. Consider the following questions:
-> 
+>
 > * Is there any class that is easily distinguishable from the others?
 > * Which combination of attributes shows the best separation for all 3 class labels at once?
 >
@@ -302,13 +302,17 @@ X_train, X_test, y_train, y_test = train_test_split(penguin_features, target,tes
 > > Using `y_train.shape` and `y_test.shape` we can see the training set has 273
 > > samples and y_test has 69 samples.
 > >
-> > We can check the balance of classes by using the `value_counts` function from pandas
+> > We can check the balance of classes by counting the number of ones for each
+> > of the columns in the one-hot-encoded target,
 > > which shows the training set has 121 Adelie, 98 Gentoo and 54 Chinstrap samples.
 > > ~~~
-> > Adelie  Chinstrap  Gentoo
-> > 1       0          0         121
-> > 0       0          1          98
-> >         1          0          54
+> > y_train.sum()
+> > ~~~
+> > {:.language-python}
+> > ~~~
+> > Adelie       121
+> > Chinstrap     54
+> > Gentoo        98
 > > dtype: int64
 > > ~~~
 > > {:.output}
