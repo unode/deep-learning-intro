@@ -98,7 +98,7 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 > >     
 > > feature_names
 > > ~~~
-> > In total there are 11 different measured variable.
+> > In total there are 11 different measured variables.
 > {:.solution}
 {:.challenge}
 
