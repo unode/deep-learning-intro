@@ -69,9 +69,9 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 >
 > Let's get a quick idea of the dataset.
 >
-> * How many features does the data have (don't count month and date as a feature)?
 > * How many data points do we have?
-> * What type of features do we have?
+> * How many features does the data have (don't count month and date as a feature)?
+> * What are the different measured variabel types in the data and how many are there (humidity etc.) ? 
 >
 > > ## Solution
 > > ~~~
@@ -82,11 +82,11 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 > > 
 > > To see what type of features the data contains we could run something like:
 > > ~~~
-> > print({x.split("_")[-1] for x in data.columns})
+> > print({x.split("_")[-1] for x in data.columns if x not in ["MONTH", "DATE"]})
 > > ~~~
 > > {:.language-python}
 > > ~~~
-> > {'humidity', 'radiation', 'sunshine', 'gust', 'mean', 'max', 'MONTH', 'precipitation', 'pressure', 'cover', 'min', 'speed', 'DATE'}
+> > {'humidity', 'radiation', 'sunshine', 'gust', 'mean', 'max', 'precipitation', 'pressure', 'cover', 'min', 'speed'}
 > > ~~~
 > > {:.output}
 > > An alternative way which is slightly more complicated but gives better results is using regex.
@@ -98,6 +98,7 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 > >     
 > > feature_names
 > > ~~~
+> > In total there are 11 different measured variable.
 > {:.solution}
 {:.challenge}
 
