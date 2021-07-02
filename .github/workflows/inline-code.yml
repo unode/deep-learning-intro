@@ -33,8 +33,7 @@ jobs:
 
       - name: Run code checkeer
         run: |
-          echo $PWD
-          ls -la
+          ls -l _episodes/
           FILES="_episodes/*"
           for f in $FILES
           do
