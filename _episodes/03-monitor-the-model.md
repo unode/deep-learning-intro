@@ -3,7 +3,10 @@ title: "Monitor the training process"
 teaching: 0
 exercises: 0
 questions:
-- tbd
+- "How do I set the training goal?"
+- "How do I monitor the training process?"
+- "How do I detect (and avoid) overfitting?"
+- "What are common options to improve the model performance?" 
 objectives:
 - "Explain the importance of splitting the training data"
 - "Use the data splits to plot the training process"
@@ -11,7 +14,6 @@ objectives:
 - "Measure the performance of your deep neural network"
 - "Interpret the training plots to recognize overfitting"
 - "Implement basic strategies to prevent overfitting"
-- "Understand the effect of regularization techniques"
 
 keypoints:
 - "Separate training, validation, and test sets allows monitoring and evaluating your model."
