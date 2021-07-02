@@ -133,6 +133,9 @@ X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, r
 >
 > Split the data into 3 completely separate set to be used for training, validation, and testing. This can be done in two steps.
 > First, split the data into training (70%) and validation+test (30%). Then split the second one again into two to get a validation setand a test set (both roughly equal in size).
+>
+> * How many data points do you have in the training, validation, and test sets?
+> 
 >  Hint:
 >  ~~~
 >  from sklearn.model_selection import train_test_split
