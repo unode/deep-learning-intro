@@ -65,15 +65,42 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 ~~~
 {:.output}
 
-~~~
-print({x.split("_")[-1] for x in data.columns})
-~~~
-{:.language-python}
+> ## Exercise: Explore the dataset
+>
+> Let's get a quick idea of the dataset.
+>
+> * How many features does the data have (don't count month and date as a feature)?
+> * How many data points do we have?
+> * What type of features do we have?
+>
+> > ## Solution
+> > ~~~
+> > data.shape
+> > ~~~
+> > {:.language-python}
+> > This will give both the number of datapoints (3654) and the number of features (163 + month + date).
+> > 
+> > To see what type of features the data contains we could run something like:
+> > ~~~
+> > print({x.split("_")[-1] for x in data.columns})
+> > ~~~
+> > {:.language-python}
+> > ~~~
+> > {'humidity', 'radiation', 'sunshine', 'gust', 'mean', 'max', 'MONTH', 'precipitation', 'pressure', 'cover', 'min', 'speed', 'DATE'}
+> > ~~~
+> > {:.output}
+> > An alternative way which is slightly more complicated but gives better results is using regex.
+> > ~~~
+> > import re
+> > feature_names = set()
+> > for col in data.columns:
+> >     feature_names.update(re.findall('[^A-Z]{2,}', col))
+> >     
+> > feature_names
+> > ~~~
+> {:.solution}
+{:.challenge}
 
-~~~
-{'humidity', 'radiation', 'sunshine', 'gust', 'mean', 'max', 'MONTH', 'precipitation', 'pressure', 'cover', 'min', 'speed', 'DATE'}
-~~~
-{:.output}
 
 ## Prepare the data
 
@@ -101,16 +128,36 @@ from sklearn.model_selection import train_test_split
 
 X_train, X_test, y_train, y_test = train_test_split(X_data, y_data, test_size=0.3, random_state=0) 
 X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, random_state=0)
-
-print(f"Data split into training ({X_train.shape[0]})," \
-      f" validation ({X_val.shape[0]}) and test set ({X_test.shape[0]}).")
 ~~~
-{:.language-python}
-
-~~~
-Data split into training (767), validation (164) and test set (165).
-~~~
-{:.output}
+> ## Exercise: Split data into training, validation, and test set
+>
+> Split the data into 3 completely separate set to be used for training, validation, and testing. This can be done in two steps.
+> First, split the data into training (70%) and validation+test (30%). Then split the second one again into two to get a validation setand a test set (both roughly equal in size).
+>  Hint:
+>  ~~~
+>  from sklearn.model_selection import train_test_split
+>  X_train, X_not_train, y_train, y_not_train = train_test_split(X, y, test_size=0.3, random_state=0) 
+>  ~~~
+>  {:.language-python}
+>
+> > ## Solution
+> > ~~~
+> > from sklearn.model_selection import train_test_split
+> > 
+> > X_train, X_test, y_train, y_test = train_test_split(X_data, y_data, test_size=0.3, random_state=0) 
+> > X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, random_state=0)
+> > 
+> > print(f"Data split into training ({X_train.shape[0]})," \
+> >       f" validation ({X_val.shape[0]}) and test set ({X_test.shape[0]}).")
+> > ~~~
+> > {:.language-python}
+> > 
+> > ~~~
+> > Data split into training (767), validation (164) and test set (165).
+> > ~~~
+> > {:.output}
+> {:.solution}
+{:.challenge}
       
 ## Build a dense neural network
 
