@@ -249,6 +249,8 @@ First, we will do the actual prediction step.
 > 
 > * Is the performance of the model as you expected (or better/worse)? 
 > * Is there a noteable difference between training set and test set? And if so, any idea why?
+> 
+> > ## Solution
 > > ~~~
 > > y_train_predicted = model.predict(X_train)
 > > y_test_predicted = model.predict(X_test)
