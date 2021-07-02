@@ -127,7 +127,7 @@ As with classical machine learning techniques, it is common in deep learning to 
 > ## Exercise: Split data into training, validation, and test set
 >
 > Split the data into 3 completely separate set to be used for training, validation, and testing. This can be done in two steps.
-> First, split the data into training (70%) and validation+test (30%). Then split the second one again into two to get a validation setand a test set (both roughly equal in size).
+> First, split the data into training set (70% of all datapoints) and validation+test set (30%). Then split the second one again into two sets (both roughly equal in size).
 >
 > * How many data points do you have in the training, validation, and test sets?
 > 
