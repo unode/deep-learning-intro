@@ -551,7 +551,7 @@ But let's better compare it to a naive baseline.
 >
 > What can we take as a baseline? 
 > Maybe the simplest prediction to make would be to say: Tomorrow we will have the same number of sunshine hours as today.
-> Let's compare to this.
+> Compare the performance of the neural network to the baseline, by creating a scatter plot for the baseline predictions.
 > 
 > > ## Solution
 > > We can here just take the `BASEL_sunhine` column of our data, because this contains the sunshine hours from one day before what we have as a label.
