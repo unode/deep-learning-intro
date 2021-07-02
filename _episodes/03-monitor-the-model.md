@@ -123,12 +123,6 @@ y_data = data.loc[1:(nr_rows + 1)]["BASEL_sunshine"]
 ### Split data and labels into training, validation, and test set
 As with classical machine learning techniques, it is common in deep learning to split off a *test set* which remains untouched during model training and tuning. It is then later be used to evaluate the model performance. Here, we will also split off an additional *validation set*, the reason of which will hopefully become clearer later in this lesson.
 
-~~~
-from sklearn.model_selection import train_test_split
-
-X_train, X_test, y_train, y_test = train_test_split(X_data, y_data, test_size=0.3, random_state=0) 
-X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, random_state=0)
-~~~
 > ## Exercise: Split data into training, validation, and test set
 >
 > Split the data into 3 completely separate set to be used for training, validation, and testing. This can be done in two steps.
@@ -136,9 +130,10 @@ X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, r
 >
 > * How many data points do you have in the training, validation, and test sets?
 > 
->  Hint:
+>  **Hint:**
 >  ~~~
 >  from sklearn.model_selection import train_test_split
+>  
 >  X_train, X_not_train, y_train, y_not_train = train_test_split(X, y, test_size=0.3, random_state=0) 
 >  ~~~
 >  {:.language-python}
@@ -150,13 +145,13 @@ X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, r
 > > X_train, X_test, y_train, y_test = train_test_split(X_data, y_data, test_size=0.3, random_state=0) 
 > > X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, random_state=0)
 > > 
-> > print(f"Data split into training ({X_train.shape[0]})," \
+> > print(f"Data was split into training ({X_train.shape[0]})," \
 > >       f" validation ({X_val.shape[0]}) and test set ({X_test.shape[0]}).")
 > > ~~~
 > > {:.language-python}
 > > 
 > > ~~~
-> > Data split into training (767), validation (164) and test set (165).
+> > Data was split into training (767), validation (164) and test set (165).
 > > ~~~
 > > {:.output}
 > {:.solution}
