@@ -31,7 +31,7 @@ jobs:
       - name: Checkout the lesson
         uses: actions/checkout@v2
 
-      - name: Run code checkeer
+      - name: Run code checker
         run: |
           ls -l _episodes/
           FILES="_episodes/*"
@@ -40,3 +40,4 @@ jobs:
             echo "Checking $f"
             cce -f "$f"
           done
+        shell: bash {0} # opt out of fail-fast
