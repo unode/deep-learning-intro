@@ -65,15 +65,43 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 ~~~
 {:.output}
 
-~~~
-print({x.split("_")[-1] for x in data.columns})
-~~~
-{:.language-python}
+> ## Exercise: Explore the dataset
+>
+> Let's get a quick idea of the dataset.
+>
+> * How many data points do we have?
+> * How many features does the data have (don't count month and date as a feature)?
+> * What are the different measured variabel types in the data and how many are there (humidity etc.) ? 
+>
+> > ## Solution
+> > ~~~
+> > data.shape
+> > ~~~
+> > {:.language-python}
+> > This will give both the number of datapoints (3654) and the number of features (163 + month + date).
+> > 
+> > To see what type of features the data contains we could run something like:
+> > ~~~
+> > print({x.split("_")[-1] for x in data.columns if x not in ["MONTH", "DATE"]})
+> > ~~~
+> > {:.language-python}
+> > ~~~
+> > {'humidity', 'radiation', 'sunshine', 'gust', 'mean', 'max', 'precipitation', 'pressure', 'cover', 'min', 'speed'}
+> > ~~~
+> > {:.output}
+> > An alternative way which is slightly more complicated but gives better results is using regex.
+> > ~~~
+> > import re
+> > feature_names = set()
+> > for col in data.columns:
+> >     feature_names.update(re.findall('[^A-Z]{2,}', col))
+> >     
+> > feature_names
+> > ~~~
+> > In total there are 11 different measured variables.
+> {:.solution}
+{:.challenge}
 
-~~~
-{'humidity', 'radiation', 'sunshine', 'gust', 'mean', 'max', 'MONTH', 'precipitation', 'pressure', 'cover', 'min', 'speed', 'DATE'}
-~~~
-{:.output}
 
 ## Prepare the data
 
@@ -96,21 +124,39 @@ y_data = data.loc[1:(nr_rows + 1)]["BASEL_sunshine"]
 ### Split data and labels into training, validation, and test set
 As with classical machine learning techniques, it is common in deep learning to split off a *test set* which remains untouched during model training and tuning. It is then later be used to evaluate the model performance. Here, we will also split off an additional *validation set*, the reason of which will hopefully become clearer later in this lesson.
 
-~~~
-from sklearn.model_selection import train_test_split
-
-X_train, X_test, y_train, y_test = train_test_split(X_data, y_data, test_size=0.3, random_state=0) 
-X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, random_state=0)
-
-print(f"Data split into training ({X_train.shape[0]})," \
-      f" validation ({X_val.shape[0]}) and test set ({X_test.shape[0]}).")
-~~~
-{:.language-python}
-
-~~~
-Data split into training (767), validation (164) and test set (165).
-~~~
-{:.output}
+> ## Exercise: Split data into training, validation, and test set
+>
+> Split the data into 3 completely separate set to be used for training, validation, and testing using the `train_test_split` function from `sklearn.model_selection`. This can be done in two steps.
+> First, split the data into training set (70% of all datapoints) and validation+test set (30%). Then split the second one again into two sets (both roughly equal in size).
+>
+> * How many data points do you have in the training, validation, and test sets?
+> 
+>  **Hint:**
+>  ~~~
+>  from sklearn.model_selection import train_test_split
+>  
+>  X_train, X_not_train, y_train, y_not_train = train_test_split(X, y, test_size=0.3, random_state=0) 
+>  ~~~
+>  {:.language-python}
+>
+> > ## Solution
+> > ~~~
+> > from sklearn.model_selection import train_test_split
+> > 
+> > X_train, X_test, y_train, y_test = train_test_split(X_data, y_data, test_size=0.3, random_state=0) 
+> > X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, random_state=0)
+> > 
+> > print(f"Data was split into training ({X_train.shape[0]})," \
+> >       f" validation ({X_val.shape[0]}) and test set ({X_test.shape[0]}).")
+> > ~~~
+> > {:.language-python}
+> > 
+> > ~~~
+> > Data was split into training (767), validation (164) and test set (165).
+> > ~~~
+> > {:.output}
+> {:.solution}
+{:.challenge}
       
 ## Build a dense neural network
 
