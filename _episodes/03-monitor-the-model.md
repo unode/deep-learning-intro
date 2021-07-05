@@ -199,16 +199,16 @@ The network should hence output a single float value which is why the last layer
 > > 
 > > def create_nn():
 > >     # Input layer
-> >     input = keras.Input(shape=(X_data.shape[1],), name='input')
+> >     inputs = keras.Input(shape=(X_data.shape[1],), name='input')
 > > 
 > >     # Dense layers
-> >     layers_dense = keras.layers.Dense(100, 'relu')(input)
+> >     layers_dense = keras.layers.Dense(100, 'relu')(inputs)
 > >     layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
 > > 
 > >     # Output layer
-> >     output = keras.layers.Dense(1)(layers_dense)
+> >     outputs = keras.layers.Dense(1)(layers_dense)
 > > 
-> >     return keras.Model(inputs=input, outputs=output, name="weather_prediction_model")
+> >     return keras.Model(inputs=inputs, outputs=outputs, name="weather_prediction_model")
 > > 
 > > model = create_nn()
 > > model.summary()
@@ -353,7 +353,7 @@ Let's give this a try!
 
 We need to initiate a new model -- otherwise Keras will simply assume that we want to continue training the model we already trained above.
 ~~~
-model = create_nn(n_features=X_data.shape[1], n_predictions=1)
+model = create_nn()
 model.compile(optimizer='adam',
               loss='mse',
               metrics=[keras.metrics.RootMeanSquaredError()])
@@ -407,20 +407,20 @@ Most similar to classical machine learning might to **reduce the number of param
 >
 > > ## Solution
 > > ~~~
-> > def create_nn(n_features, n_predictions, nodes1, nodes2):
+> > def create_nn(nodes1, nodes2):
 > >     # Input layer
-> >     input = keras.layers.Input(shape=(n_features,), name='input')
+> >     inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
 > > 
 > >     # Dense layers
-> >     layers_dense = keras.layers.Dense(nodes1, 'relu')(input)
+> >     layers_dense = keras.layers.Dense(nodes1, 'relu')(inputs)
 > >     layers_dense = keras.layers.Dense(nodes2, 'relu')(layers_dense)
 > > 
 > >     # Output layer
-> >     output = keras.layers.Dense(n_predictions)(layers_dense)
+> >     outputs = keras.layers.Dense(1)(layers_dense)
 > > 
-> >     return keras.Model(inputs=input, outputs=output, name="model_small")
+> >     return keras.Model(inputs=inputs, outputs=outputs, name="model_small")
 > > 
-> > model = create_nn(X_data.shape[1], 1, 10, 5)
+> > model = create_nn(10, 5)
 > > model.summary()
 > > ~~~
 > > {:.language-python}
@@ -482,7 +482,7 @@ Early stopping is both intuitive and effective to use, so it has become a standa
 
 To better study the effect, we can now savely go back to models with many (too many?) parameters:
 ~~~
-model = create_nn(X_data.shape[1], 1, 100, 50)
+model = create_nn(100, 50)
 model.compile(optimizer='adam',
               loss='mse',
               metrics=[keras.metrics.RootMeanSquaredError()])
@@ -549,22 +549,22 @@ from tensorflow.keras.layers import BatchNormalization
 >
 > > ## Solution
 > > ~~~
-> > def create_nn(n_features, n_predictions):
+> > def create_nn():
 > >     # Input layer
-> >     layers_input = keras.layers.Input(shape=(n_features,), name='input')
+> >     inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
 > > 
 > >     # Dense layers
-> >     layers_dense = keras.layers.BatchNormalization()(layers_input)
+> >     layers_dense = keras.layers.BatchNormalization()(inputs)
 > >     layers_dense = keras.layers.Dense(100, 'relu')(layers_dense)
 > >     layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
 > > 
 > >     # Output layer
-> >     layers_output = keras.layers.Dense(n_predictions)(layers_dense)
+> >     outputs = keras.layers.Dense(1)(layers_dense)
 > > 
 > >     # Defining the model and compiling it
-> >     return keras.Model(inputs=layers_input, outputs=layers_output, name="model_batchnorm")
+> >     return keras.Model(inputs=inputs, outputs=outputs, name="model_batchnorm")
 > > 
-> > model = create_nn(X_data.shape[1], 1)
+> > model = create_nn()
 > > model.compile(loss='mse', optimizer='adam', metrics=[keras.metrics.RootMeanSquaredError()])
 > > model.summary()
 > > ~~~
