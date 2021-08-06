@@ -1,7 +1,7 @@
 ---
 title: "Networks are like onions"
-teaching: 0
-exercises: 0
+teaching: 30
+exercises: 45
 questions:
 - "Why do we need different types of layers?"
 - "What are good network designs for image data?"
