@@ -38,6 +38,8 @@ jobs:
 
       - name: Run code checker
         run: |
+          ls -l
+          pwd
           ls -l _episodes/
           FILES="_episodes/*"
           for f in $FILES
