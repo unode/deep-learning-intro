@@ -1,7 +1,7 @@
 ---
 title: "Introduction"
-teaching: 0
-exercises: 0
+teaching: 40
+exercises: 15
 questions:
 - "What is Deep Learning?"
 - "When does it make sense to use and not use Deep Learning?"
