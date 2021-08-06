@@ -58,7 +58,7 @@ In this episode we will focus on a minimal example for each of these steps, late
 > Using a GPU becomes necessary when tackling larger datasets or complex problems which
 > require a more complex Neural Network.
 {: .callout}
-## Step 1. Formulate / Outline the problem: Penguin classification
+## 1. Formulate / Outline the problem: Penguin classification
 In this episode we will be using the [penguin dataset](https://zenodo.org/record/3960218), this is a dataset that was published in 2020 by Allison Horst and contains data on three different species of the penguins.
 
 We will use the penguin dataset to train a neural network which can classify which species a
@@ -465,7 +465,7 @@ The model summary here can show you some information about the neural network we
 > {:.solution}
 {:.challenge}
 
-## 5. Choose a cost function and metrics
+## 5. Choose a loss function and optimizer
 We have now designed a neural network that in theory we should be able to
 train to classify Penguins.
 However, we first need to select an appropriate loss
@@ -544,25 +544,15 @@ are problems that need to be adressed.
 > {:.solution}
 {:.challenge}
 
-## 7. Tune hyperparameters
-As we discussed before the design and training of a neural network comes with
-many hyper parameter choices.
-We will go into more depth of these hyperparameters in later episodes.
-For now it is important to realize that the parameters we chose were
-somewhat arbitrary and more careful consideration needs to be taken to
-pick hyperparameter values.
+## 7. Perform a Prediction/Classification
+Now that we have a trained neural network, we can use it to predict new samples
+of penguin using the `predict` function.
 
-## 8. Measuring Performance
-Now that we have a trained neural network it is important to assess how well it performs.
-We want to know how well it will perform in a realistic prediction scenario, measuring
-performance will also come back when tuning the hyperparameters.
-
-We have created a test set during the data preparation stage which we will use
-now to create a confusion matrix.
-
-### Predict the species of the test set
-The first step here is to use the neural network to predict the species of the test set
-using the `predict` function. This will return a `numpy` matrix, which I like to convert
+We will use the neural network to predict the species of the test set
+using the `predict` function.
+We will be using this prediction in the next step to measure the performance of our
+trained network.
+This will return a `numpy` matrix, which I like to convert
 to a pandas dataframe to easily see the labels.
 ~~~
 y_pred = model.predict(X_test)
@@ -617,6 +607,14 @@ predicted_species
 > ~~~
 > {:.output}
 {:.solution}
+
+## 8. Measuring Performance
+Now that we have a trained neural network it is important to assess how well it performs.
+We want to know how well it will perform in a realistic prediction scenario, measuring
+performance will also come back when tuning the hyperparameters.
+
+We have created a test set during the data preparation stage which we will use
+now to create a confusion matrix.
 
 ### Confusion matrix
 With the predicted species we can now create a confusion matrix and display it
@@ -696,11 +694,16 @@ sns.heatmap(confusion_df, annot=True)
 > {:.solution}
 {:.challenge}
 
-## 9. 'predict'
-Now that we have a training neural network, we can use it to predict new samples
-of penguin using the `predict` function like we did in the previous step.
+## 9. Tune hyperparameters
+As we discussed before the design and training of a neural network comes with
+many hyper parameter choices.
+We will go into more depth of these hyperparameters in later episodes.
+For now it is important to realize that the parameters we chose were
+somewhat arbitrary and more careful consideration needs to be taken to
+pick hyperparameter values.
 
-However, it is very useful to be able to use the trained neural network at a later
+### 10. Save model
+It is very useful to be able to use the trained neural network at a later
 stage without having to retrain it.
 This can be done by using the `save` method of the model.
 It takes a string as a parameter which is the path of a directory where the model is stored.
