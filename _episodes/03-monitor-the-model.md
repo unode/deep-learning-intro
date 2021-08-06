@@ -578,8 +578,6 @@ from tensorflow.keras.layers import BatchNormalization
 > > ~~~
 > > {:.output}
 > >
-> > As you can see, the Batchnorm layer has 356 parameters, which is 4 per input node.
-> > These are the moving mean, moving standard deviation, scaling factor and offset factor that are used at prediction time.
 > >
 > > We can train the model again as follows:
 > > ~~~
@@ -601,7 +599,17 @@ from tensorflow.keras.layers import BatchNormalization
 > {:.solution}
 {:.challenge}
 
-
+> ## Batchnorm parameters
+>
+> You may have noticed that the number of parameters of the Batchnorm layers corresponds to
+> 4 parameters per input node.
+> These are the moving mean, moving standard deviation, additional scaling factor (gamma) and offset factor (beta).
+> There is a difference in behavior for Batchnorm between training and prediction time.
+> During training time, the data is scaled with the mean and standard deviation of the batch.
+> During prediction time, the moving mean and moving standard deviation of the training set is used instead.
+> The additional parameters gamma and beta are introduced to allow for more flexibility in output values, and are used in both training and prediction,
+>
+{: .callout}
 
 ## Run on test set and compare to naive baseline
 It seems that no matter what we add, the overall loss does not decrease much further (we at least avoided overfitting though!).
