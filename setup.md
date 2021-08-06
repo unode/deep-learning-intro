@@ -75,7 +75,7 @@ If you run into any difficulties, please request help before the workshop begins
 Open a terminal and type the command (note that installing tensorflow causes keras to
 be installed too):
 ~~~
-$ conda install tensorflow seaborn scikit-learn pandas
+$ conda install "tensorflow>=2.1" seaborn "scikit-learn>=0.22" pandas
 ~~~
 {: .language-bash}
 
@@ -104,6 +104,27 @@ or git bash and type the command:
 $ python
 ~~~
 {: .language-bash}
+
+## Check your setup
+To check whether all packages installed correctly, start a jupyter notebook as
+explained above. Run the following lines of code:
+~~~
+import sklearn
+print('sklearn version: ', sklearn.__version__)
+
+import seaborn
+print('seaborn version: ', seaborn.__version__)
+
+import pandas
+print('pandas version: ', pandas.__version__)
+
+from tensorflow import keras
+print('Keras version: ', keras.__version__)
+~~~
+{:.language-python}
+
+This should output the versions of all packages without giving errors.
+Most versions will work fine with this lesson, but for Keras, the minimum version is 2.2.4, and for sklearn the minimum version is 0.22.
 
 ## Downloading the required datasets
 
