@@ -70,6 +70,13 @@ If you run into any difficulties, please request help before the workshop begins
         press enter to prepend Anaconda to your `PATH` (this makes the Anaconda
         distribution the default Python).
 
+> ## conda version
+>
+> If you already have anaconda installed at your computer, make sure you have an up-to-date version of conda running.
+> See [these instructions](https://docs.anaconda.com/anaconda/install/update-version/) for updating conda.
+>
+{: .callout}
+
 ## Installing the required packages
 
 Open a terminal and type the command (note that installing tensorflow causes keras to
