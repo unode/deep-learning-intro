@@ -37,16 +37,19 @@ The goal of this episode is to quickly get your hands dirty in actually defining
 We want you to go through the most commonly used deep learning workflow that was covered
 in the introduction.
 As a reminder below are the steps of the deep learning workflow:
+
 1. Formulate / Outline the problem
 2. Identify inputs and outputs
 3. Prepare data
 4. Choose a pretrained model or start building architecture from scratch
-5. Choose a cost function and metrics
-6. Train model
-7. Tune hyperparameters
-8. 'predict'
+5. Choose a loss function and optimizer
+6. Train the model
+7. Perform a Prediction/Classification
+8. Measure performance
+9. Tune hyperparameters
+10. Save model
 
-In this episode will focus on a minimal example for each of these steps, later episodes will build on this knowledge to go into greater depth for some or all of these steps.
+In this episode we will focus on a minimal example for each of these steps, later episodes will build on this knowledge to go into greater depth for some or all of these steps.
 
 > ## GPU usage
 > For this lesson having a GPU (graphics card) available is not needed.
