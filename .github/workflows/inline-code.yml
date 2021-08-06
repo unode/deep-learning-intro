@@ -31,6 +31,11 @@ jobs:
       - name: Checkout the lesson
         uses: actions/checkout@v2
 
+      - name: Download prerequisite files
+        run: |
+          wget https://zenodo.org/record/4980359/files/weather_prediction_dataset.csv?download=1
+          wget https://zenodo.org/record/4980359/files/weather_prediction_bbq_labels.csv?download=1
+
       - name: Run code checker
         run: |
           ls -l _episodes/
