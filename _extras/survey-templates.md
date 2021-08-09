@@ -17,16 +17,16 @@ What worked well was that each participant is asked 2-3 questions for each of th
 2. self-estimated proficiency in data science methods
 3. self-estimated proficiency in ML methods
 
-I decided to rather stick to questions that relate to problem solving rather than focusing on libraries. In general, the following is meant to support instructors to device ['what to teach'](https://cdh.carpentries.org/deciding-what-to-teach.html#target-audience).
+Sticking to questions that relate to problem solving rather than focusing on libraries or advanced concepts can help to diversify your learners. But as a whole, the following is meant to support instructors to find out ['what to teach'](https://cdh.carpentries.org/deciding-what-to-teach.html#target-audience). So you'd first start out to describe your target audience and then select subsets of questions that serve this audience.
 
-The following questions all are meant to offer 4 answers:
+The following questions all are meant to offer four answers learners can choose from:
 
 > - I know how to do this.
 > - I'd consult code I've written.
 > - I'd ask a colleague or search for this online.
 > - I am not sure what this question is talking about.
 
-This way, the implications of right/wrong answers on the learners are circumvented, i.e. no learner needs to feel bad prior to the workshop for not-knowing something. These questions rather aim to probe the self-estimated profiency of learners.
+This way, the implications of right/wrong answers on the learners are avoided, i.e. no learner needs to feel bad prior to the workshop for not-knowing something. These questions rather aim to probe the self-estimated profiency of learners.
 
 ### Questions about python coding
 
