@@ -219,7 +219,7 @@ A **convolution matrix**, or **kernel**, is a matrix transformation that we 'sli
  [0, 0, 0]
  [1, 1, 1]]
 ~~~
-{: .language-python}
+{: .output}
 This kernel will give a high value to a pixel if it's on a horizontal border between dark and light areas.
 Note that for RGB images, the kernel should also have a depth of 3.
 
