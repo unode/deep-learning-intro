@@ -130,11 +130,11 @@ print('Keras version: ', keras.__version__)
 ~~~
 {:.language-python}
 
-This should output the versions of all packages without giving errors.
+This should output the versions of all required packages without giving errors.
 Most versions will work fine with this lesson, but for Keras, the minimum version is 2.2.4, and for sklearn the minimum version is 0.22.
 
 ## Fallback option: cloud environment
-When local installation does not work for you, it is also possible to run this lesson in [Google colab](https://colab.research.google.com/). If you open a notebook here, the required packages are already pre-installed.
+If a local installation does not work for you, it is also possible to run this lesson in [Google colab](https://colab.research.google.com/). If you open a notebook here, the required packages are already pre-installed.
 
 ## Downloading the required datasets
 
