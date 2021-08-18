@@ -20,7 +20,7 @@ keypoints:
 - "Batchnormalization scales the data as part of the model."
 ---
 
-## Explore the data
+# Import & explore the data
 
 ### Import dataset
 Here we want to work with the *weather prediction dataset* which can be [downloaded from Zenodo](https://doi.org/10.5281/zenodo.5071376).
@@ -103,7 +103,7 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 {:.challenge}
 
 
-## Prepare the data
+# Define the problem: Predict tomorrow's sunshine hours
 
 ### Select a subset and split into data (X) and labels (y)
 The full dataset comprises 10 years (3654 days) from which we here will only select the first 3 years.
@@ -120,6 +120,9 @@ y_data = data.loc[1:(nr_rows + 1)]["BASEL_sunshine"]
 ~~~
 {:.language-python}
 
+
+# Prepare the data for machine learning
+In the present case the data is luckily pre-prepared to some extend; It should not contain any weird values such as `9999` or `NaN` or `NoneType`. In general, one would first check this and eventually remove or replace such values, for instance using pandas `data.describe()` function.
 
 ### Split data and labels into training, validation, and test set
 As with classical machine learning techniques, it is common in deep learning to split off a *test set* which remains untouched during model training and tuning. It is then later be used to evaluate the model performance. Here, we will also split off an additional *validation set*, the reason of which will hopefully become clearer later in this lesson.
@@ -308,6 +311,7 @@ First, we will do the actual prediction step.
 > Even though we here use a different model architecture and a different task compared to episode 2, the prediction step is mostly identical.
 > Use the model to predict the labels for the training set and the test set and then compare them in a scatter plot to the true labels. Hint: use `plt.scatter()`.
 > 
+> Hint: the predicted labels can be generated using `y_predicted = model.predict(X)`.
 > * Is the performance of the model as you expected (or better/worse)? 
 > * Is there a noteable difference between training set and test set? And if so, any idea why?
 > 
@@ -346,8 +350,36 @@ First, we will do the actual prediction step.
 Overfitting also happens in classical machine learning, but there it is usually interpreted as the model having more parameters than the training data would justify (say, a decision tree with too many branches for the number of training instances). As a consequence one would reduce the number of parameters to avoid overfitting.
 In deep learning the situation is slightly different. It can -same as for classical machine learning- also be a sign of having a *too big* model, meaning a model with too many parameters (layers and/or nodes). However, in deep learning higher number of model parameters are often still considered acceptable and models often perform best (in terms of prediction accuracy) when they are at the verge of overfitting. So, in a way, training deep learning models is always a bit like playing with fire...
 
+## Set expectations: How difficult is the defined problem?
+Before we dive deeper into handling overfitting and (trying to) improving the model performance, let's ask the question: How well must a model perform before we consider it a good model?
+
+Now that we defined a problem (predict tomorrow's sunshine hours), it makes sense to develop an intuition for how difficult the posed problem is. Frequently, models will be evaluated against a so called **baseline**. A baseline can be the current standard in the field or if such a thing does not exist it could also be an intuitive first guess or toy model. The latter is exactly what we would use for our case.
+
+Maybe the simplest sunshine hour prediction we can easily do is: Tomorrow we will have the same number of sunshine hours as today.
+(sounds very naive, but for many observables such as temperature this is already a fairly good predictor)
+
+> ## Excercise: Create a baseline and plot it against the true labels
+> Create the same type of scatter plot as before, but now comparing the sunshine hours in Basel today vs. the sunshine hours in Basel tomorrow. 
+>
+> * Looking at this baseline: Would you consider this a simple or a hard problem to solve?
+> 
+> > ## Solution
+> > We can here just take the `BASEL_sunhine` column of our data, because this contains the sunshine hours from one day before what we have as a label.
+> > ~~~
+> > plt.figure(figsize=(5, 5), dpi=100)
+> > plt.scatter(X_test["BASEL_sunshine"], y_test, s=10, alpha=0.5)
+> > plt.xlabel("sunshine hours yesterday")
+> > plt.ylabel("true sunshine hours")
+> > ~~~
+> > {: .language-python} 
+> > 
+> > ![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
+> {:.solution}
+{:.challenge}
+
+
 ## Watch your model training closely
-As we just saw, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a second test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evaluate the model with the *validation set* after every epoch during training, for instance to splot if we see signs of clear overfitting.
+As we saw when comparing the predictions for the training and the test set, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a second test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evaluate the model with the *validation set* after every epoch during training, for instance to splot if we see signs of clear overfitting.
 
 Let's give this a try!
 
@@ -590,9 +622,6 @@ from tensorflow.keras.layers import BatchNormalization
 > {:.solution}
 {:.challenge}
 
-
-
-## Run on test set and compare to naive baseline
 It seems that no matter what we add, the overall loss does not decrease much further (we at least avoided overfitting though!).
 Let's again plot the results on the test set:
 ~~~
@@ -608,27 +637,7 @@ plt.ylabel("true sunshine hours")
 ![Output of plotting sample](../fig/03_regression_test_5_dropout_batchnorm.png)
 
 Well... certainly not perfect. But how good or bad is this? Maybe not good enough to plan your picnic for tomorrow.
-But let's better compare it to a naive baseline.
-
-> ## Exercise: Create a similar scatter plot as above for a reasonable baseline
->
-> What can we take as a baseline? 
-> Maybe the simplest prediction to make would be to say: Tomorrow we will have the same number of sunshine hours as today.
-> Let's compare to this.
-> 
-> > ## Solution
-> > We can here just take the `BASEL_sunhine` column of our data, because this contains the sunshine hours from one day before what we have as a label.
-> > ~~~
-> > plt.figure(figsize=(5, 5), dpi=100)
-> > plt.scatter(X_test["BASEL_sunshine"], y_test, s=10, alpha=0.5)
-> > plt.xlabel("sunshine hours yesterday")
-> > plt.ylabel("true sunshine hours")
-> > ~~~
-> > {: .language-python} 
-> > 
-> > ![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
-> {:.solution}
-{:.challenge}
+But let's better compare it to the naive baseline we created in the beginning. What would you say, did we improve on that?
 
 
 # Outlook
