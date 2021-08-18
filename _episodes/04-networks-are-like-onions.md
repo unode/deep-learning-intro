@@ -1,7 +1,7 @@
 ---
 title: "Networks are like onions"
-teaching: 0
-exercises: 0
+teaching: 30
+exercises: 45
 questions:
 - "Why do we need different types of layers?"
 - "What are good network designs for image data?"
@@ -219,7 +219,7 @@ A **convolution matrix**, or **kernel**, is a matrix transformation that we 'sli
  [0, 0, 0]
  [1, 1, 1]]
 ~~~
-{: .language-python}
+{: .output}
 This kernel will give a high value to a pixel if it's on a horizontal border between dark and light areas.
 Note that for RGB images, the kernel should also have a depth of 3.
 

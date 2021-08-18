@@ -1,7 +1,7 @@
 ---
 title: "Monitor the training process"
-teaching: 0
-exercises: 0
+teaching: 135
+exercises: 80
 questions:
 - "How do I set the training goal?"
 - "How do I monitor the training process?"
