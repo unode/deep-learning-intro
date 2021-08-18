@@ -122,7 +122,8 @@ y_data = data.loc[1:(nr_rows + 1)]["BASEL_sunshine"]
 
 
 # Prepare the data for machine learning
-In the present case the data is luckily pre-prepared to some extend; It should not contain any weird values such as `9999` or `NaN` or `NoneType`. In general, one would first check this and eventually remove or replace such values, for instance using pandas `data.describe()` function.
+In general, it is important to check if the data contains any weird values such as `9999` or `NaN` or `NoneType`, for instance using pandas `data.describe()` function. If so, such values must be removed or replaced such values. 
+In the present case the data is luckily pre-prepared to some extent and shouldn't contain such values, so that this step could here be omitted.
 
 ### Split data and labels into training, validation, and test set
 As with classical machine learning techniques, it is common in deep learning to split off a *test set* which remains untouched during model training and tuning. It is then later be used to evaluate the model performance. Here, we will also split off an additional *validation set*, the reason of which will hopefully become clearer later in this lesson.
