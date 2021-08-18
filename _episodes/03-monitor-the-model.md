@@ -197,7 +197,7 @@ The network should hence output a single float value which is why the last layer
 > * How would our output layer look like? What about the activation function? Tip: Remember that the activation function in our previous classification network scaled the outputs between 0 and 1.
 >
 > > ## Solution
-> > Here we wrote a function for generating a keras model, because we plan on using this again in the following.
+> > Here we wrote a function for generating a keras model, because we plan on using this again in the following part.
 > > ~~~
 > > from tensorflow import keras
 > > 
