@@ -20,10 +20,10 @@ keypoints:
 - "Batchnormalization scales the data as part of the model."
 ---
 
-## Explore the data
+# Import & explore the data
 
 ### Import dataset
-Here we want to work with the *weather prediction dataset* which can be [downloaded from Zenodo](https://doi.org/10.5281/zenodo.4980359).
+Here we want to work with the *weather prediction dataset* which can be [downloaded from Zenodo](https://doi.org/10.5281/zenodo.5071376).
 It contains daily weather observations from 18 different European cities or places through the years 2000 to 2010. For all locations the data contains the variables ‘mean temperature’, ‘max temperature’, and ‘min temperature’. In addition, for multiple of the following variables are provided: 'cloud_cover', 'wind_speed', 'wind_gust', 'humidity', 'pressure', 'global_radiation', 'precipitation', 'sunshine', but not all of them are provided for all locations. A more extensive description of the dataset including the different physical units is given in accompanying metadata file.
 ![18 locations in the weather prediction dataset](../fig/03_weather_prediction_dataset_map.png)
 
@@ -103,7 +103,7 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 {:.challenge}
 
 
-## Prepare the data
+# Define the problem: Predict tomorrow's sunshine hours
 
 ### Select a subset and split into data (X) and labels (y)
 The full dataset comprises 10 years (3654 days) from which we here will only select the first 3 years.
@@ -120,6 +120,10 @@ y_data = data.loc[1:(nr_rows + 1)]["BASEL_sunshine"]
 ~~~
 {:.language-python}
 
+
+# Prepare the data for machine learning
+In general, it is important to check if the data contains any weird values such as `9999` or `NaN` or `NoneType`, for instance using pandas `data.describe()` function. If so, such values must be removed or replaced such values. 
+In the present case the data is luckily pre-prepared to some extent and shouldn't contain such values, so that this step could here be omitted.
 
 ### Split data and labels into training, validation, and test set
 As with classical machine learning techniques, it is common in deep learning to split off a *test set* which remains untouched during model training and tuning. It is then later be used to evaluate the model performance. Here, we will also split off an additional *validation set*, the reason of which will hopefully become clearer later in this lesson.
@@ -143,8 +147,8 @@ As with classical machine learning techniques, it is common in deep learning to 
 > > ~~~
 > > from sklearn.model_selection import train_test_split
 > > 
-> > X_train, X_test, y_train, y_test = train_test_split(X_data, y_data, test_size=0.3, random_state=0) 
-> > X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, random_state=0)
+> > X_train, X_not_train, y_train, y_not_train = train_test_split(X_data, y_data, test_size=0.3, random_state=0) 
+> > X_val, X_test, y_val, y_test = train_test_split(X_not_train, y_not_train, test_size=0.5, random_state=0)
 > > 
 > > print(f"Data was split into training ({X_train.shape[0]})," \
 > >       f" validation ({X_val.shape[0]}) and test set ({X_test.shape[0]}).")
@@ -175,29 +179,42 @@ The network should hence output a single float value which is why the last layer
 >
 > We have seen how to build a dense neural network in episode 2. 
 > Try now to construct a dense neural network with 3 layers for a regression task.
-> You could for instance start with a network of a dense layer with 100 nodes, followed by one with 50 nodes and finally an output layer.
+> Start with a network of a dense layer with 100 nodes, followed by one with 50 nodes and finally an output layer.
+> Hint: Layers in keras are stacked by passing a layer to the next one like this
+> ~~~
+> inputs = keras.layers.Input(shape=...)
+> next_layer = keras.layers.Dense(..., activation='relu')(inputs)
+> next_layer = keras.layers.Dense(..., activation='relu')(next_layer) 
+> #here we used the same layer name twice, but that is up to you
+> ...
+> next_layer = ...(next_layer) 
+> ...
+> #stack as many layers as you like
+> ~~~
+> {:.language-python}
 >
 > * What must here be the dimension of our input layer?
 > * How would our output layer look like? What about the activation function? Tip: Remember that the activation function in our previous classification network scaled the outputs between 0 and 1.
 >
 > > ## Solution
+> > Here we wrote a function for generating a keras model, because we plan on using this again in the following part.
 > > ~~~
 > > from tensorflow import keras
 > > 
-> > def create_nn(n_features, n_predictions):
+> > def create_nn():
 > >     # Input layer
-> >     input = keras.Input(shape=(n_features,), name='input')
+> >     inputs = keras.Input(shape=(X_data.shape[1],), name='input')
 > > 
 > >     # Dense layers
-> >     layers_dense = keras.layers.Dense(100, 'relu')(input)
+> >     layers_dense = keras.layers.Dense(100, 'relu')(inputs)
 > >     layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
 > > 
 > >     # Output layer
-> >     output = keras.layers.Dense(n_predictions)(layers_dense)
+> >     outputs = keras.layers.Dense(1)(layers_dense)
 > > 
-> >     return keras.Model(inputs=input, outputs=output, name="weather_prediction_model")
+> >     return keras.Model(inputs=inputs, outputs=outputs, name="weather_prediction_model")
 > > 
-> > model = create_nn(n_features=X_data.shape[1], n_predictions=1)
+> > model = create_nn()
 > > model.summary()
 > > ~~~
 > > {:.language-python}
@@ -295,6 +312,7 @@ First, we will do the actual prediction step.
 > Even though we here use a different model architecture and a different task compared to episode 2, the prediction step is mostly identical.
 > Use the model to predict the labels for the training set and the test set and then compare them in a scatter plot to the true labels. Hint: use `plt.scatter()`.
 > 
+> Hint: the predicted labels can be generated using `y_predicted = model.predict(X)`.
 > * Is the performance of the model as you expected (or better/worse)? 
 > * Is there a noteable difference between training set and test set? And if so, any idea why?
 > 
@@ -333,14 +351,42 @@ First, we will do the actual prediction step.
 Overfitting also happens in classical machine learning, but there it is usually interpreted as the model having more parameters than the training data would justify (say, a decision tree with too many branches for the number of training instances). As a consequence one would reduce the number of parameters to avoid overfitting.
 In deep learning the situation is slightly different. It can -same as for classical machine learning- also be a sign of having a *too big* model, meaning a model with too many parameters (layers and/or nodes). However, in deep learning higher number of model parameters are often still considered acceptable and models often perform best (in terms of prediction accuracy) when they are at the verge of overfitting. So, in a way, training deep learning models is always a bit like playing with fire...
 
+## Set expectations: How difficult is the defined problem?
+Before we dive deeper into handling overfitting and (trying to) improving the model performance, let's ask the question: How well must a model perform before we consider it a good model?
+
+Now that we defined a problem (predict tomorrow's sunshine hours), it makes sense to develop an intuition for how difficult the posed problem is. Frequently, models will be evaluated against a so called **baseline**. A baseline can be the current standard in the field or if such a thing does not exist it could also be an intuitive first guess or toy model. The latter is exactly what we would use for our case.
+
+Maybe the simplest sunshine hour prediction we can easily do is: Tomorrow we will have the same number of sunshine hours as today.
+(sounds very naive, but for many observables such as temperature this is already a fairly good predictor)
+
+> ## Excercise: Create a baseline and plot it against the true labels
+> Create the same type of scatter plot as before, but now comparing the sunshine hours in Basel today vs. the sunshine hours in Basel tomorrow. 
+>
+> * Looking at this baseline: Would you consider this a simple or a hard problem to solve?
+> 
+> > ## Solution
+> > We can here just take the `BASEL_sunhine` column of our data, because this contains the sunshine hours from one day before what we have as a label.
+> > ~~~
+> > plt.figure(figsize=(5, 5), dpi=100)
+> > plt.scatter(X_test["BASEL_sunshine"], y_test, s=10, alpha=0.5)
+> > plt.xlabel("sunshine hours yesterday")
+> > plt.ylabel("true sunshine hours")
+> > ~~~
+> > {: .language-python} 
+> > 
+> > ![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
+> {:.solution}
+{:.challenge}
+
+
 ## Watch your model training closely
-As we just saw, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a second test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evaluate the model with the *validation set* after every epoch during training, for instance to splot if we see signs of clear overfitting.
+As we saw when comparing the predictions for the training and the test set, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a second test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evaluate the model with the *validation set* after every epoch during training, for instance to splot if we see signs of clear overfitting.
 
 Let's give this a try!
 
 We need to initiate a new model -- otherwise Keras will simply assume that we want to continue training the model we already trained above.
 ~~~
-model = create_nn(n_features=X_data.shape[1], n_predictions=1)
+model = create_nn()
 model.compile(optimizer='adam',
               loss='mse',
               metrics=[keras.metrics.RootMeanSquaredError()])
@@ -394,20 +440,20 @@ Most similar to classical machine learning might to **reduce the number of param
 >
 > > ## Solution
 > > ~~~
-> > def create_nn(n_features, n_predictions, nodes1, nodes2):
+> > def create_nn(nodes1, nodes2):
 > >     # Input layer
-> >     input = keras.layers.Input(shape=(n_features,), name='input')
+> >     inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
 > > 
 > >     # Dense layers
-> >     layers_dense = keras.layers.Dense(nodes1, 'relu')(input)
+> >     layers_dense = keras.layers.Dense(nodes1, 'relu')(inputs)
 > >     layers_dense = keras.layers.Dense(nodes2, 'relu')(layers_dense)
 > > 
 > >     # Output layer
-> >     output = keras.layers.Dense(n_predictions)(layers_dense)
+> >     outputs = keras.layers.Dense(1)(layers_dense)
 > > 
-> >     return keras.Model(inputs=input, outputs=output, name="model_small")
+> >     return keras.Model(inputs=inputs, outputs=outputs, name="model_small")
 > > 
-> > model = create_nn(X_data.shape[1], 1, 10, 5)
+> > model = create_nn(10, 5)
 > > model.summary()
 > > ~~~
 > > {:.language-python}
@@ -469,7 +515,7 @@ Early stopping is both intuitive and effective to use, so it has become a standa
 
 To better study the effect, we can now savely go back to models with many (too many?) parameters:
 ~~~
-model = create_nn(X_data.shape[1], 1, 100, 50)
+model = create_nn(100, 50)
 model.compile(optimizer='adam',
               loss='mse',
               metrics=[keras.metrics.RootMeanSquaredError()])
@@ -536,22 +582,22 @@ from tensorflow.keras.layers import BatchNormalization
 >
 > > ## Solution
 > > ~~~
-> > def create_nn(n_features, n_predictions):
+> > def create_nn():
 > >     # Input layer
-> >     layers_input = keras.layers.Input(shape=(n_features,), name='input')
+> >     inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
 > > 
 > >     # Dense layers
-> >     layers_dense = keras.layers.BatchNormalization()(layers_input)
+> >     layers_dense = keras.layers.BatchNormalization()(inputs)
 > >     layers_dense = keras.layers.Dense(100, 'relu')(layers_dense)
 > >     layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
 > > 
 > >     # Output layer
-> >     layers_output = keras.layers.Dense(n_predictions)(layers_dense)
+> >     outputs = keras.layers.Dense(1)(layers_dense)
 > > 
 > >     # Defining the model and compiling it
-> >     return keras.Model(inputs=layers_input, outputs=layers_output, name="model_batchnorm")
+> >     return keras.Model(inputs=inputs, outputs=outputs, name="model_batchnorm")
 > > 
-> > model = create_nn(X_data.shape[1], 1)
+> > model = create_nn()
 > > model.compile(loss='mse', optimizer='adam', metrics=[keras.metrics.RootMeanSquaredError()])
 > > model.summary()
 > > ~~~
@@ -577,9 +623,6 @@ from tensorflow.keras.layers import BatchNormalization
 > {:.solution}
 {:.challenge}
 
-
-
-## Run on test set and compare to naive baseline
 It seems that no matter what we add, the overall loss does not decrease much further (we at least avoided overfitting though!).
 Let's again plot the results on the test set:
 ~~~
@@ -595,27 +638,7 @@ plt.ylabel("true sunshine hours")
 ![Output of plotting sample](../fig/03_regression_test_5_dropout_batchnorm.png)
 
 Well... certainly not perfect. But how good or bad is this? Maybe not good enough to plan your picnic for tomorrow.
-But let's better compare it to a naive baseline.
-
-> ## Exercise: Create a similar scatter plot as above for a reasonable baseline
->
-> What can we take as a baseline? 
-> Maybe the simplest prediction to make would be to say: Tomorrow we will have the same number of sunshine hours as today.
-> Let's compare to this.
-> 
-> > ## Solution
-> > We can here just take the `BASEL_sunhine` column of our data, because this contains the sunshine hours from one day before what we have as a label.
-> > ~~~
-> > plt.figure(figsize=(5, 5), dpi=100)
-> > plt.scatter(X_test["BASEL_sunshine"], y_test, s=10, alpha=0.5)
-> > plt.xlabel("sunshine hours yesterday")
-> > plt.ylabel("true sunshine hours")
-> > ~~~
-> > {: .language-python} 
-> > 
-> > ![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
-> {:.solution}
-{:.challenge}
+But let's better compare it to the naive baseline we created in the beginning. What would you say, did we improve on that?
 
 
 # Outlook
