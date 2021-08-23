@@ -299,7 +299,7 @@ X_train, X_test, y_train, y_test = train_test_split(penguin_features, target,tes
 >
 > Take a look at the training and test set we created.
 > - How many samples do the training and test sets have?
-> - Is the training set well balanced?
+> - Are the classes in the training set well balanced?
 >
 > > ## Solution
 > > Using `y_train.shape` and `y_test.shape` we can see the training set has 273
