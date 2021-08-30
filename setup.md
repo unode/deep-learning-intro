@@ -70,12 +70,19 @@ If you run into any difficulties, please request help before the workshop begins
         press enter to prepend Anaconda to your `PATH` (this makes the Anaconda
         distribution the default Python).
 
+> ## conda version
+>
+> If you already have anaconda installed at your computer, make sure you have an up-to-date version of conda running.
+> See [these instructions](https://docs.anaconda.com/anaconda/install/update-version/) for updating conda.
+>
+{: .callout}
+
 ## Installing the required packages
 
 Open a terminal and type the command (note that installing tensorflow causes keras to
 be installed too):
 ~~~
-$ conda install tensorflow seaborn scikit-learn pandas
+$ conda install "tensorflow>=2.5" seaborn "scikit-learn>=0.22" pandas
 ~~~
 {: .language-bash}
 
@@ -104,6 +111,30 @@ or git bash and type the command:
 $ python
 ~~~
 {: .language-bash}
+
+## Check your setup
+To check whether all packages installed correctly, start a jupyter notebook as
+explained above. Run the following lines of code:
+~~~
+import sklearn
+print('sklearn version: ', sklearn.__version__)
+
+import seaborn
+print('seaborn version: ', seaborn.__version__)
+
+import pandas
+print('pandas version: ', pandas.__version__)
+
+from tensorflow import keras
+print('Keras version: ', keras.__version__)
+~~~
+{:.language-python}
+
+This should output the versions of all required packages without giving errors.
+Most versions will work fine with this lesson, but for Keras, the minimum version is 2.2.4, and for sklearn the minimum version is 0.22.
+
+## Fallback option: cloud environment
+If a local installation does not work for you, it is also possible to run this lesson in [Google colab](https://colab.research.google.com/). If you open a notebook here, the required packages are already pre-installed.
 
 ## Downloading the required datasets
 
