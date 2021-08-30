@@ -334,7 +334,7 @@ First, we will do the actual prediction step.
 > > ~~~
 > > 24/24 [==============================] - 0s 2ms/step - loss: 0.6970 - root_mean_squared_error: 0.8349
 > > 6/6 [==============================] - 0s 2ms/step - loss: 17.0761 - root_mean_squared_error: 4.1323
-> > Train RMSE: 0.83, Test RMSE: 4.13"
+> > Train RMSE: 0.83, Test RMSE: 4.13
 > > ~~~
 > > {:.output}
 > >
