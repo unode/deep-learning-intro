@@ -6,6 +6,7 @@ on:
       - main
       - code-check-action
   pull_request: []
+  workflow_dispatch:
 jobs:
   code-check:
     runs-on: ubuntu-20.04
