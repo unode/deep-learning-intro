@@ -465,6 +465,20 @@ The model summary here can show you some information about the neural network we
 > {:.solution}
 {:.challenge}
 
+> ## How to choose an architecture?
+> Even for this small neural network, we had to make a choice on the number of hidden nodes.
+> Other choices to be made are the number of layers and type of layers (as we will see later).
+> You might wonder how you should make these architectural choices.
+> Unfortunately, there are no clear rules to follow here, and it often boils down to a lot of
+> trial and error. However, it is recommended to look what others have done with similar datasets and problems.
+> Another best practice is to start with a relatively simple architecture, and from there start add layers and tweaking the network to see if performance increases.
+>
+> If your data and problem is very similar to what others have done, you can often use a *pretrained network*.
+> Even if you're problem is different, but the data type is common (for example images), you can use a pretrained network and finetune it for your problem.
+> A large number of openly available pretrained network can be found in the [Model Zoo](https://modelzoo.co/).
+{: .callout}
+
+
 ## 5. Choose a loss function and optimizer
 We have now designed a neural network that in theory we should be able to
 train to classify Penguins.
