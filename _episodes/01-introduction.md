@@ -104,7 +104,14 @@ The following could technically be achieved using Deep Learning, but it would pr
 > {: .solution}
 {: .challenge}
 
-
+> ## How much data do you need for Deep Learning?
+> The rise of Deep Learning is partially due to the increased availability of very large datasets.
+> But how much data do you actually need to train a Deep Learning model?
+> Unfortunately, this question is not easy to answer. It depends, among other things, on the
+> complexity of the task (which you often don't know beforehand) and the complexity of the network. For complex tasks with large neural networks, we often see that adding more data continues to improve performance. However, this is also not a generic truth: if the data you add is too similar to the data you have, it will not give much new information to the neural network.
+>
+> In case you have too little data available to train a complex network from scratch, it is sometimes possible to use a pretrained network that was trained on a similar problem. Another trick is data augmentation, where you expand the dataset with artificial data points that could be real. An example of this is mirroring images when trying to classify cats and dogs.
+{: .callout}
 
 ## Deep Learning workflow
 
