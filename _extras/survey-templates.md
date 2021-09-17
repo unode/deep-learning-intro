@@ -36,7 +36,7 @@ This way, the implications of right/wrong answers on the learners are avoided, i
 
 - You need to open 102 data files and extract an object from them. For this, you compose a small function to open a single file which requires 3 input parameters. The parameters are a file location, the name of the object to retrieve and a parameter that controls the verbosity of the function. The latter parameter has the default value “False”.
 
-- Consider a 4 dimensional numpy array of uint32 type numbers. The shape of the array is '(512,3,224,224)' and it is stored in row-major memory ordering. Your goal is to randomly set every other row to 42, i.e. every other entry in dimension 2 to 42. 
+- Consider a 4 dimensional numpy array of uint32 type numbers. The shape of the array is '(512,3,224,224)' and it is stored in row-major memory ordering. Your goal is to set every other row to 42, i.e. every other entry in dimension 2 to 42. 
 
 - You discovered the numpy 'rot90' method. You observe yourself calling it over and over again with the same parameter for the axis option. You'd like to write a wrapper function which calls 'rot90' having axis set to '(0,1)'. 
 
