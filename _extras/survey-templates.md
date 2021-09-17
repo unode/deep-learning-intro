@@ -68,7 +68,7 @@ This way, the implications of right/wrong answers on the learners are avoided, i
 
 - You are presented a training data set of 10000 samples. You would like to train a classifier on this datasets. However, you observe that class 0 dominates the training set at 60%, the other classes equally share 20% of the rows each. How do you prepare your training procedure?
 
--  You are given a classifier by a colleague. Your peer trained it on a very large dataset. You just need it for inference. You reassure yourself if the model you loaded from disk really reproduces the weights by running the 'predict' function on an unseen validation set by your colleague. The network doesn't make the same predictions as your colleague told you. What could be the cause?
+-  You are given a trained classification model by a colleague. Your peer trained it on a very large dataset. You need it for inference on your data. You reassure yourself if the model you loaded from disk really reproduces the weights by running the `predict` function on an unseen validation data set. The network doesn't make the same predictions as your colleague documented it for you. What could be the cause?
 
 -  You are provided a table of observations with 23 columns and 5000 rows. For half of the rows, there is data available for column 24 as float32 between '[-1, +1]'. You'd like to write a predictor for these missing rows.
 
