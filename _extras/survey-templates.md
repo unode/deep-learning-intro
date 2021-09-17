@@ -56,7 +56,7 @@ This way, the implications of right/wrong answers on the learners are avoided, i
 
 - A probability density function (PDF) in statistics is something very distinct from a probability mass function (PMF). What is the difference?
 
-- You are given samples of two sets of observations with type float32. Both arrays have a similar shape: "(1024, 1)" You'd like to compare both ensembles if they are produced by the same PDF. How do you do this?
+- You are given samples of two sets of observations with type float32. Both arrays have the same shape: "(1024, 1)" You'd like to compare both ensembles if they are produced by the same PDF. How do you do this?
 
 ### Questions about machine learning
 
