@@ -122,7 +122,7 @@ y_data = data.loc[1:(nr_rows + 1)]["BASEL_sunshine"]
 
 
 # Prepare the data for machine learning
-In general, it is important to check if the data contains any weird values such as `9999` or `NaN` or `NoneType`, for instance using pandas `data.describe()` function. If so, such values must be removed or replaced such values.
+In general, it is important to check if the data contains any unexpected values such as `9999` or `NaN` or `NoneType`, for instance using pandas `data.describe()` function. If so, such values must be removed or replaced.
 In the present case the data is luckily pre-prepared to some extent and shouldn't contain such values, so that this step could here be omitted.
 
 ### Split data and labels into training, validation, and test set
@@ -162,6 +162,13 @@ As with classical machine learning techniques, it is common in deep learning to 
 > > {:.output}
 > {:.solution}
 {:.challenge}
+
+> ## Feature selection
+> In traditional Machine Learning, we might want to do a feature selection step at this point.
+> As you may have noted, the number of features is quite a bit larger than in the previous dataset, and some of them are highly correlated.
+> Some Machine Learning algorithms cannot handle this very well. But for Deep Learning, the best practice is often to just throw all features in!
+> The techniques we will learn in this episode to improve model training, can guide the Neural Network to learn which features are important and which can be ignored.
+{: .callout}
 
 ## Build a dense neural network
 
@@ -352,9 +359,9 @@ First, we will do the actual prediction step.
 > > ~~~
 > > {: .language-python}
 > > ~~~
-> > 24/24 [==============================] - 0s 3ms/step - loss: 0.2107 - root_mean_squared_error: 0.4590
-> > 6/6 [==============================] - 0s 4ms/step - loss: 16.8387 - root_mean_squared_error: 4.1035
-> > Train RMSE: 0.46, Test RMSE: 4.10
+> > 24/24 [==============================] - 0s 10ms/step - loss: 0.2036 - root_mean_squared_error: 0.4512
+> > 6/6 [==============================] - 0s 3ms/step - loss: 15.4701 - root_mean_squared_error: 3.9332
+> > Train RMSE: 0.45, Test RMSE: 3.93
 > > ~~~
 > > {:.output}
 > >
@@ -377,20 +384,42 @@ Maybe the simplest sunshine hour prediction we can easily do is: Tomorrow we wil
 
 > ## Excercise: Create a baseline and plot it against the true labels
 > Create the same type of scatter plot as before, but now comparing the sunshine hours in Basel today vs. the sunshine hours in Basel tomorrow.
+> Also calculate the RMSE for the baseline prediction. Hint: you can use:
+<!--cce:skip-->
+> ~~~
+> from sklearn.metrics import mean_squared_error
+> rmse_score = mean_squared_error(true_values, predicted_values, squared=False)
+> ~~~
+> {: .language-python}
 >
 > * Looking at this baseline: Would you consider this a simple or a hard problem to solve?
 >
 > > ## Solution
 > > We can here just take the `BASEL_sunhine` column of our data, because this contains the sunshine hours from one day before what we have as a label.
 > > ~~~
+> > y_baseline_prediction = X_test['BASEL_sunshine']
+> >
 > > plt.figure(figsize=(5, 5), dpi=100)
-> > plt.scatter(X_test["BASEL_sunshine"], y_test, s=10, alpha=0.5)
+> > plt.scatter(y_baseline_prediction, y_test, s=10, alpha=0.5)
 > > plt.xlabel("sunshine hours yesterday")
 > > plt.ylabel("true sunshine hours")
 > > ~~~
 > > {: .language-python}
 > >
 > > ![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
+> > It is difficult to interpret from this plot whether our model is doing better than the baseline.
+> > We can have a look at the RMSE:
+> > ~~~
+> > from sklearn.metrics import mean_squared_error
+> > rmse_nn = mean_squared_error(y_test, y_test_predicted, squared=False)
+> > rmse_baseline = mean_squared_error(y_test, y_baseline_prediction, squared=False)
+> > print('NN RMSE: {:.2f}, baseline RMSE: {:.2f}'.format(rmse_nn, rmse_baseline))
+> > ~~~
+> > {: .language-python}
+> > ~~~
+> > NN RMSE: 3.93, baseline RMSE: 3.88
+> > ~~~
+> > {:.output}
 > {:.solution}
 {:.challenge}
 
