@@ -36,6 +36,10 @@ In this episode we will learn how to create and train a Neural Network using Ker
 The goal of this episode is to quickly get your hands dirty in actually defining and training a neural network, without going into depth of how neural networks work on a technical or mathematical level.
 We want you to go through the most commonly used deep learning workflow that was covered
 in the introduction.
+
+![A visualisation of the Deep Learning Workflow](../fig/graphviz/pipeline.png){: width="800px" }
+
+
 As a reminder below are the steps of the deep learning workflow:
 
 1. Formulate / Outline the problem
@@ -58,6 +62,8 @@ In this episode we will focus on a minimal example for each of these steps, late
 > Using a GPU becomes necessary when tackling larger datasets or complex problems which
 > require a more complex Neural Network.
 {: .callout}
+
+
 ## 1. Formulate / Outline the problem: Penguin classification
 In this episode we will be using the [penguin dataset](https://zenodo.org/record/3960218), this is a dataset that was published in 2020 by Allison Horst and contains data on three different species of the penguins.
 

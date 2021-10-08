@@ -110,7 +110,7 @@ The following could technically be achieved using Deep Learning, but it would pr
 
 To apply Deep Learning to a problem there are several steps we need to go through:
 
-![A visualisation of the Machine Learning Pipeline](../fig/graphviz/pipeline.png){: width="800px" }
+![A visualisation of the Deep Learning Workflow](../fig/graphviz/pipeline.png){: width="800px" }
 
 
 ### 1. Formulate/ Outline the problem
