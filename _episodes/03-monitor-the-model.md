@@ -162,6 +162,13 @@ As with classical machine learning techniques, it is common in deep learning to 
 > {:.solution}
 {:.challenge}
 
+> ## Feature selection
+> In traditional Machine Learning, we might want to do a feature selection step at this point.
+> As you may have noted, the number of features is quite a bit larger than in the previous dataset, and some of them are highly correlated.
+> Some Machine Learning algorithms cannot handle this very well. But for Deep Learning, the best practice is often to just throw all features in!
+> The techniques we will learn in this episode to improve model training, can guide the Neural Network to learn which features are important and which can be ignored.
+{: .callout}
+
 ## Build a dense neural network
 
 ### Regression and classification - how to set a training goal
