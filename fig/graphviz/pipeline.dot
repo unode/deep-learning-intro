@@ -1,0 +1,22 @@
+digraph {
+    #configs
+	rankdir=LR;
+    node [shape=rect, style=rounded]
+
+    #special nodes
+    formulate [label=<<B>formulate</B><BR/>task>]
+    i_o [label=<<B>identify</B><BR/>inputs and outputs>]
+    prepare [label=<<B>prepare</B><BR/>data>]
+	create_model [label=<<B>create model </B><BR/>or<BR/>use pretrained model>]
+    loss [label=<<B>choose</B><BR/>loss and optimizer>]
+    train [label=<<B>train</B><BR/>the model>]
+    predict [label=<<B>Perform</B><BR/>Prediction>]
+    quality [label=<<B>Measure</B><BR/>Performance>]
+    tune [label=<<B>Tune</B><BR/>Hyperparameters>]
+    share [label=<<B>Share</B><BR/>the model>]
+
+    #the graph
+    formulate -> i_o -> prepare 
+    prepare -> create_model -> loss
+    loss -> train -> predict -> quality -> tune -> share
+}
