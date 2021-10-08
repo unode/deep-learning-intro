@@ -110,6 +110,9 @@ The following could technically be achieved using Deep Learning, but it would pr
 
 To apply Deep Learning to a problem there are several steps we need to go through:
 
+![A visualisation of the Machine Learning Pipeline](../fig/graphviz/pipeline.png){: width="800px" }
+
+
 ### 1. Formulate/ Outline the problem
 
 Firstly we must decide what it is we want our Deep Learning system to do. Is it going to classify some data into one of a few categories? For example if we have an image of some hand written characters, the neural network could classify which character it is being shown. Or is it going to perform a prediction? For example trying to predict what the price of something will be tomorrow given some historical data on pricing and current trends.
