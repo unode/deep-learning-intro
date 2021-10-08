@@ -318,10 +318,10 @@ First, we will do the actual prediction step.
 > ## Predict the labels for both training and test set and compare to the true values
 > Even though we here use a different model architecture and a different task compared to episode 2, the prediction step is mostly identical.
 > Use the model to predict the labels for the training set and the test set and then compare them in a scatter plot to the true labels. Hint: use `plt.scatter()`.
->
 > Hint: the predicted labels can be generated using `y_predicted = model.predict(X)`.
+>
 > * Is the performance of the model as you expected (or better/worse)?
-> * Is there a noteable difference between training set and test set? And if so, any idea why?
+> * Is there a noteable difference between training set and test set? And if so, any idea why? Hint: you can use `model.evaluate` to obtain metric scores for train and test set.
 >
 > > ## Solution
 > > ~~~
@@ -346,9 +346,23 @@ First, we will do the actual prediction step.
 > > {: .language-python}
 > > ![Scatter plot to evaluate training and test set](../fig/03_regression_training_test_comparison.png)
 > >
-> > The accuracy on the training set is fairly good.
+> > The accuracy on the training set seems fairly good.
 > > In fact, considering that the task of predicting the daily sunshine hours is really not easy it might even be surprising how well the model predicts that
 > > (at least on the training set). Maybe a little too good?
+> > We also see the noticable difference between train and test set when calculating the exact value of the RMSE:
+> > ~~~
+> > loss_train, rmse_train = model.evaluate(X_train, y_train)
+> > loss_test, rmse_test = model.evaluate(X_test, y_test)
+> > print('Train RMSE: {:.2f}, Test RMSE: {:.2f}'.format(rmse_train, rmse_test))
+> > ~~~
+> > {: .language-python}
+> > ~~~
+> > 24/24 [==============================] - 0s 10ms/step - loss: 0.2036 - root_mean_squared_error: 0.4512
+> > 6/6 [==============================] - 0s 3ms/step - loss: 15.4701 - root_mean_squared_error: 3.9332
+> > Train RMSE: 0.45, Test RMSE: 3.93
+> > ~~~
+> > {:.output}
+> >
 > > For those familiar with (classical) machine learning this might look familiar.
 > > It is a very clear signature of **overfitting** which means that the model has to some extend memorized aspects of the training data.
 > > As a result makes much more accurate predictions on the training data than on unseen data.
@@ -368,20 +382,42 @@ Maybe the simplest sunshine hour prediction we can easily do is: Tomorrow we wil
 
 > ## Excercise: Create a baseline and plot it against the true labels
 > Create the same type of scatter plot as before, but now comparing the sunshine hours in Basel today vs. the sunshine hours in Basel tomorrow.
+> Also calculate the RMSE for the baseline prediction. Hint: you can use:
+<!--cce:skip-->
+> ~~~
+> from sklearn.metrics import mean_squared_error
+> rmse_score = mean_squared_error(true_values, predicted_values, squared=False)
+> ~~~
+> {: .language-python}
 >
 > * Looking at this baseline: Would you consider this a simple or a hard problem to solve?
 >
 > > ## Solution
 > > We can here just take the `BASEL_sunhine` column of our data, because this contains the sunshine hours from one day before what we have as a label.
 > > ~~~
+> > y_baseline_prediction = X_test['BASEL_sunshine']
+> >
 > > plt.figure(figsize=(5, 5), dpi=100)
-> > plt.scatter(X_test["BASEL_sunshine"], y_test, s=10, alpha=0.5)
+> > plt.scatter(y_baseline_prediction, y_test, s=10, alpha=0.5)
 > > plt.xlabel("sunshine hours yesterday")
 > > plt.ylabel("true sunshine hours")
 > > ~~~
 > > {: .language-python}
 > >
 > > ![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
+> > It is difficult to interpret from this plot whether our model is doing better than the baseline.
+> > We can have a look at the RMSE:
+> > ~~~
+> > from sklearn.metrics import mean_squared_error
+> > rmse_nn = mean_squared_error(y_test, y_test_predicted, squared=False)
+> > rmse_baseline = mean_squared_error(y_test, y_baseline_prediction, squared=False)
+> > print('NN RMSE: {:.2f}, baseline RMSE: {:.2f}'.format(rmse_nn, rmse_baseline))
+> > ~~~
+> > {: .language-python}
+> > ~~~
+> > NN RMSE: 3.93, baseline RMSE: 3.88
+> > ~~~
+> > {:.output}
 > {:.solution}
 {:.challenge}
 
