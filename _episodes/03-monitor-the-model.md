@@ -136,6 +136,7 @@ As with classical machine learning techniques, it is common in deep learning to 
 > * How many data points do you have in the training, validation, and test sets?
 >
 >  **Hint:**
+<!--cce:skip-->
 >  ~~~
 >  from sklearn.model_selection import train_test_split
 >  
@@ -188,6 +189,7 @@ The network should hence output a single float value which is why the last layer
 > Try now to construct a dense neural network with 3 layers for a regression task.
 > Start with a network of a dense layer with 100 nodes, followed by one with 50 nodes and finally an output layer.
 > Hint: Layers in keras are stacked by passing a layer to the next one like this
+<!--cce:skip-->
 > ~~~
 > inputs = keras.layers.Input(shape=...)
 > next_layer = keras.layers.Dense(..., activation='relu')(inputs)
