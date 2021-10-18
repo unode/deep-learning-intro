@@ -45,6 +45,14 @@ data.head()
 |4| 	20000105 	|1 	|5 	|0.90 	|1.0246|... |
 {: .output}
 
+> ## Load the data
+> If you have not downloaded the data yet, you can also load it directly from Zenodo:
+> ~~~
+> data = pd.read_csv("https://zenodo.org/record/5071376/files/weather_prediction_dataset_light.csv?download=1")
+> ~~~
+> {: .language-python}
+{: .callout}
+
 ### Brief exploration of the data
 Let us start with a quick look at the type of features that we find in the data.
 ~~~
@@ -162,13 +170,6 @@ As with classical machine learning techniques, it is common in deep learning to 
 > > {:.output}
 > {:.solution}
 {:.challenge}
-
-> ## Feature selection
-> In traditional Machine Learning, we might want to do a feature selection step at this point.
-> As you may have noted, the number of features is quite a bit larger than in the previous dataset, and some of them are highly correlated.
-> Some Machine Learning algorithms cannot handle this very well. But for Deep Learning, the best practice is often to just throw all features in!
-> The techniques we will learn in this episode to improve model training, can guide the Neural Network to learn which features are important and which can be ignored.
-{: .callout}
 
 ## Build a dense neural network
 
