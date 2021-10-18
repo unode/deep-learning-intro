@@ -299,7 +299,7 @@ X_train, X_test, y_train, y_test = train_test_split(penguin_features, target,tes
 >
 > Take a look at the training and test set we created.
 > - How many samples do the training and test sets have?
-> - Is the training set well balanced?
+> - Are the classes in the training set well balanced?
 >
 > > ## Solution
 > > Using `y_train.shape` and `y_test.shape` we can see the training set has 273
@@ -464,6 +464,20 @@ The model summary here can show you some information about the neural network we
 > > of neurons.
 > {:.solution}
 {:.challenge}
+
+> ## How to choose an architecture?
+> Even for this small neural network, we had to make a choice on the number of hidden nodes.
+> Other choices to be made are the number of layers and type of layers (as we will see later).
+> You might wonder how you should make these architectural choices.
+> Unfortunately, there are no clear rules to follow here, and it often boils down to a lot of
+> trial and error. However, it is recommended to look what others have done with similar datasets and problems.
+> Another best practice is to start with a relatively simple architecture. Once running start to add layers and tweak the network to see if performance increases.
+>
+> If your data and problem is very similar to what others have done, you can often use a *pretrained network*.
+> Even if your problem is different, but the data type is common (for example images), you can use a pretrained network and finetune it for your problem.
+> A large number of openly available pretrained networks can be found in the [Model Zoo](https://modelzoo.co/), [pytorch hub](https://pytorch.org/hub/) or [tensorflow hub](https://www.tensorflow.org/hub/).
+{: .callout}
+
 
 ## 5. Choose a loss function and optimizer
 We have now designed a neural network that in theory we should be able to
