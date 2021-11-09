@@ -478,7 +478,7 @@ Dropout essentially means that during each training cycle a random fraction of t
 ![Dropout sketch](../fig/neural_network_sketch_dropout.png)
 The intuition behind dropout is that it enforces redundancies in the network by constantly removing different elements of a network. The model can no longer rely on individual nodes and instead must create multiple "paths". In addition, the model has to make predictions with much fewer nodes and weights (connections between the nodes).
 As a result, it becomes much harder for a network to memorize particular features. At first this might appear a quiet drastic approach which affects the network architecture strongly.
-In practice, however, dropout is computationally a very elegant solution which does not affet training speed. And it frequently works very well.
+In practice, however, dropout is computationally a very elegant solution which does not affect training speed. And it frequently works very well.
 
 **Important to note:** Dropout layers will only randomly silence nodes during training! During a predictions step, all nodes remain active (dropout is off). During training, the sample of nodes that are silenced are different for each training instance, to give all nodes a chance to observe enough training data to learn its weights.
 

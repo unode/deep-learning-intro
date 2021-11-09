@@ -115,7 +115,7 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 
 ### Select a subset and split into data (X) and labels (y)
 The full dataset comprises 10 years (3654 days) from which we here will only select the first 3 years.
-We will then define what exactly we want to predict from this data. A very common task with weather data is to make a predicion about the weather somewhere in the future, say the next day. The present dataset is sorted by "DATE", so for each row `i` in the table we can pick a corresponding feature and location from row `i+1` that we later want to predict with our model.
+We will then define what exactly we want to predict from this data. A very common task with weather data is to make a prediction about the weather somewhere in the future, say the next day. The present dataset is sorted by "DATE", so for each row `i` in the table we can pick a corresponding feature and location from row `i+1` that we later want to predict with our model.
 Here we will pick a rather difficult-to-predict feature, sunshine hours, which we want to predict for the location: BASEL.
 
 ~~~
@@ -180,7 +180,7 @@ As with classical machine learning techniques, it is common in deep learning to 
 
 In episode 2 we trained a dense neural network on a *classification task*. For this one hot encoding was used together with a Categorical Crossentropy loss function.
 This measured how close the distribution of the neural network outputs corresponds to the distribution of the three values in the one hot encoding.
-Now we want to work on a *regression task*, thus not prediciting the right class for a datapoint but a certain value (could in principle also be several values). In our example we want to predict the sunshine hours in Basel (or any other place in the dataset) for tomorrow based on the weather data of all 18 locations today.
+Now we want to work on a *regression task*, thus not predicting the right class for a datapoint but a certain value (could in principle also be several values). In our example we want to predict the sunshine hours in Basel (or any other place in the dataset) for tomorrow based on the weather data of all 18 locations today.
 
 The network should hence output a single float value which is why the last layer of our network will only consist of a single node.
 
@@ -189,7 +189,7 @@ The network should hence output a single float value which is why the last layer
 > We have seen how to build a dense neural network in episode 2.
 > Try now to construct a dense neural network with 3 layers for a regression task.
 > Start with a network of a dense layer with 100 nodes, followed by one with 50 nodes and finally an output layer.
-> Hint: Layers in keras are stacked by passing a layer to the next one like this
+> Hint: Layers in Keras are stacked by passing a layer to the next one like this
 <!--cce:skip-->
 > ~~~
 > inputs = keras.layers.Input(shape=...)
@@ -207,7 +207,7 @@ The network should hence output a single float value which is why the last layer
 > * How would our output layer look like? What about the activation function? Tip: Remember that the activation function in our previous classification network scaled the outputs between 0 and 1.
 >
 > > ## Solution
-> > Here we wrote a function for generating a keras model, because we plan on using this again in the following part.
+> > Here we wrote a function for generating a Keras model, because we plan on using this again in the following part.
 > > ~~~
 > > from tensorflow import keras
 > >
@@ -261,9 +261,9 @@ The network should hence output a single float value which is why the last layer
 When compiling the model we can define a few very important aspects. We will discuss them now in more detail.
 
 ### Loss function:
-The loss is what the neural network will be optimized on during training, so chosing a suitable loss function is crucial for training neural networks.
-In the given case we want to stimulate that the prodicted values are as close as possible to the true values. This is commonly done by using the *mean squared error* (mse) or the *mean absolute error* (mae), both of which should work OK in this case. Often, mse is prefered over mae because it "punishes" large prediction errors more severely.
-In keras this is implemented in the `keras.losses.MeanSquaredError` class (see keras documentation: https://keras.io/api/losses/).
+The loss is what the neural network will be optimized on during training, so choosing a suitable loss function is crucial for training neural networks.
+In the given case we want to stimulate that the predicted values are as close as possible to the true values. This is commonly done by using the *mean squared error* (mse) or the *mean absolute error* (mae), both of which should work OK in this case. Often, mse is preferred over mae because it "punishes" large prediction errors more severely.
+In Keras this is implemented in the `keras.losses.MeanSquaredError` class (see Keras documentation: https://keras.io/api/losses/).
 
 ### Optimizer:
 Somewhat coupled to the loss function is the *optimizer* that we want to use.
@@ -324,7 +324,7 @@ First, we will do the actual prediction step.
 > Hint: the predicted labels can be generated using `y_predicted = model.predict(X)`.
 >
 > * Is the performance of the model as you expected (or better/worse)?
-> * Is there a noteable difference between training set and test set? And if so, any idea why? Hint: you can use `model.evaluate` to obtain metric scores for train and test set.
+> * Is there a notable difference between training set and test set? And if so, any idea why? Hint: you can use `model.evaluate` to obtain metric scores for train and test set.
 >
 > > ## Solution
 > > ~~~
@@ -352,7 +352,7 @@ First, we will do the actual prediction step.
 > > The accuracy on the training set seems fairly good.
 > > In fact, considering that the task of predicting the daily sunshine hours is really not easy it might even be surprising how well the model predicts that
 > > (at least on the training set). Maybe a little too good?
-> > We also see the noticable difference between train and test set when calculating the exact value of the RMSE:
+> > We also see the noticeable difference between train and test set when calculating the exact value of the RMSE:
 > > ~~~
 > > loss_train, rmse_train = model.evaluate(X_train, y_train)
 > > loss_test, rmse_test = model.evaluate(X_test, y_test)
@@ -383,7 +383,7 @@ Now that we defined a problem (predict tomorrow's sunshine hours), it makes sens
 Maybe the simplest sunshine hour prediction we can easily do is: Tomorrow we will have the same number of sunshine hours as today.
 (sounds very naive, but for many observables such as temperature this is already a fairly good predictor)
 
-> ## Excercise: Create a baseline and plot it against the true labels
+> ## Exercise: Create a baseline and plot it against the true labels
 > Create the same type of scatter plot as before, but now comparing the sunshine hours in Basel today vs. the sunshine hours in Basel tomorrow.
 > Also calculate the RMSE for the baseline prediction. Hint: you can use:
 <!--cce:skip-->
@@ -482,7 +482,7 @@ Most similar to classical machine learning might to **reduce the number of param
 >
 > * Is it possible to get rid of overfitting this way?
 > * Does the overall performance suffer or does it mostly stay the same?
-> * How low can you go with the number of paramters without notable effect on the performance on the validation set?
+> * How low can you go with the number of parameters without notable effect on the performance on the validation set?
 >
 > > ## Solution
 > > ~~~
@@ -559,7 +559,7 @@ As the name suggests, this technique just means that you stop the model training
 More specifically, this usually means that the training is stopped if the validation loss does not (notably) improve anymore.
 Early stopping is both intuitive and effective to use, so it has become a standard addition for model training.
 
-To better study the effect, we can now savely go back to models with many (too many?) parameters:
+To better study the effect, we can now safely go back to models with many (too many?) parameters:
 ~~~
 model = create_nn(100, 50)
 model.compile(optimizer='adam',
@@ -568,7 +568,7 @@ model.compile(optimizer='adam',
 ~~~
 {: .language-python}
 
-To apply early stopping during training it is easiest to use keras `EarlyStopping` class.
+To apply early stopping during training it is easiest to use Keras `EarlyStopping` class.
 This allows to define the condition of when to stop training. In our case we will say when the validation loss is lowest.
 However, since we have seen quiet some fluctuation of the losses during training above we will also set `patience=10` which means that the model will stop training of the validation loss has not gone down for 10 epochs.
 ~~~
@@ -615,7 +615,7 @@ Techniques to avoid overfitting, or to improve model generalization, are termed 
 A very common step in classical machine learning pipelines is to scale the features, for instance by using sckit-learn's `StandardScaler`.
 This can in principle also be done for deep learning.
 An alternative, more common approach, is to add **BatchNormalization** layers which will learn how to scale the input values.
-Similar to dropout, batch normalization is available as a network layer in keras and can be added to the network in a similar way.
+Similar to dropout, batch normalization is available as a network layer in Keras and can be added to the network in a similar way.
 It does not require any additional parameter setting.
 
 ~~~
@@ -623,7 +623,7 @@ from tensorflow.keras.layers import BatchNormalization
 ~~~
 {: .language-python}
 
-> ## Excercise: Add a BatchNormalization layer as the first layer to your neural network.
+> ## Exercise: Add a BatchNormalization layer as the first layer to your neural network.
 > Look at the [documentation of the batch normalization layer](https://keras.io/api/layers/normalization_layers/batch_normalization/). Add this as a first layer to the model we defined above. Then, train the model and compare the performance to the model without batch normalization.
 >
 > > ## Solution
