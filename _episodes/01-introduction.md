@@ -40,7 +40,14 @@ The image above is by Tukijaaliwa, CC BY-SA 4.0, via Wikimedia Commons, [origina
 
 #### Neural Networks
 
-A neural network is an artificial intelligence technique loosely based on the way neurons in the brain work. A neural network consists of connected computational units called neurons. Each neuron has one or more inputs and takes the sum of these each multiple by a weight, performs some, typically non-linear, calculation on the sum and produces one output. This calculation is called the activation function. An extra input called a bias term is usually attached with a value fixed at 1.
+A neural network is an artificial intelligence technique loosely based on the way neurons in the brain work. A neural network consists of connected computational units called **neurons**. Each neuron ... 
+
+- has one or more inputs, e.g. input data expressed as floating point numbers
+- most of the time, each neuron conducts 3 main operations:
+  + take the weighted sum of the inputs
+  + add an extra constant weight (i.e. a bias term) to this weighted sum
+  + apply a non-linear function to the output so far (using a predefined activation function)
+- return one output value, again a floating point number
 
 ![A diagram of a single artificial neuron](../fig/01_neuron.png){: width="600px"}
 
