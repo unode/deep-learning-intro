@@ -51,7 +51,7 @@ A neural network is an artificial intelligence technique loosely based on the wa
 
 ![A diagram of a single artificial neuron](../fig/01_neuron.png){: width="600px"}
 
-Multiple neurons can be joined together by connecting the output of one to the input of another. These connections are called edges. The weights determines the 'strength' of the connection, the weights are adjusted during training. In this way, the combination of neurons and edges describe a computational graph, an example can be seen in the image below. In most neural networks neurons are aggregated into layers. Signals travel from the input layer to the output layer, possibly through one or more intermediate layers called hidden layers. 
+Multiple neurons can be joined together by connecting the output of one to the input of another. These connections are associated with weights that determine the 'strength' of the connection, the weights are adjusted during training. In this way, the combination of neurons and connections describe a computational graph, an example can be seen in the image below. In most neural networks neurons are aggregated into layers. Signals travel from the input layer to the output layer, possibly through one or more intermediate layers called hidden layers. 
 The image below shows an example of a neural network with three layers, each circle is a neuron, each line is an edge and the arrows indicate the direction data moves in.
 
 ![A diagram of a three layer neural network.](../fig/01_neural_net.png){: width="400px"}
