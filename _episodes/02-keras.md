@@ -212,7 +212,7 @@ target = penguins['species']
 
 > ## Data Exploration
 > Exploring the data is an important step to familiarize yourself with the problem and to help you
-> determine the relavent inputs and outputs.
+> determine the relevant inputs and outputs.
 {:.keypoints}
 ## 3. Prepare data
 The input data and target data are not yet in a format that is suitable to use for training a neural network.
@@ -339,7 +339,7 @@ from tensorflow import keras
 ~~~
 {:.language-python}
 
-For this class it is usefule if everyone gets the same results from their training.
+For this class it is useful if everyone gets the same results from their training.
 Keras uses a random number generator at certain points during its execution.
 Therefore we will need to set two random seeds, one for numpy and one for tensorflow:
 ~~~
@@ -356,7 +356,7 @@ a daunting task, with Keras it is actually surprisingly straightforward.
 
 With Keras you compose a neural network by creating layers and linking them
 together. For now we will only use one type of layer called a fully connected
-or Dense layer. In keras this is defined by the `keras.layers.Dense` class.
+or Dense layer. In Keras this is defined by the `keras.layers.Dense` class.
 
 A dense layer has a number of neurons, which is a parameter you can choose when
 you create the layer.
@@ -364,7 +364,7 @@ When connecting the layer to its input and output layers every neuron in the den
 layer gets an edge (i.e. connection) to ***all*** of the input neurons and ***all*** of the output neurons.
 The hidden layer in the image in the introduction of this episode is a Dense layer.
 
-The input in Keras also gets special treatment, Keras autmatically calculates the number of inputs
+The input in Keras also gets special treatment, Keras automatically calculates the number of inputs
 and outputs a layer needs and therefore how many edges need to be created.
 This means we need to let Keras now how big our input is going to be.
 We do this by instantiating a `keras.Input` class and tell it how big our input is.
@@ -382,7 +382,7 @@ hidden_layer = keras.layers.Dense(10, activation="relu")(inputs)
 ~~~
 {:.language-python}
 
-The instantiation here has 2 parameters and a seemlingly strange combination of parenthenses, so
+The instantiation here has 2 parameters and a seemingly strange combination of parentheses, so
 let's take a closer look.
 The first parameter `10` is the number of neurons we want in this layer, this is one of the
 hyperparameters of our system and needs to be chosen carefully. We will get back to this in the section
@@ -410,7 +410,7 @@ We can interpret this as a kind of 'probability' that the sample belongs to a ce
 species.
 
 Now that we have defined the layers of our neural network we can combine them into
-a keras model which facilitates training the network.
+a Keras model which facilitates training the network.
 ~~~
 model = keras.Model(inputs=inputs, outputs=output_layer)
 model.summary()
@@ -421,7 +421,7 @@ The model summary here can show you some information about the neural network we
 
 > ## Create the neural network
 >
-> With the code snippets above, we defined a keras model with 1 hidden layer with
+> With the code snippets above, we defined a Keras model with 1 hidden layer with
 > 10 neurons and an output layer with 3 neurons.
 >
 > * How many parameters does the resulting model have?
@@ -540,7 +540,7 @@ sns.lineplot(x=history.epoch, y=history.history['loss'])
 ![Training loss curve of the neural network training][training_curve]
 
 This plot can be used to identify whether the training is well configured or whether there
-are problems that need to be adressed.
+are problems that need to be addressed.
 
 > ## The Training Curve
 >
