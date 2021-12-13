@@ -140,7 +140,7 @@ If a local installation does not work for you, it is also possible to run this l
 
 Download the [weather dataset prediction csv][weatherdata] and [BBQ labels][weatherbbqdata].
 
-[anaconda]: https://www.continuum.io/anaconda
+[anaconda]: https://www.anaconda.com/products/individual
 [continuum-mac]: http://continuum.io/downloads#_macosx
 [continuum-linux]: http://continuum.io/downloads#_unix
 [continuum-windows]: http://continuum.io/downloads#_windows
