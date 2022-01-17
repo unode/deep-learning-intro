@@ -134,40 +134,56 @@ In general, it is important to check if the data contains any unexpected values 
 In the present case the data is luckily well prepared and shouldn't contain such values, so that this step can be omitted.
 
 ### Split data and labels into training, validation, and test set
-As with classical machine learning techniques, it is common in deep learning to split off a *test set* which remains untouched during model training and tuning. It is then later be used to evaluate the model performance. Here, we will also split off an additional *validation set*, the reason of which will hopefully become clearer later in this lesson.
+
+As with classical machine learning techniques, it is required in deep learning to split off a hold-out *test set* which remains untouched during model training and tuning. It is later used to evaluate the model performance. On top, We will also split off an additional *validation set*, the reason of which will hopefully become clearer later in this lesson.
+
+To make our lives a bit easier, we employ a trick to create these 3 datasets, `training set`, `test set` and `validation set`, by calling the `train_test_split` method of `scikit-learn` twice.
+
+First we create the training set and leave the remainder of 30 % of the data to the two hold-out sets.
+
+~~~
+from sklearn.model_selection import train_test_split
+
+X_train, X_holdout, y_train, y_holdout = train_test_split(X_data, y_data, test_size=0.3, random_state=0)
+~~~
+{:.language-python}
+
+Now we split the 30 % of the data in two equal sized parts.
+
+~~~
+X_val, X_test, y_val, y_test = train_test_split(X_holdout, y_holdout, test_size=0.5, random_state=0)
+~~~
+{:.language-python}
+
+Setting the `random_state` to `0` is a short-hand at this point. Note however, that changing this see of the pseudo-random number generator will also change the composition of your data sets. For the sake of reproducibility, this is one example of a parameters that should not change at all.
 
 > ## Exercise: Split data into training, validation, and test set
 >
-> Split the data into 3 completely separate set to be used for training, validation, and testing using the `train_test_split` function from `sklearn.model_selection`. This can be done in two steps.
-> First, split the data into training set (70% of all datapoints) and validation+test set (30%). Then split the second one again into two sets (both roughly equal in size).
+> We have been rather generous at selecting rows from the dataset. Our holdout set above amounts to almost an entire year of data. How would the code need to be rewritten in order to obtain two months of data for the validation and test set each?
 >
-> * How many data points do you have in the training, validation, and test sets?
+> 1. `X_train, X_holdout ... = train_test_split( ..., test_size = .12, ...)`  
+> ``X_val, X_test ... = train_test_split( ..., test_size = 2, ...)`
 >
->  **Hint:**
-<!--cce:skip-->
->  ~~~
->  from sklearn.model_selection import train_test_split
->  
->  X_train, X_not_train, y_train, y_not_train = train_test_split(X, y, test_size=0.3, random_state=0)
->  ~~~
->  {:.language-python}
+> 2. `X_train, X_holdout ... = train_test_split( ..., test_size = .33, ...)`  
+> `X_val, X_test ... = train_test_split( ..., test_size = .33, ...)`
+>
+> 3. `X_train, X_holdout ... = train_test_split( ..., test_size = (4./36.), ...)`  
+> `X_val, X_test ... = train_test_split( ..., test_size = .5, ...)`
+>
+> 4. `X_train, X_holdout ... = train_test_split( ..., test_size = 365, ...)`  
+> `X_val, X_test ... = train_test_split( ..., test_size = .5, ...)`
 >
 > > ## Solution
-> > ~~~
-> > from sklearn.model_selection import train_test_split
+> >  
+> > In the code above, we selected the first `365*3 = 1095` days from the original dataset as the number of rows to use. This is the total number of days we have in our dataset here.
 > >
-> > X_train, X_not_train, y_train, y_not_train = train_test_split(X_data, y_data, test_size=0.3, random_state=0)
-> > X_val, X_test, y_val, y_test = train_test_split(X_not_train, y_not_train, test_size=0.5, random_state=0)
+> > 1. The first `test_size = .12` would leave `.12*3*365` for the holdout set. This would amount to 131 days or 4.32 months. This is more than we need. Take caution as well with the second `test_size = 2`. According to the [API reference of `train_test_split`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split), this would select only 2 days into `X_test`.
+> > 
+> > 2. The first `test_size = .33` would leave `.33*3*365` for the holdout set. This would amount to 361 days or almost 12 months. This is more than we need. 
+> > 
+> > 3. The first `test_size = (4./36.)` would leave `.11*3*365` for the holdout set. This would amount to 4 out of 36 months. This is exactly than we need. With the subsequent `test_size = .5` we obtain 2 months of data into the validation and into the test set each.
 > >
-> > print(f"Data was split into training ({X_train.shape[0]})," \
-> >       f" validation ({X_val.shape[0]}) and test set ({X_test.shape[0]}).")
-> > ~~~
-> > {:.language-python}
-> >
-> > ~~~
-> > Data was split into training (767), validation (164) and test set (165).
-> > ~~~
-> > {:.output}
+> > 4. The first `test_size = 365` selects 365 rows or days into the holdout. This would be too many for the task at hand.
 > {:.solution}
 {:.challenge}
 
