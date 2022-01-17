@@ -27,7 +27,10 @@ jobs:
 
       - name: Install Code Checker
         run: |
-          python3 -m pip install --upgrade git+https://github.com/bpmweel/cce.git#egg=cce
+          #python3 -m pip install --upgrade git+https://github.com/bpmweel/cce.git#egg=cce
+          #fix to code checker which works on calls to imports inside functions
+          wget -O /usr/local/bin/cce https://raw.githubusercontent.com/colinsauze/cce/master/cce/main.py 
+          chmod 755 /usr/local/bin/cce
 
       - name: Checkout the lesson
         uses: actions/checkout@v2
