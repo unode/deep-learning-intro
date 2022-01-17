@@ -190,89 +190,73 @@ Setting the `random_state` to `0` is a short-hand at this point. Note however, t
 ## Build a dense neural network
 
 ### Regression and classification - how to set a training goal
+
 - Explain how to define the output part of a neural network
 - What is the loss function (and which one to chose for a regression or classification task)?
 
-
-In episode 2 we trained a dense neural network on a *classification task*. For this one hot encoding was used together with a Categorical Crossentropy loss function.
+In episode 2 we trained a dense neural network on a *classification task*. For this one hot encoding was used together with a `Categorical Crossentropy` loss function.
 This measured how close the distribution of the neural network outputs corresponds to the distribution of the three values in the one hot encoding.
-Now we want to work on a *regression task*, thus not predicting the right class for a datapoint but a certain value (could in principle also be several values). In our example we want to predict the sunshine hours in Basel (or any other place in the dataset) for tomorrow based on the weather data of all 18 locations today.
+Now we want to work on a *regression task*, thus not predicting a class label (or integer number) for a datapoint. In regression, we like to predict one (and sometimes many) values of a feature. This is typically a floating point number. 
 
-The network should hence output a single float value which is why the last layer of our network will only consist of a single node.
+In our example we want to predict the sunshine hours in Basel (or any other place in the dataset) for tomorrow based on the weather data of all 18 locations today. `BASEL_sunshine` is a floating point value (i.e. `float64`). The network should hence output a single float value which is why the last layer of our network will only consist of a single node. 
 
-> ## Create the neural network
->
-> We have seen how to build a dense neural network in episode 2.
-> Try now to construct a dense neural network with 3 layers for a regression task.
-> Start with a network of a dense layer with 100 nodes, followed by one with 50 nodes and finally an output layer.
-> Hint: Layers in Keras are stacked by passing a layer to the next one like this
-<!--cce:skip-->
-> ~~~
-> inputs = keras.layers.Input(shape=...)
-> next_layer = keras.layers.Dense(..., activation='relu')(inputs)
-> next_layer = keras.layers.Dense(..., activation='relu')(next_layer)
-> #here we used the same layer name twice, but that is up to you
-> ...
-> next_layer = ...(next_layer)
-> ...
-> #stack as many layers as you like
-> ~~~
-> {:.language-python}
->
-> * What must here be the dimension of our input layer?
-> * How would our output layer look like? What about the activation function? Tip: Remember that the activation function in our previous classification network scaled the outputs between 0 and 1.
->
-> > ## Solution
-> > Here we wrote a function for generating a Keras model, because we plan on using this again in the following part.
-> > ~~~
-> > from tensorflow import keras
-> >
-> > def create_nn():
-> >     # Input layer
-> >     inputs = keras.Input(shape=(X_data.shape[1],), name='input')
-> >
-> >     # Dense layers
-> >     layers_dense = keras.layers.Dense(100, 'relu')(inputs)
-> >     layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
-> >
-> >     # Output layer
-> >     outputs = keras.layers.Dense(1)(layers_dense)
-> >
-> >     return keras.Model(inputs=inputs, outputs=outputs, name="weather_prediction_model")
-> >
-> > model = create_nn()
-> > model.summary()
-> > ~~~
-> > {:.language-python}
-> >
-> > ~~~
-> > Model: "weather_prediction_model"
-> > _________________________________________________________________
-> > Layer (type)                 Output Shape              Param #   
-> > =================================================================
-> > input (InputLayer)           [(None, 163)]             0         
-> > _________________________________________________________________
-> > dense_0 (Dense)              (None, 100)               16400     
-> > _________________________________________________________________
-> > dense_1 (Dense)              (None, 50)                5050      
-> > _________________________________________________________________
-> > dense_2 (Dense)              (None, 1)                 51        
-> > =================================================================
-> > Total params: 21,501
-> > Trainable params: 21,501
-> > Non-trainable params: 0
-> > _________________________________________________________________
-> > ~~~
-> > {:.output}
-> >
-> > The shape of the input layer has to correspond to the number of features in our data: 163
-> >
-> > The output layer here is a dense layer with only 1 node. And we here have chosen to use *no activation function*.
-> > While we might use *softmax* for a classification task, here we do not want to restrict the possible outcomes for a start.
-> >
-> > In addition, we have here chosen to write the network creation as a function so that we can use it later again to initiate new models.
-> {:.solution}
-{:.challenge}
+We compose a network of two hidden layers to start off with something. We go by a scheme with 100 neurons in the first hidden layer and 50 neurons in the second layer. As activation function we settle on the `relu` function as a it proved very robust and widely used. To make our live easier later, we wrap the definition of the network in a method called `create_nn`.
+
+~~~
+from tensorflow import keras
+
+def create_nn():
+    # Input layer
+    inputs = keras.Input(shape=(X_data.shape[1],), name='input')
+
+    # Dense layers
+    layers_dense = keras.layers.Dense(100, 'relu')(inputs)
+    layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
+
+    # Output layer
+    outputs = keras.layers.Dense(1)(layers_dense)
+
+    return keras.Model(inputs=inputs, outputs=outputs, name="weather_prediction_model")
+
+model = create_nn()
+~~~
+{:.language-python}
+
+The shape of the input layer has to correspond to the number of features in our data: `163`. We use `X_data.shape[1]` to obtain this value dynamically
+
+The output layer here is a dense layer with only 1 node. And we here have chosen to use *no activation function*.
+While we might use *softmax* for a classification task, here we do not want to restrict the possible outcomes for a start.
+
+In addition, we have here chosen to write the network creation as a function so that we can use it later again to initiate new models.
+
+Let's check how our model looks like by calling the `summary` method.
+
+~~~
+model.summary()
+~~~
+{:.language-python}
+~~~
+Model: "weather_prediction_model"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input (InputLayer)           [(None, 163)]             0         
+_________________________________________________________________
+dense_0 (Dense)              (None, 100)               16400     
+_________________________________________________________________
+dense_1 (Dense)              (None, 50)                5050      
+_________________________________________________________________
+dense_2 (Dense)              (None, 1)                 51        
+=================================================================
+Total params: 21,501
+Trainable params: 21,501
+Non-trainable params: 0
+_________________________________________________________________
+~~~
+{:.output}
+
+
+
 
 When compiling the model we can define a few very important aspects. We will discuss them now in more detail.
 
