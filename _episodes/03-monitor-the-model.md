@@ -522,7 +522,7 @@ Most similar to classical machine learning might to **reduce the number of param
 > > Trainable params: 961
 > > Non-trainable params: 0
 > > 
-> > ~~q
+> > ~~~
 > > {:.output}
 > >
 > > ~~~
