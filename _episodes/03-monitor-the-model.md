@@ -361,9 +361,9 @@ First, we will do the actual prediction step.
 > > ~~~
 > > {: .language-python}
 > > ~~~
-> > 24/24 [==============================] - 0s 10ms/step - loss: 0.2036 - root_mean_squared_error: 0.4512
-> > 6/6 [==============================] - 0s 3ms/step - loss: 15.4701 - root_mean_squared_error: 3.9332
-> > Train RMSE: 0.45, Test RMSE: 3.93
+> > 24/24 [==============================] - 0s 442us/step - loss: 0.7092 - root_mean_squared_error: 0.8421
+> > 6/6 [==============================] - 0s 647us/step - loss: 16.4413 - root_mean_squared_error: 4.0548
+> > Train RMSE: 0.84, Test RMSE: 4.05
 > > ~~~
 > > {:.output}
 > >
