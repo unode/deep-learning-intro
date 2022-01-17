@@ -37,16 +37,19 @@ The goal of this episode is to quickly get your hands dirty in actually defining
 We want you to go through the most commonly used deep learning workflow that was covered
 in the introduction.
 As a reminder below are the steps of the deep learning workflow:
+
 1. Formulate / Outline the problem
 2. Identify inputs and outputs
 3. Prepare data
 4. Choose a pretrained model or start building architecture from scratch
-5. Choose a cost function and metrics
-6. Train model
-7. Tune hyperparameters
-8. 'predict'
+5. Choose a loss function and optimizer
+6. Train the model
+7. Perform a Prediction/Classification
+8. Measure performance
+9. Tune hyperparameters
+10. Save model
 
-In this episode will focus on a minimal example for each of these steps, later episodes will build on this knowledge to go into greater depth for some or all of these steps.
+In this episode we will focus on a minimal example for each of these steps, later episodes will build on this knowledge to go into greater depth for some or all of these steps.
 
 > ## GPU usage
 > For this lesson having a GPU (graphics card) available is not needed.
@@ -55,7 +58,7 @@ In this episode will focus on a minimal example for each of these steps, later e
 > Using a GPU becomes necessary when tackling larger datasets or complex problems which
 > require a more complex Neural Network.
 {: .callout}
-## Step 1. Formulate / Outline the problem: Penguin classification
+## 1. Formulate / Outline the problem: Penguin classification
 In this episode we will be using the [penguin dataset](https://zenodo.org/record/3960218), this is a dataset that was published in 2020 by Allison Horst and contains data on three different species of the penguins.
 
 We will use the penguin dataset to train a neural network which can classify which species a
@@ -200,16 +203,9 @@ as input for the neural network and the target that we want to predict.
 In the rest of this episode we will use the `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, `body_mass_g` attributes.
 The target for the classification task will be the `species`.
 
-Using the following code we can select these columns from the dataframe:
-~~~
-penguin_features = penguins.drop(columns=["species", 'island', 'sex'])
-target = penguins['species']
-~~~
-{:.language-python}
-
 > ## Data Exploration
 > Exploring the data is an important step to familiarize yourself with the problem and to help you
-> determine the relavent inputs and outputs.
+> determine the relevant inputs and outputs.
 {:.keypoints}
 ## 3. Prepare data
 The input data and target data are not yet in a format that is suitable to use for training a neural network.
@@ -238,7 +234,6 @@ penguins_filtered = penguins.drop(columns=['island', 'sex']).dropna()
 
 # Split the dataset in the features and the target
 penguin_features = penguins_filtered.drop(columns=['species'])
-target = penguins_filtered['species']
 ~~~
 {:.language-python}
 
@@ -296,7 +291,7 @@ X_train, X_test, y_train, y_test = train_test_split(penguin_features, target,tes
 >
 > Take a look at the training and test set we created.
 > - How many samples do the training and test sets have?
-> - Is the training set well balanced?
+> - Are the classes in the training set well balanced?
 >
 > > ## Solution
 > > Using `y_train.shape` and `y_test.shape` we can see the training set has 273
@@ -336,7 +331,7 @@ from tensorflow import keras
 ~~~
 {:.language-python}
 
-For this class it is usefule if everyone gets the same results from their training.
+For this class it is useful if everyone gets the same results from their training.
 Keras uses a random number generator at certain points during its execution.
 Therefore we will need to set two random seeds, one for numpy and one for tensorflow:
 ~~~
@@ -353,7 +348,7 @@ a daunting task, with Keras it is actually surprisingly straightforward.
 
 With Keras you compose a neural network by creating layers and linking them
 together. For now we will only use one type of layer called a fully connected
-or Dense layer. In keras this is defined by the `keras.layers.Dense` class.
+or Dense layer. In Keras this is defined by the `keras.layers.Dense` class.
 
 A dense layer has a number of neurons, which is a parameter you can choose when
 you create the layer.
@@ -361,7 +356,7 @@ When connecting the layer to its input and output layers every neuron in the den
 layer gets an edge (i.e. connection) to ***all*** of the input neurons and ***all*** of the output neurons.
 The hidden layer in the image in the introduction of this episode is a Dense layer.
 
-The input in Keras also gets special treatment, Keras autmatically calculates the number of inputs
+The input in Keras also gets special treatment, Keras automatically calculates the number of inputs
 and outputs a layer needs and therefore how many edges need to be created.
 This means we need to let Keras now how big our input is going to be.
 We do this by instantiating a `keras.Input` class and tell it how big our input is.
@@ -379,7 +374,7 @@ hidden_layer = keras.layers.Dense(10, activation="relu")(inputs)
 ~~~
 {:.language-python}
 
-The instantiation here has 2 parameters and a seemlingly strange combination of parenthenses, so
+The instantiation here has 2 parameters and a seemingly strange combination of parentheses, so
 let's take a closer look.
 The first parameter `10` is the number of neurons we want in this layer, this is one of the
 hyperparameters of our system and needs to be chosen carefully. We will get back to this in the section
@@ -407,7 +402,7 @@ We can interpret this as a kind of 'probability' that the sample belongs to a ce
 species.
 
 Now that we have defined the layers of our neural network we can combine them into
-a keras model which facilitates training the network.
+a Keras model which facilitates training the network.
 ~~~
 model = keras.Model(inputs=inputs, outputs=output_layer)
 model.summary()
@@ -418,7 +413,7 @@ The model summary here can show you some information about the neural network we
 
 > ## Create the neural network
 >
-> With the code snippets above, we defined a keras model with 1 hidden layer with
+> With the code snippets above, we defined a Keras model with 1 hidden layer with
 > 10 neurons and an output layer with 3 neurons.
 >
 > * How many parameters does the resulting model have?
@@ -462,7 +457,21 @@ The model summary here can show you some information about the neural network we
 > {:.solution}
 {:.challenge}
 
-## 5. Choose a cost function and metrics
+> ## How to choose an architecture?
+> Even for this small neural network, we had to make a choice on the number of hidden nodes.
+> Other choices to be made are the number of layers and type of layers (as we will see later).
+> You might wonder how you should make these architectural choices.
+> Unfortunately, there are no clear rules to follow here, and it often boils down to a lot of
+> trial and error. However, it is recommended to look what others have done with similar datasets and problems.
+> Another best practice is to start with a relatively simple architecture. Once running start to add layers and tweak the network to see if performance increases.
+>
+> If your data and problem is very similar to what others have done, you can often use a *pretrained network*.
+> Even if your problem is different, but the data type is common (for example images), you can use a pretrained network and finetune it for your problem.
+> A large number of openly available pretrained networks can be found in the [Model Zoo](https://modelzoo.co/), [pytorch hub](https://pytorch.org/hub/) or [tensorflow hub](https://www.tensorflow.org/hub/).
+{: .callout}
+
+
+## 5. Choose a loss function and optimizer
 We have now designed a neural network that in theory we should be able to
 train to classify Penguins.
 However, we first need to select an appropriate loss
@@ -523,7 +532,7 @@ sns.lineplot(x=history.epoch, y=history.history['loss'])
 ![Training loss curve of the neural network training][training_curve]
 
 This plot can be used to identify whether the training is well configured or whether there
-are problems that need to be adressed.
+are problems that need to be addressed.
 
 > ## The Training Curve
 >
@@ -541,25 +550,15 @@ are problems that need to be adressed.
 > {:.solution}
 {:.challenge}
 
-## 7. Tune hyperparameters
-As we discussed before the design and training of a neural network comes with
-many hyper parameter choices.
-We will go into more depth of these hyperparameters in later episodes.
-For now it is important to realize that the parameters we chose were
-somewhat arbitrary and more careful consideration needs to be taken to
-pick hyperparameter values.
+## 7. Perform a Prediction/Classification
+Now that we have a trained neural network, we can use it to predict new samples
+of penguin using the `predict` function.
 
-## 8. Measuring Performance
-Now that we have a trained neural network it is important to assess how well it performs.
-We want to know how well it will perform in a realistic prediction scenario, measuring
-performance will also come back when tuning the hyperparameters.
-
-We have created a test set during the data preparation stage which we will use
-now to create a confusion matrix.
-
-### Predict the species of the test set
-The first step here is to use the neural network to predict the species of the test set
-using the `predict` function. This will return a `numpy` matrix, which I like to convert
+We will use the neural network to predict the species of the test set
+using the `predict` function.
+We will be using this prediction in the next step to measure the performance of our
+trained network.
+This will return a `numpy` matrix, which I like to convert
 to a pandas dataframe to easily see the labels.
 ~~~
 y_pred = model.predict(X_test)
@@ -614,6 +613,14 @@ predicted_species
 > ~~~
 > {:.output}
 {:.solution}
+
+## 8. Measuring Performance
+Now that we have a trained neural network it is important to assess how well it performs.
+We want to know how well it will perform in a realistic prediction scenario, measuring
+performance will also come back when tuning the hyperparameters.
+
+We have created a test set during the data preparation stage which we will use
+now to create a confusion matrix.
 
 ### Confusion matrix
 With the predicted species we can now create a confusion matrix and display it
@@ -693,11 +700,16 @@ sns.heatmap(confusion_df, annot=True)
 > {:.solution}
 {:.challenge}
 
-## 9. 'predict'
-Now that we have a training neural network, we can use it to predict new samples
-of penguin using the `predict` function like we did in the previous step.
+## 9. Tune hyperparameters
+As we discussed before the design and training of a neural network comes with
+many hyper parameter choices.
+We will go into more depth of these hyperparameters in later episodes.
+For now it is important to realize that the parameters we chose were
+somewhat arbitrary and more careful consideration needs to be taken to
+pick hyperparameter values.
 
-However, it is very useful to be able to use the trained neural network at a later
+### 10. Share Model
+It is very useful to be able to use the trained neural network at a later
 stage without having to retrain it.
 This can be done by using the `save` method of the model.
 It takes a string as a parameter which is the path of a directory where the model is stored.
