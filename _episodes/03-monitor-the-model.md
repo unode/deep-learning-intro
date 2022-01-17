@@ -256,27 +256,42 @@ _________________________________________________________________
 {:.output}
 
 
-
-
 When compiling the model we can define a few very important aspects. We will discuss them now in more detail.
 
-### Loss function:
+### Loss function
 The loss is what the neural network will be optimized on during training, so choosing a suitable loss function is crucial for training neural networks.
 In the given case we want to stimulate that the predicted values are as close as possible to the true values. This is commonly done by using the *mean squared error* (mse) or the *mean absolute error* (mae), both of which should work OK in this case. Often, mse is preferred over mae because it "punishes" large prediction errors more severely.
-In Keras this is implemented in the `keras.losses.MeanSquaredError` class (see Keras documentation: https://keras.io/api/losses/).
+In Keras this is implemented in the `keras.losses.MeanSquaredError` class (see Keras documentation: https://keras.io/api/losses/). This can be provided into the `model.compile` method with the `loss` parameter and setting it to `mse`, e.g. 
 
-### Optimizer:
+~~~
+model.compile(#...
+              loss='mse',
+              #...)
+~~~
+{: .language-python}
+
+### Optimizer
+
 Somewhat coupled to the loss function is the *optimizer* that we want to use.
-The *optimizer* here refers to the algorithm with which the model learns to optimize on the set loss function. A basic example for such an optimizer would be *stochastic gradient descent*. For now, we can largely skip this step and simply pick one of the most common optimizers that works well for most tasks: the *Adam optimizer*.
+The *optimizer* here refers to the algorithm with which the model learns to optimize on the provided loss function. A basic example for such an optimizer would be *stochastic gradient descent*. For now, we can largely skip this step and pick one of the most common optimizers that works well for most tasks: the *Adam optimizer*. Similar to activation functions, the choice of optimizer depends on the problem you are trying to solve, your model architecture and your data. *Adam* is a good starting point though, which is why we chose it.
 
-### Metrics:
+~~~
+model.compile(optimizer='adam',
+              loss='mse',
+              #...)
+~~~
+{: .language-python}
+
+
+### Metrics
+
 In our first example (episode 2) we plotted the progression of the loss during training.
-That is indeed a good first indicator if things are working alright, i.e. if the loss is indeed decreasing as it should.
+That is indeed a good first indicator if things are working alright, i.e. if the loss is indeed decreasing as it should with the number of epochs.
 However, when models become more complicated then also the loss functions often become less intuitive.
 That is why it is good practice to monitor the training process with additional, more intuitive metrics.
 They are not used to optimize the model, but are simply recorded during training.
-With Keras they can simply be added via `metrics=[...]` and can contain one or multiple metrics of interest.
-Here we could for instance chose to use `'mae'` the mean absolute error, or the the *root mean squared error* (RMSE) which unlike the *mse* has the same units as the predicted values.
+With Keras such additional metrics can be added via `metrics=[...]` parameter and can contain one or multiple metrics of interest.
+Here we could for instance chose to use `'mae'` the mean absolute error, or the the *root mean squared error* (RMSE) which unlike the *mse* has the same units as the predicted values. For the sake of units, we choose the latter.
 
 ~~~
 model.compile(optimizer='adam',
@@ -285,7 +300,10 @@ model.compile(optimizer='adam',
 ~~~
 {: .language-python}
 
+With this, we complete the compilation of our network and are ready to start training.
+
 ## Train a dense neural network
+
 Now that we created and compiled our dense neural network, we can start training it.
 One additional concept we need to introduce though, is the `batch_size`.
 This defines how many samples from the training data will be used to estimate the error gradient before the model weights are updated.
@@ -315,67 +333,64 @@ This looks very promising! Our metric ("RMSE") is dropping nicely and while it m
 But the *RMSE* is just the root *mean* squared error, so we might want to look a bit more in detail how well our just trained model does in predicting the sunshine hours.
 
 ## Evaluate our model
-There is not a single way to evaluate how a model performs. But there is at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly. For the present *regression task* however, it makes more sense to compare true and predicted values in simple scatter plot. Hint: use `plt.scatter()`.
+
+There is not a single way to evaluate how a model performs. But there is at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly. 
+
+For the present *regression task*, it makes more sense to compare true and predicted values in a scatter plot. Hint: use `plt.scatter()`.
 
 First, we will do the actual prediction step.
-> ## Predict the labels for both training and test set and compare to the true values
-> Even though we here use a different model architecture and a different task compared to episode 2, the prediction step is mostly identical.
-> Use the model to predict the labels for the training set and the test set and then compare them in a scatter plot to the true labels. Hint: use `plt.scatter()`.
-> Hint: the predicted labels can be generated using `y_predicted = model.predict(X)`.
->
-> * Is the performance of the model as you expected (or better/worse)?
-> * Is there a notable difference between training set and test set? And if so, any idea why? Hint: you can use `model.evaluate` to obtain metric scores for train and test set.
->
-> > ## Solution
-> > ~~~
-> > y_train_predicted = model.predict(X_train)
-> > y_test_predicted = model.predict(X_test)
-> > ~~~
-> > {: .language-python}
-> > We can then compare those to the true labels, for instance by
-> > ~~~
-> > fig, axes = plt.subplots(1, 2, figsize=(12, 6))
-> > plt.style.use('ggplot')  # optional, that's only to define a visual style
-> > axes[0].scatter(y_train_predicted, y_train, s=10, alpha=0.5, color="teal")
-> > axes[0].set_title("training set")
-> > axes[0].set_xlabel("predicted sunshine hours")
-> > axes[0].set_ylabel("true sunshine hours")
-> >
-> > axes[1].scatter(y_test_predicted, y_test, s=10, alpha=0.5, color="teal")
-> > axes[1].set_title("test set")
-> > axes[1].set_xlabel("predicted sunshine hours")
-> > axes[1].set_ylabel("true sunshine hours")
-> > ~~~
-> > {: .language-python}
-> > ![Scatter plot to evaluate training and test set](../fig/03_regression_training_test_comparison.png)
-> >
-> > The accuracy on the training set seems fairly good.
-> > In fact, considering that the task of predicting the daily sunshine hours is really not easy it might even be surprising how well the model predicts that
-> > (at least on the training set). Maybe a little too good?
-> > We also see the noticeable difference between train and test set when calculating the exact value of the RMSE:
-> > ~~~
-> > loss_train, rmse_train = model.evaluate(X_train, y_train)
-> > loss_test, rmse_test = model.evaluate(X_test, y_test)
-> > print('Train RMSE: {:.2f}, Test RMSE: {:.2f}'.format(rmse_train, rmse_test))
-> > ~~~
-> > {: .language-python}
-> > ~~~
-> > 24/24 [==============================] - 0s 10ms/step - loss: 0.2036 - root_mean_squared_error: 0.4512
-> > 6/6 [==============================] - 0s 3ms/step - loss: 15.4701 - root_mean_squared_error: 3.9332
-> > Train RMSE: 0.45, Test RMSE: 3.93
-> > ~~~
-> > {:.output}
-> >
-> > For those familiar with (classical) machine learning this might look familiar.
-> > It is a very clear signature of **overfitting** which means that the model has to some extend memorized aspects of the training data.
-> > As a result makes much more accurate predictions on the training data than on unseen data.
-> {:.solution}
-{:.challenge}
+
+~~~
+y_train_predicted = model.predict(X_train)
+y_test_predicted = model.predict(X_test)
+~~~
+{: .language-python}
+
+So, let's look at how the predicted sunshine hour have developed with reference to their ground truth values.
+
+~~~
+fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+plt.style.use('ggplot')  # optional, that's only to define a visual style
+axes[0].scatter(y_train_predicted, y_train, s=10, alpha=0.5, color="teal")
+axes[0].set_title("training set")
+axes[0].set_xlabel("predicted sunshine hours")
+axes[0].set_ylabel("true sunshine hours")
+
+axes[1].scatter(y_test_predicted, y_test, s=10, alpha=0.5, color="teal")
+axes[1].set_title("test set")
+axes[1].set_xlabel("predicted sunshine hours")
+axes[1].set_ylabel("true sunshine hours")
+~~~
+{: .language-python}
+![Scatter plot to evaluate training and test set](../fig/03_regression_training_test_comparison.png)
+
+The accuracy on the training set seems fairly good.
+In fact, considering that the task of predicting the daily sunshine hours is really not easy it might even be surprising how well the model predicts that
+(at least on the training set). Maybe a little too good?
+We also see the noticeable difference between train and test set when calculating the exact value of the RMSE:
+
+~~~
+loss_train, rmse_train = model.evaluate(X_train, y_train)
+loss_test, rmse_test = model.evaluate(X_test, y_test)
+print('Train RMSE: {:.2f}, Test RMSE: {:.2f}'.format(rmse_train, rmse_test))
+~~~
+{: .language-python}
+~~~
+24/24 [==============================] - 0s 10ms/step - loss: 0.2036 - root_mean_squared_error: 0.4512
+6/6 [==============================] - 0s 3ms/step - loss: 15.4701 - root_mean_squared_error: 3.9332
+Train RMSE: 0.45, Test RMSE: 3.93
+~~~
+{:.output}
+
+For those experienced with (classical) machine learning this might look familiar.
+The plots above expose the signs of **overfitting** which means that the model has to some extend memorized aspects of the training data.
+As a result, it makes much more accurate predictions on the training data than on unseen test data.
 
 Overfitting also happens in classical machine learning, but there it is usually interpreted as the model having more parameters than the training data would justify (say, a decision tree with too many branches for the number of training instances). As a consequence one would reduce the number of parameters to avoid overfitting.
 In deep learning the situation is slightly different. It can -same as for classical machine learning- also be a sign of having a *too big* model, meaning a model with too many parameters (layers and/or nodes). However, in deep learning higher number of model parameters are often still considered acceptable and models often perform best (in terms of prediction accuracy) when they are at the verge of overfitting. So, in a way, training deep learning models is always a bit like playing with fire...
 
 ## Set expectations: How difficult is the defined problem?
+
 Before we dive deeper into handling overfitting and (trying to) improving the model performance, let's ask the question: How well must a model perform before we consider it a good model?
 
 Now that we defined a problem (predict tomorrow's sunshine hours), it makes sense to develop an intuition for how difficult the posed problem is. Frequently, models will be evaluated against a so called **baseline**. A baseline can be the current standard in the field or if such a thing does not exist it could also be an intuitive first guess or toy model. The latter is exactly what we would use for our case.
