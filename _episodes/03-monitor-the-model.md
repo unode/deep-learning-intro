@@ -23,8 +23,10 @@ keypoints:
 # Import & explore the data
 
 ### Import dataset
-Here we want to work with the *weather prediction dataset* which can be [downloaded from Zenodo](https://doi.org/10.5281/zenodo.5071376).
-It contains daily weather observations from 18 different European cities or places through the years 2000 to 2010. For all locations the data contains the variables ‘mean temperature’, ‘max temperature’, and ‘min temperature’. In addition, for multiple of the following variables are provided: 'cloud_cover', 'wind_speed', 'wind_gust', 'humidity', 'pressure', 'global_radiation', 'precipitation', 'sunshine', but not all of them are provided for all locations. A more extensive description of the dataset including the different physical units is given in accompanying metadata file.
+Here we want to work with the *weather prediction dataset* (the light version) which can be 
+[downloaded from Zenodo](https://doi.org/10.5281/zenodo.5071376).
+It contains daily weather observations from 11 different European cities or places through the 
+years 2000 to 2010. For all locations the data contains the variables ‘mean temperature’, ‘max temperature’, and ‘min temperature’. In addition, for multiple of the following variables are provided: 'cloud_cover', 'wind_speed', 'wind_gust', 'humidity', 'pressure', 'global_radiation', 'precipitation', 'sunshine', but not all of them are provided for all locations. A more extensive description of the dataset including the different physical units is given in accompanying metadata file.
 ![18 locations in the weather prediction dataset](../fig/03_weather_prediction_dataset_map.png)
 
 ~~~
@@ -63,13 +65,12 @@ data.columns
 ~~~
 Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
        'BASEL_pressure', 'BASEL_global_radiation', 'BASEL_precipitation',
-       'BASEL_sunshine', 'BASEL_temp_mean', 'BASEL_temp_min',
-       ...
-       'STOCKHOLM_temp_min', 'STOCKHOLM_temp_max', 'TOURS_wind_speed',
-       'TOURS_humidity', 'TOURS_pressure', 'TOURS_global_radiation',
-       'TOURS_precipitation', 'TOURS_temp_mean', 'TOURS_temp_min',
-       'TOURS_temp_max'],
-      dtype='object', length=165)
+       'BASEL_sunshine', 'BASEL_temp_mean', 'BASEL_temp_min', 'BASEL_temp_max',
+        ...
+       'SONNBLICK_temp_min', 'SONNBLICK_temp_max', 'TOURS_humidity',
+       'TOURS_pressure', 'TOURS_global_radiation', 'TOURS_precipitation',
+       'TOURS_temp_mean', 'TOURS_temp_min', 'TOURS_temp_max'],
+      dtype='object')
 ~~~
 {:.output}
 
@@ -86,7 +87,8 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 > > data.shape
 > > ~~~
 > > {:.language-python}
-> > This will give both the number of datapoints (3654) and the number of features (163 + month + date).
+> > This will give both the number of datapoints (3654) and the number of features (89 + month + 
+> date).
 > >
 > > To see what type of features the data contains we could run something like:
 > > ~~~
@@ -94,7 +96,7 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 > > ~~~
 > > {:.language-python}
 > > ~~~
-> > {'humidity', 'radiation', 'sunshine', 'gust', 'mean', 'max', 'precipitation', 'pressure', 'cover', 'min', 'speed'}
+> > {'precipitation', 'max', 'radiation', 'humidity', 'sunshine', 'min', 'pressure', 'mean', 'cover'}
 > > ~~~
 > > {:.output}
 > > An alternative way which is slightly more complicated but gives better results is using regex.
@@ -106,7 +108,7 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 > >     
 > > feature_names
 > > ~~~
-> > In total there are 11 different measured variables.
+> > In total there are 9 different measured variables.
 > {:.solution}
 {:.challenge}
 
@@ -234,22 +236,21 @@ The network should hence output a single float value which is why the last layer
 > > _________________________________________________________________
 > > Layer (type)                 Output Shape              Param #   
 > > =================================================================
-> > input (InputLayer)           [(None, 163)]             0         
+> > input (InputLayer)           [(None, 89)]              0         
 > > _________________________________________________________________
-> > dense_0 (Dense)              (None, 100)               16400     
+> > dense (Dense)                (None, 100)               9000      
 > > _________________________________________________________________
 > > dense_1 (Dense)              (None, 50)                5050      
 > > _________________________________________________________________
 > > dense_2 (Dense)              (None, 1)                 51        
 > > =================================================================
-> > Total params: 21,501
-> > Trainable params: 21,501
+> > Total params: 14,101
+> > Trainable params: 14,101
 > > Non-trainable params: 0
-> > _________________________________________________________________
 > > ~~~
 > > {:.output}
 > >
-> > The shape of the input layer has to correspond to the number of features in our data: 163
+> > The shape of the input layer has to correspond to the number of features in our data: 89
 > >
 > > The output layer here is a dense layer with only 1 node. And we here have chosen to use *no activation function*.
 > > While we might use *softmax* for a classification task, here we do not want to restrict the possible outcomes for a start.
@@ -418,7 +419,7 @@ Maybe the simplest sunshine hour prediction we can easily do is: Tomorrow we wil
 > > ~~~
 > > {: .language-python}
 > > ~~~
-> > NN RMSE: 3.93, baseline RMSE: 3.88
+> > NN RMSE: 4.05, baseline RMSE: 3.88
 > > ~~~
 > > {:.output}
 > {:.solution}
@@ -509,19 +510,19 @@ Most similar to classical machine learning might to **reduce the number of param
 > > _________________________________________________________________
 > > Layer (type)                 Output Shape              Param #   
 > > =================================================================
-> > input (InputLayer)           [(None, 163)]             0         
+> > input (InputLayer)           [(None, 89)]              0         
 > > _________________________________________________________________
-> > dense_21 (Dense)             (None, 10)                1640      
+> > dense_9 (Dense)              (None, 10)                900       
 > > _________________________________________________________________
-> > dense_22 (Dense)             (None, 5)                 55        
+> > dense_10 (Dense)             (None, 5)                 55        
 > > _________________________________________________________________
-> > dense_23 (Dense)             (None, 1)                 6         
+> > dense_11 (Dense)             (None, 1)                 6         
 > > =================================================================
-> > Total params: 1,701
-> > Trainable params: 1,701
+> > Total params: 961
+> > Trainable params: 961
 > > Non-trainable params: 0
-> > _________________________________________________________________
-> > ~~~
+> > 
+> > ~~q
 > > {:.output}
 > >
 > > ~~~
