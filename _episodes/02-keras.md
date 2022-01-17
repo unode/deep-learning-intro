@@ -203,13 +203,6 @@ as input for the neural network and the target that we want to predict.
 In the rest of this episode we will use the `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, `body_mass_g` attributes.
 The target for the classification task will be the `species`.
 
-Using the following code we can select these columns from the dataframe:
-~~~
-penguin_features = penguins.drop(columns=["species", 'island', 'sex'])
-target = penguins['species']
-~~~
-{:.language-python}
-
 > ## Data Exploration
 > Exploring the data is an important step to familiarize yourself with the problem and to help you
 > determine the relevant inputs and outputs.
@@ -241,7 +234,6 @@ penguins_filtered = penguins.drop(columns=['island', 'sex']).dropna()
 
 # Split the dataset in the features and the target
 penguin_features = penguins_filtered.drop(columns=['species'])
-target = penguins_filtered['species']
 ~~~
 {:.language-python}
 
