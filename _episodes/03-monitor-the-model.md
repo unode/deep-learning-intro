@@ -317,10 +317,11 @@ history = model.fit(X_train, y_train,
 ~~~
 {: .language-python}
 
-We can plot the training process using the history:
+We can plot the training process using the `history` object returned from the model training:
 ~~~
 import seaborn as sns
 import matplotlib.pyplot as plt
+
 history_df = pd.DataFrame.from_dict(history.history)
 sns.lineplot(data=history_df['root_mean_squared_error'])
 plt.xlabel("epochs")
@@ -429,6 +430,7 @@ NN RMSE: 3.93, baseline RMSE: 3.88
 Judging from the numbers alone, our neural network preduction would be performing worse than the baseline.
 
 ## Watch your model training closely
+
 As we saw when comparing the predictions for the training and the test set, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a second test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evaluate the model with the *validation set* after every epoch during training, for instance to splot if we see signs of clear overfitting.
 
 Let's give this a try!
@@ -452,109 +454,109 @@ history = model.fit(X_train, y_train,
 ~~~
 {: .language-python}
 
-> ## Exercise: plot the training progress.
->
-> As before the history allows plotting the training progress. But now we can plot both the performance on the training data and on the validation data!
-> * Is there a difference between the training and validation data? And if so, what would this imply?
->
-> > ## Solution
-> > ~~~
-> > history_df = pd.DataFrame.from_dict(history.history)
-> > sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
-> > plt.xlabel("epochs")
-> > plt.ylabel("RMSE")
-> > ~~~
-> > {: .language-python}
-> > ![Output of plotting sample](../fig/03_training_history_2_rmse.png)
-> >
-> > This clearly shows that something is not completely right here.
-> > The model predictions on the validation set quickly seem to reach a plateau while the performance on the training set keeps improving.
-> > That is a clear signature of overfitting.
-> {:.solution}
-{:.challenge}
+With this we can plot both the performance on the training data and on the validation data!
+
+~~~
+history_df = pd.DataFrame.from_dict(history.history)
+sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+plt.xlabel("epochs")
+plt.ylabel("RMSE")
+~~~
+{: .language-python}
+![Output of plotting sample](../fig/03_training_history_2_rmse.png)
+
+This clearly shows that something is not completely right here.
+The model predictions on the validation set quickly seem to reach a plateau while the performance on the training set keeps improving.
+That is a clear signature of overfitting.
+
 
 ## Counteract model overfitting
+
 Overfitting is a very common issue and there are many strategies to handle it.
 Most similar to classical machine learning might to **reduce the number of parameters**.
 
-> ## Try to reduce the degree of overfitting by lowering the number of parameters
->
-> We can keep the network architecture unchanged (2 dense layers + a one-node output layer) and only play with the number of nodes per layer.
-> Try to lower the number of nodes in one or both of the two dense layers and observe the changes to the training and validation losses.
-> If time is short: Suggestion is to run one network with only 10 and 5 nodes in the first and second layer.
->
-> * Is it possible to get rid of overfitting this way?
-> * Does the overall performance suffer or does it mostly stay the same?
-> * How low can you go with the number of parameters without notable effect on the performance on the validation set?
->
-> > ## Solution
-> > ~~~
-> > def create_nn(nodes1, nodes2):
-> >     # Input layer
-> >     inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
-> >
-> >     # Dense layers
-> >     layers_dense = keras.layers.Dense(nodes1, 'relu')(inputs)
-> >     layers_dense = keras.layers.Dense(nodes2, 'relu')(layers_dense)
-> >
-> >     # Output layer
-> >     outputs = keras.layers.Dense(1)(layers_dense)
-> >
-> >     return keras.Model(inputs=inputs, outputs=outputs, name="model_small")
-> >
-> > model = create_nn(10, 5)
-> > model.summary()
-> > ~~~
-> > {:.language-python}
-> >
-> > ~~~
-> > Model: "model_small"
-> > _________________________________________________________________
-> > Layer (type)                 Output Shape              Param #   
-> > =================================================================
-> > input (InputLayer)           [(None, 163)]             0         
-> > _________________________________________________________________
-> > dense_21 (Dense)             (None, 10)                1640      
-> > _________________________________________________________________
-> > dense_22 (Dense)             (None, 5)                 55        
-> > _________________________________________________________________
-> > dense_23 (Dense)             (None, 1)                 6         
-> > =================================================================
-> > Total params: 1,701
-> > Trainable params: 1,701
-> > Non-trainable params: 0
-> > _________________________________________________________________
-> > ~~~
-> > {:.output}
-> >
-> > ~~~
-> > model.compile(optimizer='adam',
-> >               loss='mse',
-> >               metrics=[keras.metrics.RootMeanSquaredError()])
-> > history = model.fit(X_train, y_train,
-> >                     batch_size = 32,
-> >                     epochs = 200,
-> >                     validation_data=(X_val, y_val), verbose = 2)
-> >                     
-> > history_df = pd.DataFrame.from_dict(history.history)
-> > sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
-> > plt.xlabel("epochs")
-> > plt.ylabel("RMSE")
-> > ~~~
-> > {:.language-python}
-> >
-> > ![Output of plotting sample](../fig/03_training_history_3_rmse_smaller_model.png)
-> >
-> > There is obviously no single correct solution here. But you will have noticed that the number of nodes can be reduced quiet a bit!
-> >
-> > In general, it quickly becomes a very complicated search for the right "sweet spot", i.e. the settings for which overfitting will be (nearly) avoided but which still performes equally well.
-> >
-> {:.solution}
-{:.challenge}
+We can keep the network architecture unchanged (2 dense layers + a one-node output layer) and only play with the number of nodes per layer.
+
+~~~
+def create_nn(nodes1, nodes2):
+    # Input layer
+    inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
+
+    # Dense layers
+    layers_dense = keras.layers.Dense(nodes1, 'relu')(inputs)
+    layers_dense = keras.layers.Dense(nodes2, 'relu')(layers_dense)
+
+    # Output layer
+    outputs = keras.layers.Dense(1)(layers_dense)
+
+    return keras.Model(inputs=inputs, outputs=outputs, name="model_small")
+
+model = create_nn(10, 5)
+~~~
+{:.language-python}
+
+Let's check the created model for good measure:
+
+~~~
+model.summary()
+~~~
+{:.language-python}
+
+~~~
+Model: "model_small"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input (InputLayer)           [(None, 163)]             0         
+_________________________________________________________________
+dense_21 (Dense)             (None, 10)                1640      
+_________________________________________________________________
+dense_22 (Dense)             (None, 5)                 55        
+_________________________________________________________________
+dense_23 (Dense)             (None, 1)                 6         
+=================================================================
+Total params: 1,701
+Trainable params: 1,701
+Non-trainable params: 0
+_________________________________________________________________
+~~~
+{:.output}
+
+With this change, we have reduced the parameters by 92%. Now compile the model and run the training.
+
+~~~
+model.compile(optimizer='adam',
+              loss='mse',
+              metrics=[keras.metrics.RootMeanSquaredError()])
+history = model.fit(X_train, y_train,
+                    batch_size = 32,
+                    epochs = 200,
+                    validation_data=(X_val, y_val), verbose = 2)
+~~~
+{:.language-python}
+
+In order to compare, we use the same code to check the training performance.
+
+~~~
+history_df = pd.DataFrame.from_dict(history.history)
+sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+plt.xlabel("epochs")
+plt.ylabel("RMSE")
+~~~
+{:.language-python}
+
+![Output of plotting sample](../fig/03_training_history_3_rmse_smaller_model.png)
+
 
 We saw that reducing the number of parameters can be a strategy to avoid overfitting.
 In practice, however, this is usually not the (main) way to go when it comes to deep learning.
 One reason is, that finding the sweet spot can be really hard and time consuming. And it has to be repeated every time the model is adapted, e.g. when more training data becomes available.
+
+> ## Sweet Spots
+> Note: There is no single correct solution here. But you will have noticed that the number of nodes can be reduced quiet a bit!
+> In general, it quickly becomes a very complicated search for the right "sweet spot", i.e. the settings for which overfitting will be (nearly) avoided but which still performes equally well.
+{ .callout }
+
 
 ## Early stopping: stop when things are looking best
 Arguable **the** most common technique to avoid (severe) overfitting in deep learning is called **early stopping**.
@@ -615,9 +617,10 @@ Techniques to avoid overfitting, or to improve model generalization, are termed 
 
 
 ## BatchNorm: the "standard scaler" for deep learning
+
 A very common step in classical machine learning pipelines is to scale the features, for instance by using sckit-learn's `StandardScaler`.
 This can in principle also be done for deep learning.
-An alternative, more common approach, is to add **BatchNormalization** layers which will learn how to scale the input values.
+An alternative, more common approach, is to add **BatchNormalization** layers ([documentation of the batch normalization layer](https://keras.io/api/layers/normalization_layers/batch_normalization/)) which will learn how to scale the input values.
 Similar to dropout, batch normalization is available as a network layer in Keras and can be added to the network in a similar way.
 It does not require any additional parameter setting.
 
@@ -626,73 +629,70 @@ from tensorflow.keras.layers import BatchNormalization
 ~~~
 {: .language-python}
 
-> ## Exercise: Add a BatchNormalization layer as the first layer to your neural network.
-> Look at the [documentation of the batch normalization layer](https://keras.io/api/layers/normalization_layers/batch_normalization/). Add this as a first layer to the model we defined above. Then, train the model and compare the performance to the model without batch normalization.
->
-> > ## Solution
-> > ~~~
-> > def create_nn():
-> >     # Input layer
-> >     inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
-> >
-> >     # Dense layers
-> >     layers_dense = keras.layers.BatchNormalization()(inputs)
-> >     layers_dense = keras.layers.Dense(100, 'relu')(layers_dense)
-> >     layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
-> >
-> >     # Output layer
-> >     outputs = keras.layers.Dense(1)(layers_dense)
-> >
-> >     # Defining the model and compiling it
-> >     return keras.Model(inputs=inputs, outputs=outputs, name="model_batchnorm")
-> >
-> > model = create_nn()
-> > model.compile(loss='mse', optimizer='adam', metrics=[keras.metrics.RootMeanSquaredError()])
-> > model.summary()
-> > ~~~
-> > {: .language-python}
-> >
-> > ~~~
-> > Model: "model_batchnorm"
-> > _________________________________________________________________
-> > Layer (type)                 Output Shape              Param #   
-> > =================================================================
-> > input_1 (InputLayer)         [(None, 89)]              0         
-> > _________________________________________________________________
-> > batch_normalization (BatchNo (None, 89)                356       
-> > _________________________________________________________________
-> > dense (Dense)             (None, 100)               9000      
-> > _________________________________________________________________
-> > dense_1 (Dense)             (None, 50)                5050      
-> > _________________________________________________________________
-> > dense_2 (Dense)             (None, 1)                 51        
-> > =================================================================
-> > Total params: 14,457
-> > Trainable params: 14,279
-> > Non-trainable params: 178
-> > ~~~
-> > {:.output}
-> >
-> >
-> > We can train the model again as follows:
-> > ~~~
-> > history = model.fit(X_train, y_train,
-> >                     batch_size = 32,
-> >                     epochs = 1000,
-> >                     validation_data=(X_val, y_val),
-> >                     callbacks=[earlystopper],
-> >                     verbose = 2)
-> >
-> > history_df = pd.DataFrame.from_dict(history.history)
-> > sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
-> > plt.xlabel("epochs")
-> > plt.ylabel("RMSE")
-> > ~~~
-> > {: .language-python}      
-> >
-> > ![Output of plotting sample](../fig/03_training_history_5_rmse_batchnorm.png)
-> {:.solution}
-{:.challenge}
+The `BatchNormalization` can be inserted as yet another layer into the architecture.
+
+~~~
+def create_nn():
+    # Input layer
+    inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
+
+    # Dense layers
+    layers_dense = keras.layers.BatchNormalization()(inputs)
+    layers_dense = keras.layers.Dense(100, 'relu')(layers_dense)
+    layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
+
+    # Output layer
+    outputs = keras.layers.Dense(1)(layers_dense)
+
+    # Defining the model and compiling it
+    return keras.Model(inputs=inputs, outputs=outputs, name="model_batchnorm")
+
+model = create_nn()
+model.compile(loss='mse', optimizer='adam', metrics=[keras.metrics.RootMeanSquaredError()])
+model.summary()
+~~~
+{: .language-python}
+
+This new layer appears in the model summary as well.
+
+~~~
+Model: "model_batchnorm"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 89)]              0         
+_________________________________________________________________
+batch_normalization (BatchNo (None, 89)                356       
+_________________________________________________________________
+dense (Dense)             (None, 100)               9000      
+_________________________________________________________________
+dense_1 (Dense)             (None, 50)                5050      
+_________________________________________________________________
+dense_2 (Dense)             (None, 1)                 51        
+=================================================================
+Total params: 14,457
+Trainable params: 14,279
+Non-trainable params: 178
+~~~
+{:.output}
+
+We can train the model again as follows:
+~~~
+history = model.fit(X_train, y_train,
+                    batch_size = 32,
+                    epochs = 1000,
+                    validation_data=(X_val, y_val),
+                    callbacks=[earlystopper],
+                    verbose = 2)
+
+history_df = pd.DataFrame.from_dict(history.history)
+sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+plt.xlabel("epochs")
+plt.ylabel("RMSE")
+~~~
+{: .language-python}      
+
+![Output of plotting sample](../fig/03_training_history_5_rmse_batchnorm.png)
 
 > ## Batchnorm parameters
 >
@@ -707,6 +707,7 @@ from tensorflow.keras.layers import BatchNormalization
 {: .callout}
 
 ## Run on test set and compare to naive baseline
+
 It seems that no matter what we add, the overall loss does not decrease much further (we at least avoided overfitting though!).
 Let's again plot the results on the test set:
 ~~~
@@ -721,7 +722,7 @@ plt.ylabel("true sunshine hours")
 
 ![Output of plotting sample](../fig/03_regression_test_5_dropout_batchnorm.png)
 
-Well... certainly not perfect. But how good or bad is this? Maybe not good enough to plan your picnic for tomorrow.
+Well, the above is certainly not perfect. But how good or bad is this? Maybe not good enough to plan your picnic for tomorrow.
 But let's better compare it to the naive baseline we created in the beginning. What would you say, did we improve on that?
 
 
