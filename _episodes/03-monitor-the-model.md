@@ -398,47 +398,35 @@ Now that we defined a problem (predict tomorrow's sunshine hours), it makes sens
 Maybe the simplest sunshine hour prediction we can easily do is: Tomorrow we will have the same number of sunshine hours as today.
 (sounds very naive, but for many observables such as temperature this is already a fairly good predictor)
 
-> ## Exercise: Create a baseline and plot it against the true labels
-> Create the same type of scatter plot as before, but now comparing the sunshine hours in Basel today vs. the sunshine hours in Basel tomorrow.
-> Also calculate the RMSE for the baseline prediction. Hint: you can use:
-<!--cce:skip-->
-> ~~~
-> from sklearn.metrics import mean_squared_error
-> rmse_score = mean_squared_error(true_values, predicted_values, squared=False)
-> ~~~
-> {: .language-python}
->
-> * Looking at this baseline: Would you consider this a simple or a hard problem to solve?
->
-> > ## Solution
-> > We can here just take the `BASEL_sunhine` column of our data, because this contains the sunshine hours from one day before what we have as a label.
-> > ~~~
-> > y_baseline_prediction = X_test['BASEL_sunshine']
-> >
-> > plt.figure(figsize=(5, 5), dpi=100)
-> > plt.scatter(y_baseline_prediction, y_test, s=10, alpha=0.5)
-> > plt.xlabel("sunshine hours yesterday")
-> > plt.ylabel("true sunshine hours")
-> > ~~~
-> > {: .language-python}
-> >
-> > ![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
-> > It is difficult to interpret from this plot whether our model is doing better than the baseline.
-> > We can have a look at the RMSE:
-> > ~~~
-> > from sklearn.metrics import mean_squared_error
-> > rmse_nn = mean_squared_error(y_test, y_test_predicted, squared=False)
-> > rmse_baseline = mean_squared_error(y_test, y_baseline_prediction, squared=False)
-> > print('NN RMSE: {:.2f}, baseline RMSE: {:.2f}'.format(rmse_nn, rmse_baseline))
-> > ~~~
-> > {: .language-python}
-> > ~~~
-> > NN RMSE: 3.93, baseline RMSE: 3.88
-> > ~~~
-> > {:.output}
-> {:.solution}
-{:.challenge}
 
+We can take the `BASEL_sunshine` column of our data, because this contains the sunshine hours from one day before what we have as a label.
+~~~
+y_baseline_prediction = X_test['BASEL_sunshine']
+
+plt.figure(figsize=(5, 5), dpi=100)
+plt.scatter(y_baseline_prediction, y_test, s=10, alpha=0.5)
+plt.xlabel("sunshine hours yesterday")
+plt.ylabel("true sunshine hours")
+~~~
+{: .language-python}
+
+![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
+
+It is difficult to interpret from this plot whether our model is doing better than the baseline.
+We can also have a look at the RMSE:
+~~~
+from sklearn.metrics import mean_squared_error
+rmse_nn = mean_squared_error(y_test, y_test_predicted, squared=False)
+rmse_baseline = mean_squared_error(y_test, y_baseline_prediction, squared=False)
+print('NN RMSE: {:.2f}, baseline RMSE: {:.2f}'.format(rmse_nn, rmse_baseline))
+~~~
+{: .language-python}
+~~~
+NN RMSE: 3.93, baseline RMSE: 3.88
+~~~
+{:.output}
+
+Judging from the numbers alone, our neural network preduction would be performing worse than the baseline.
 
 ## Watch your model training closely
 As we saw when comparing the predictions for the training and the test set, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a second test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evaluate the model with the *validation set* after every epoch during training, for instance to splot if we see signs of clear overfitting.
