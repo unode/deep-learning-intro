@@ -86,6 +86,14 @@ $ conda install "tensorflow>=2.5" seaborn "scikit-learn>=0.22" pandas
 ~~~
 {: .language-bash}
 
+### Troubleshooting for Windows
+It is possible that Windows users will run into version conflicts. If you are on Windows and get 
+errors running the command, you can try installing the packages using pip:
+
+~~~
+$ pip install tensorflow>=2.5 seaborn scikit-learn pandas
+~~~
+{: .language-bash}
 
 ## Starting a Jupyter Notebook
 
