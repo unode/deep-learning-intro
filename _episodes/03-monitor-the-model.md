@@ -555,7 +555,7 @@ One reason is, that finding the sweet spot can be really hard and time consuming
 > ## Sweet Spots
 > Note: There is no single correct solution here. But you will have noticed that the number of nodes can be reduced quiet a bit!
 > In general, it quickly becomes a very complicated search for the right "sweet spot", i.e. the settings for which overfitting will be (nearly) avoided but which still performes equally well.
-{ .callout }
+{: .callout }
 
 
 ## Early stopping: stop when things are looking best
