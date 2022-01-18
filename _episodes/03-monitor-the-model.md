@@ -155,7 +155,7 @@ X_val, X_test, y_val, y_test = train_test_split(X_holdout, y_holdout, test_size=
 ~~~
 {:.language-python}
 
-Setting the `random_state` to `0` is a short-hand at this point. Note however, that changing this see of the pseudo-random number generator will also change the composition of your data sets. For the sake of reproducibility, this is one example of a parameters that should not change at all.
+Setting the `random_state` to `0` is a short-hand at this point. Note however, that changing this seed of the pseudo-random number generator will also change the composition of your data sets. For the sake of reproducibility, this is one example of a parameters that should not change at all.
 
 > ## Exercise: Split data into training, validation, and test set
 >
