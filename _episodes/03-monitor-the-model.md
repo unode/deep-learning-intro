@@ -464,7 +464,16 @@ plt.ylabel("RMSE")
 ~~~
 {: .language-python}
 ![Output of plotting sample](../fig/03_training_history_2_rmse.png)
-
+> ## Exercise: plot the training progress.
+>
+> Is there a difference between the training and validation data? And if so, what would this imply?
+>
+> > ## Solution
+> > This shows that something is not completely right here.
+> > The model predictions on the validation set quickly seem to reach a plateau while the performance on the training set keeps improving.
+> > That is a common signature of *overfitting*.
+> {:.solution}
+{:.challenge}
 This clearly shows that something is not completely right here.
 The model predictions on the validation set quickly seem to reach a plateau while the performance on the training set keeps improving.
 That is a clear signature of overfitting.
