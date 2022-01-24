@@ -132,152 +132,167 @@ y_data = data.loc[1:(nr_rows + 1)]["BASEL_sunshine"]
 
 
 # Prepare the data for machine learning
-In general, it is important to check if the data contains any unexpected values such as `9999` or `NaN` or `NoneType`, for instance using pandas `data.describe()` function. If so, such values must be removed or replaced.
-In the present case the data is luckily pre-prepared to some extent and shouldn't contain such values, so that this step could here be omitted.
+In general, it is important to check if the data contains any unexpected values such as `9999` or `NaN` or `NoneType`. You can use the using pandas `data.describe()` function for this. If so, such values must be removed or replaced.
+In the present case the data is luckily well prepared and shouldn't contain such values, so that this step can be omitted.
 
 ### Split data and labels into training, validation, and test set
-As with classical machine learning techniques, it is common in deep learning to split off a *test set* which remains untouched during model training and tuning. It is then later be used to evaluate the model performance. Here, we will also split off an additional *validation set*, the reason of which will hopefully become clearer later in this lesson.
+
+As with classical machine learning techniques, it is required in deep learning to split off a hold-out *test set* which remains untouched during model training and tuning. It is later used to evaluate the model performance. On top, we will also split off an additional *validation set*, the reason of which will hopefully become clearer later in this lesson.
+
+To make our lives a bit easier, we employ a trick to create these 3 datasets, `training set`, `test set` and `validation set`, by calling the `train_test_split` method of `scikit-learn` twice.
+
+First we create the training set and leave the remainder of 30 % of the data to the two hold-out sets.
+
+~~~
+from sklearn.model_selection import train_test_split
+
+X_train, X_holdout, y_train, y_holdout = train_test_split(X_data, y_data, test_size=0.3, random_state=0)
+~~~
+{:.language-python}
+
+Now we split the 30 % of the data in two equal sized parts.
+
+~~~
+X_val, X_test, y_val, y_test = train_test_split(X_holdout, y_holdout, test_size=0.5, random_state=0)
+~~~
+{:.language-python}
+
+Setting the `random_state` to `0` is a short-hand at this point. Note however, that changing this seed of the pseudo-random number generator will also change the composition of your data sets. For the sake of reproducibility, this is one example of a parameters that should not change at all.
 
 > ## Exercise: Split data into training, validation, and test set
 >
-> Split the data into 3 completely separate set to be used for training, validation, and testing using the `train_test_split` function from `sklearn.model_selection`. This can be done in two steps.
-> First, split the data into training set (70% of all datapoints) and validation+test set (30%). Then split the second one again into two sets (both roughly equal in size).
+> We have been rather generous at selecting rows from the dataset. Our holdout set above amounts to almost an entire year of data. How would the code need to be rewritten in order to obtain two months of data for the validation and test set each?
 >
-> * How many data points do you have in the training, validation, and test sets?
+> 1. `X_train, X_holdout ... = train_test_split( ..., test_size = .12, ...)`  
+> ``X_val, X_test ... = train_test_split( ..., test_size = 2, ...)`
 >
->  **Hint:**
-<!--cce:skip-->
->  ~~~
->  from sklearn.model_selection import train_test_split
->  
->  X_train, X_not_train, y_train, y_not_train = train_test_split(X, y, test_size=0.3, random_state=0)
->  ~~~
->  {:.language-python}
+> 2. `X_train, X_holdout ... = train_test_split( ..., test_size = .33, ...)`  
+> `X_val, X_test ... = train_test_split( ..., test_size = .33, ...)`
+>
+> 3. `X_train, X_holdout ... = train_test_split( ..., test_size = (4./36.), ...)`  
+> `X_val, X_test ... = train_test_split( ..., test_size = .5, ...)`
+>
+> 4. `X_train, X_holdout ... = train_test_split( ..., test_size = 365, ...)`  
+> `X_val, X_test ... = train_test_split( ..., test_size = .5, ...)`
 >
 > > ## Solution
-> > ~~~
-> > from sklearn.model_selection import train_test_split
+> >  
+> > In the code above, we selected the first `365*3 = 1095` days from the original dataset as the number of rows to use. This is the total number of days we have in our dataset here.
 > >
-> > X_train, X_not_train, y_train, y_not_train = train_test_split(X_data, y_data, test_size=0.3, random_state=0)
-> > X_val, X_test, y_val, y_test = train_test_split(X_not_train, y_not_train, test_size=0.5, random_state=0)
+> > 1. The first `test_size = .12` would leave `.12*3*365` for the holdout set. This would amount to 131 days or 4.32 months. This is more than we need. Take caution as well with the second `test_size = 2`. According to the [API reference of `train_test_split`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split), this would select only 2 days into `X_test`.
+> > 
+> > 2. The first `test_size = .33` would leave `.33*3*365` for the holdout set. This would amount to 361 days or almost 12 months. This is more than we need. 
+> > 
+> > 3. The first `test_size = (4./36.)` would leave `.11*3*365` for the holdout set. This would amount to 4 out of 36 months. This is exactly than we need. With the subsequent `test_size = .5` we obtain 2 months of data into the validation and into the test set each.
 > >
-> > print(f"Data was split into training ({X_train.shape[0]})," \
-> >       f" validation ({X_val.shape[0]}) and test set ({X_test.shape[0]}).")
-> > ~~~
-> > {:.language-python}
-> >
-> > ~~~
-> > Data was split into training (767), validation (164) and test set (165).
-> > ~~~
-> > {:.output}
+> > 4. The first `test_size = 365` selects 365 rows or days into the holdout. This would be too many for the task at hand.
 > {:.solution}
 {:.challenge}
 
 ## Build a dense neural network
 
 ### Regression and classification - how to set a training goal
+
 - Explain how to define the output part of a neural network
 - What is the loss function (and which one to chose for a regression or classification task)?
 
-
-In episode 2 we trained a dense neural network on a *classification task*. For this one hot encoding was used together with a Categorical Crossentropy loss function.
+In episode 2 we trained a dense neural network on a *classification task*. For this one hot encoding was used together with a `Categorical Crossentropy` loss function.
 This measured how close the distribution of the neural network outputs corresponds to the distribution of the three values in the one hot encoding.
-Now we want to work on a *regression task*, thus not predicting the right class for a datapoint but a certain value (could in principle also be several values). In our example we want to predict the sunshine hours in Basel (or any other place in the dataset) for tomorrow based on the weather data of all 18 locations today.
+Now we want to work on a *regression task*, thus not predicting a class label (or integer number) for a datapoint. In regression, we like to predict one (and sometimes many) values of a feature. This is typically a floating point number. 
 
-The network should hence output a single float value which is why the last layer of our network will only consist of a single node.
+In our example we want to predict the sunshine hours in Basel (or any other place in the dataset) for tomorrow based on the weather data of all 18 locations today. `BASEL_sunshine` is a floating point value (i.e. `float64`). The network should hence output a single float value which is why the last layer of our network will only consist of a single node. 
 
-> ## Create the neural network
->
-> We have seen how to build a dense neural network in episode 2.
-> Try now to construct a dense neural network with 3 layers for a regression task.
-> Start with a network of a dense layer with 100 nodes, followed by one with 50 nodes and finally an output layer.
-> Hint: Layers in Keras are stacked by passing a layer to the next one like this
-<!--cce:skip-->
-> ~~~
-> inputs = keras.layers.Input(shape=...)
-> next_layer = keras.layers.Dense(..., activation='relu')(inputs)
-> next_layer = keras.layers.Dense(..., activation='relu')(next_layer)
-> #here we used the same layer name twice, but that is up to you
-> ...
-> next_layer = ...(next_layer)
-> ...
-> #stack as many layers as you like
-> ~~~
-> {:.language-python}
->
-> * What must here be the dimension of our input layer?
-> * How would our output layer look like? What about the activation function? Tip: Remember that the activation function in our previous classification network scaled the outputs between 0 and 1.
->
-> > ## Solution
-> > Here we wrote a function for generating a Keras model, because we plan on using this again in the following part.
-> > ~~~
-> > from tensorflow import keras
-> >
-> > def create_nn():
-> >     # Input layer
-> >     inputs = keras.Input(shape=(X_data.shape[1],), name='input')
-> >
-> >     # Dense layers
-> >     layers_dense = keras.layers.Dense(100, 'relu')(inputs)
-> >     layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
-> >
-> >     # Output layer
-> >     outputs = keras.layers.Dense(1)(layers_dense)
-> >
-> >     return keras.Model(inputs=inputs, outputs=outputs, name="weather_prediction_model")
-> >
-> > model = create_nn()
-> > model.summary()
-> > ~~~
-> > {:.language-python}
-> >
-> > ~~~
-> > Model: "weather_prediction_model"
-> > _________________________________________________________________
-> > Layer (type)                 Output Shape              Param #   
-> > =================================================================
-> > input (InputLayer)           [(None, 89)]              0         
-> > _________________________________________________________________
-> > dense (Dense)                (None, 100)               9000      
-> > _________________________________________________________________
-> > dense_1 (Dense)              (None, 50)                5050      
-> > _________________________________________________________________
-> > dense_2 (Dense)              (None, 1)                 51        
-> > =================================================================
-> > Total params: 14,101
-> > Trainable params: 14,101
-> > Non-trainable params: 0
-> > ~~~
-> > {:.output}
-> >
-> > The shape of the input layer has to correspond to the number of features in our data: 89
-> >
-> > The output layer here is a dense layer with only 1 node. And we here have chosen to use *no activation function*.
-> > While we might use *softmax* for a classification task, here we do not want to restrict the possible outcomes for a start.
-> >
-> > In addition, we have here chosen to write the network creation as a function so that we can use it later again to initiate new models.
-> {:.solution}
-{:.challenge}
+We compose a network of two hidden layers to start off with something. We go by a scheme with 100 neurons in the first hidden layer and 50 neurons in the second layer. As activation function we settle on the `relu` function as a it proved very robust and widely used. To make our live easier later, we wrap the definition of the network in a method called `create_nn`.
+
+~~~
+from tensorflow import keras
+
+def create_nn():
+    # Input layer
+    inputs = keras.Input(shape=(X_data.shape[1],), name='input')
+
+    # Dense layers
+    layers_dense = keras.layers.Dense(100, 'relu')(inputs)
+    layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
+
+    # Output layer
+    outputs = keras.layers.Dense(1)(layers_dense)
+
+    return keras.Model(inputs=inputs, outputs=outputs, name="weather_prediction_model")
+
+model = create_nn()
+~~~
+{:.language-python}
+
+The shape of the input layer has to correspond to the number of features in our data: `163`. We use `X_data.shape[1]` to obtain this value dynamically
+
+The output layer here is a dense layer with only 1 node. And we here have chosen to use *no activation function*.
+While we might use *softmax* for a classification task, here we do not want to restrict the possible outcomes for a start.
+
+In addition, we have here chosen to write the network creation as a function so that we can use it later again to initiate new models.
+
+Let's check how our model looks like by calling the `summary` method.
+
+~~~
+model.summary()
+~~~
+{:.language-python}
+~~~
+Model: "weather_prediction_model"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input (InputLayer)           [(None, 89)]              0         
+_________________________________________________________________
+dense (Dense)                (None, 100)               9000      
+_________________________________________________________________
+dense_1 (Dense)              (None, 50)                5050      
+_________________________________________________________________
+dense_2 (Dense)              (None, 1)                 51        
+=================================================================
+Total params: 14,101
+Trainable params: 14,101
+Non-trainable params: 0
+~~~
+{:.output}
+
 
 When compiling the model we can define a few very important aspects. We will discuss them now in more detail.
 
-### Loss function:
+### Loss function
 The loss is what the neural network will be optimized on during training, so choosing a suitable loss function is crucial for training neural networks.
 In the given case we want to stimulate that the predicted values are as close as possible to the true values. This is commonly done by using the *mean squared error* (mse) or the *mean absolute error* (mae), both of which should work OK in this case. Often, mse is preferred over mae because it "punishes" large prediction errors more severely.
-In Keras this is implemented in the `keras.losses.MeanSquaredError` class (see Keras documentation: https://keras.io/api/losses/).
+In Keras this is implemented in the `keras.losses.MeanSquaredError` class (see Keras documentation: https://keras.io/api/losses/). This can be provided into the `model.compile` method with the `loss` parameter and setting it to `mse`, e.g. 
 
-### Optimizer:
+~~~
+model.compile(#...
+              loss='mse',
+              #...)
+~~~
+{: .language-python}
+
+### Optimizer
+
 Somewhat coupled to the loss function is the *optimizer* that we want to use.
-The *optimizer* here refers to the algorithm with which the model learns to optimize on the set loss function. A basic example for such an optimizer would be *stochastic gradient descent*. For now, we can largely skip this step and simply pick one of the most common optimizers that works well for most tasks: the *Adam optimizer*.
+The *optimizer* here refers to the algorithm with which the model learns to optimize on the provided loss function. A basic example for such an optimizer would be *stochastic gradient descent*. For now, we can largely skip this step and pick one of the most common optimizers that works well for most tasks: the *Adam optimizer*. Similar to activation functions, the choice of optimizer depends on the problem you are trying to solve, your model architecture and your data. *Adam* is a good starting point though, which is why we chose it.
 
-### Metrics:
+~~~
+model.compile(optimizer='adam',
+              loss='mse',
+              #...)
+~~~
+{: .language-python}
+
+
+### Metrics
+
 In our first example (episode 2) we plotted the progression of the loss during training.
-That is indeed a good first indicator if things are working alright, i.e. if the loss is indeed decreasing as it should.
+That is indeed a good first indicator if things are working alright, i.e. if the loss is indeed decreasing as it should with the number of epochs.
 However, when models become more complicated then also the loss functions often become less intuitive.
 That is why it is good practice to monitor the training process with additional, more intuitive metrics.
 They are not used to optimize the model, but are simply recorded during training.
-With Keras they can simply be added via `metrics=[...]` and can contain one or multiple metrics of interest.
-Here we could for instance chose to use `'mae'` the mean absolute error, or the the *root mean squared error* (RMSE) which unlike the *mse* has the same units as the predicted values.
+With Keras such additional metrics can be added via `metrics=[...]` parameter and can contain one or multiple metrics of interest.
+Here we could for instance chose to use `'mae'` the mean absolute error, or the the *root mean squared error* (RMSE) which unlike the *mse* has the same units as the predicted values. For the sake of units, we choose the latter.
 
 ~~~
 model.compile(optimizer='adam',
@@ -286,7 +301,10 @@ model.compile(optimizer='adam',
 ~~~
 {: .language-python}
 
+With this, we complete the compilation of our network and are ready to start training.
+
 ## Train a dense neural network
+
 Now that we created and compiled our dense neural network, we can start training it.
 One additional concept we need to introduce though, is the `batch_size`.
 This defines how many samples from the training data will be used to estimate the error gradient before the model weights are updated.
@@ -300,10 +318,11 @@ history = model.fit(X_train, y_train,
 ~~~
 {: .language-python}
 
-We can plot the training process using the history:
+We can plot the training process using the `history` object returned from the model training:
 ~~~
 import seaborn as sns
 import matplotlib.pyplot as plt
+
 history_df = pd.DataFrame.from_dict(history.history)
 sns.lineplot(data=history_df['root_mean_squared_error'])
 plt.xlabel("epochs")
@@ -316,67 +335,65 @@ This looks very promising! Our metric ("RMSE") is dropping nicely and while it m
 But the *RMSE* is just the root *mean* squared error, so we might want to look a bit more in detail how well our just trained model does in predicting the sunshine hours.
 
 ## Evaluate our model
-There is not a single way to evaluate how a model performs. But there is at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly. For the present *regression task* however, it makes more sense to compare true and predicted values in simple scatter plot. Hint: use `plt.scatter()`.
+
+There is not a single way to evaluate how a model performs. But there is at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly. 
+
+For the present *regression task*, it makes more sense to compare true and predicted values in a scatter plot. Hint: use `plt.scatter()`.
 
 First, we will do the actual prediction step.
-> ## Predict the labels for both training and test set and compare to the true values
-> Even though we here use a different model architecture and a different task compared to episode 2, the prediction step is mostly identical.
-> Use the model to predict the labels for the training set and the test set and then compare them in a scatter plot to the true labels. Hint: use `plt.scatter()`.
-> Hint: the predicted labels can be generated using `y_predicted = model.predict(X)`.
->
-> * Is the performance of the model as you expected (or better/worse)?
-> * Is there a notable difference between training set and test set? And if so, any idea why? Hint: you can use `model.evaluate` to obtain metric scores for train and test set.
->
-> > ## Solution
-> > ~~~
-> > y_train_predicted = model.predict(X_train)
-> > y_test_predicted = model.predict(X_test)
-> > ~~~
-> > {: .language-python}
-> > We can then compare those to the true labels, for instance by
-> > ~~~
-> > fig, axes = plt.subplots(1, 2, figsize=(12, 6))
-> > plt.style.use('ggplot')  # optional, that's only to define a visual style
-> > axes[0].scatter(y_train_predicted, y_train, s=10, alpha=0.5, color="teal")
-> > axes[0].set_title("training set")
-> > axes[0].set_xlabel("predicted sunshine hours")
-> > axes[0].set_ylabel("true sunshine hours")
-> >
-> > axes[1].scatter(y_test_predicted, y_test, s=10, alpha=0.5, color="teal")
-> > axes[1].set_title("test set")
-> > axes[1].set_xlabel("predicted sunshine hours")
-> > axes[1].set_ylabel("true sunshine hours")
-> > ~~~
-> > {: .language-python}
-> > ![Scatter plot to evaluate training and test set](../fig/03_regression_training_test_comparison.png)
-> >
-> > The accuracy on the training set seems fairly good.
-> > In fact, considering that the task of predicting the daily sunshine hours is really not easy it might even be surprising how well the model predicts that
-> > (at least on the training set). Maybe a little too good?
-> > We also see the noticeable difference between train and test set when calculating the exact value of the RMSE:
-> > ~~~
-> > loss_train, rmse_train = model.evaluate(X_train, y_train)
-> > loss_test, rmse_test = model.evaluate(X_test, y_test)
-> > print('Train RMSE: {:.2f}, Test RMSE: {:.2f}'.format(rmse_train, rmse_test))
-> > ~~~
-> > {: .language-python}
-> > ~~~
-> > 24/24 [==============================] - 0s 442us/step - loss: 0.7092 - root_mean_squared_error: 0.8421
-> > 6/6 [==============================] - 0s 647us/step - loss: 16.4413 - root_mean_squared_error: 4.0548
-> > Train RMSE: 0.84, Test RMSE: 4.05
-> > ~~~
-> > {:.output}
-> >
-> > For those familiar with (classical) machine learning this might look familiar.
-> > It is a very clear signature of **overfitting** which means that the model has to some extend memorized aspects of the training data.
-> > As a result makes much more accurate predictions on the training data than on unseen data.
-> {:.solution}
-{:.challenge}
+
+~~~
+y_train_predicted = model.predict(X_train)
+y_test_predicted = model.predict(X_test)
+~~~
+{: .language-python}
+
+So, let's look at how the predicted sunshine hour have developed with reference to their ground truth values.
+
+~~~
+fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+plt.style.use('ggplot')  # optional, that's only to define a visual style
+axes[0].scatter(y_train_predicted, y_train, s=10, alpha=0.5, color="teal")
+axes[0].set_title("training set")
+axes[0].set_xlabel("predicted sunshine hours")
+axes[0].set_ylabel("true sunshine hours")
+
+axes[1].scatter(y_test_predicted, y_test, s=10, alpha=0.5, color="teal")
+axes[1].set_title("test set")
+axes[1].set_xlabel("predicted sunshine hours")
+axes[1].set_ylabel("true sunshine hours")
+~~~
+{: .language-python}
+![Scatter plot to evaluate training and test set](../fig/03_regression_training_test_comparison.png)
+
+The accuracy on the training set seems fairly good.
+In fact, considering that the task of predicting the daily sunshine hours is really not easy it might even be surprising how well the model predicts that
+(at least on the training set). Maybe a little too good?
+We also see the noticeable difference between train and test set when calculating the exact value of the RMSE:
+
+~~~
+loss_train, rmse_train = model.evaluate(X_train, y_train)
+loss_test, rmse_test = model.evaluate(X_test, y_test)
+print('Train RMSE: {:.2f}, Test RMSE: {:.2f}'.format(rmse_train, rmse_test))
+~~~
+{: .language-python}
+~~~
+24/24 [==============================] - 0s 442us/step - loss: 0.7092 - root_mean_squared_error: 0.8421
+6/6 [==============================] - 0s 647us/step - loss: 16.4413 - root_mean_squared_error: 4.0548
+Train RMSE: 0.84, Test RMSE: 4.05
+~~~
+{:.output}
+
+For those experienced with (classical) machine learning this might look familiar.
+The plots above expose the signs of **overfitting** which means that the model has to some extend memorized aspects of the training data.
+As a result, it makes much more accurate predictions on the training data than on unseen test data.
+
 
 Overfitting also happens in classical machine learning, but there it is usually interpreted as the model having more parameters than the training data would justify (say, a decision tree with too many branches for the number of training instances). As a consequence one would reduce the number of parameters to avoid overfitting.
 In deep learning the situation is slightly different. It can -same as for classical machine learning- also be a sign of having a *too big* model, meaning a model with too many parameters (layers and/or nodes). However, in deep learning higher number of model parameters are often still considered acceptable and models often perform best (in terms of prediction accuracy) when they are at the verge of overfitting. So, in a way, training deep learning models is always a bit like playing with fire...
 
 ## Set expectations: How difficult is the defined problem?
+
 Before we dive deeper into handling overfitting and (trying to) improving the model performance, let's ask the question: How well must a model perform before we consider it a good model?
 
 Now that we defined a problem (predict tomorrow's sunshine hours), it makes sense to develop an intuition for how difficult the posed problem is. Frequently, models will be evaluated against a so called **baseline**. A baseline can be the current standard in the field or if such a thing does not exist it could also be an intuitive first guess or toy model. The latter is exactly what we would use for our case.
@@ -384,49 +401,38 @@ Now that we defined a problem (predict tomorrow's sunshine hours), it makes sens
 Maybe the simplest sunshine hour prediction we can easily do is: Tomorrow we will have the same number of sunshine hours as today.
 (sounds very naive, but for many observables such as temperature this is already a fairly good predictor)
 
-> ## Exercise: Create a baseline and plot it against the true labels
-> Create the same type of scatter plot as before, but now comparing the sunshine hours in Basel today vs. the sunshine hours in Basel tomorrow.
-> Also calculate the RMSE for the baseline prediction. Hint: you can use:
-<!--cce:skip-->
-> ~~~
-> from sklearn.metrics import mean_squared_error
-> rmse_score = mean_squared_error(true_values, predicted_values, squared=False)
-> ~~~
-> {: .language-python}
->
-> * Looking at this baseline: Would you consider this a simple or a hard problem to solve?
->
-> > ## Solution
-> > We can here just take the `BASEL_sunhine` column of our data, because this contains the sunshine hours from one day before what we have as a label.
-> > ~~~
-> > y_baseline_prediction = X_test['BASEL_sunshine']
-> >
-> > plt.figure(figsize=(5, 5), dpi=100)
-> > plt.scatter(y_baseline_prediction, y_test, s=10, alpha=0.5)
-> > plt.xlabel("sunshine hours yesterday")
-> > plt.ylabel("true sunshine hours")
-> > ~~~
-> > {: .language-python}
-> >
-> > ![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
-> > It is difficult to interpret from this plot whether our model is doing better than the baseline.
-> > We can have a look at the RMSE:
-> > ~~~
-> > from sklearn.metrics import mean_squared_error
-> > rmse_nn = mean_squared_error(y_test, y_test_predicted, squared=False)
-> > rmse_baseline = mean_squared_error(y_test, y_baseline_prediction, squared=False)
-> > print('NN RMSE: {:.2f}, baseline RMSE: {:.2f}'.format(rmse_nn, rmse_baseline))
-> > ~~~
-> > {: .language-python}
-> > ~~~
-> > NN RMSE: 4.05, baseline RMSE: 3.88
-> > ~~~
-> > {:.output}
-> {:.solution}
-{:.challenge}
 
+We can take the `BASEL_sunshine` column of our data, because this contains the sunshine hours from one day before what we have as a label.
+~~~
+y_baseline_prediction = X_test['BASEL_sunshine']
+
+plt.figure(figsize=(5, 5), dpi=100)
+plt.scatter(y_baseline_prediction, y_test, s=10, alpha=0.5)
+plt.xlabel("sunshine hours yesterday")
+plt.ylabel("true sunshine hours")
+~~~
+{: .language-python}
+
+![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
+
+It is difficult to interpret from this plot whether our model is doing better than the baseline.
+We can also have a look at the RMSE:
+~~~
+from sklearn.metrics import mean_squared_error
+rmse_nn = mean_squared_error(y_test, y_test_predicted, squared=False)
+rmse_baseline = mean_squared_error(y_test, y_baseline_prediction, squared=False)
+print('NN RMSE: {:.2f}, baseline RMSE: {:.2f}'.format(rmse_nn, rmse_baseline))
+~~~
+{: .language-python}
+~~~
+NN RMSE: 4.05, baseline RMSE: 3.88
+~~~
+{:.output}
+
+Judging from the numbers alone, our neural network preduction would be performing worse than the baseline.
 
 ## Watch your model training closely
+
 As we saw when comparing the predictions for the training and the test set, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a second test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evaluate the model with the *validation set* after every epoch during training, for instance to splot if we see signs of clear overfitting.
 
 Let's give this a try!
@@ -450,109 +456,119 @@ history = model.fit(X_train, y_train,
 ~~~
 {: .language-python}
 
+With this we can plot both the performance on the training data and on the validation data!
+
+~~~
+history_df = pd.DataFrame.from_dict(history.history)
+sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+plt.xlabel("epochs")
+plt.ylabel("RMSE")
+~~~
+{: .language-python}
+![Output of plotting sample](../fig/03_training_history_2_rmse.png)
 > ## Exercise: plot the training progress.
 >
-> As before the history allows plotting the training progress. But now we can plot both the performance on the training data and on the validation data!
-> * Is there a difference between the training and validation data? And if so, what would this imply?
+> Is there a difference between the training and validation data? And if so, what would this imply?
 >
 > > ## Solution
-> > ~~~
-> > history_df = pd.DataFrame.from_dict(history.history)
-> > sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
-> > plt.xlabel("epochs")
-> > plt.ylabel("RMSE")
-> > ~~~
-> > {: .language-python}
-> > ![Output of plotting sample](../fig/03_training_history_2_rmse.png)
-> >
-> > This clearly shows that something is not completely right here.
+> > This shows that something is not completely right here.
 > > The model predictions on the validation set quickly seem to reach a plateau while the performance on the training set keeps improving.
-> > That is a clear signature of overfitting.
+> > That is a common signature of *overfitting*.
 > {:.solution}
 {:.challenge}
+This clearly shows that something is not completely right here.
+The model predictions on the validation set quickly seem to reach a plateau while the performance on the training set keeps improving.
+That is a clear signature of overfitting.
+
 
 ## Counteract model overfitting
+
 Overfitting is a very common issue and there are many strategies to handle it.
 Most similar to classical machine learning might to **reduce the number of parameters**.
 
-> ## Try to reduce the degree of overfitting by lowering the number of parameters
->
-> We can keep the network architecture unchanged (2 dense layers + a one-node output layer) and only play with the number of nodes per layer.
-> Try to lower the number of nodes in one or both of the two dense layers and observe the changes to the training and validation losses.
-> If time is short: Suggestion is to run one network with only 10 and 5 nodes in the first and second layer.
->
-> * Is it possible to get rid of overfitting this way?
-> * Does the overall performance suffer or does it mostly stay the same?
-> * How low can you go with the number of parameters without notable effect on the performance on the validation set?
->
-> > ## Solution
-> > ~~~
-> > def create_nn(nodes1, nodes2):
-> >     # Input layer
-> >     inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
-> >
-> >     # Dense layers
-> >     layers_dense = keras.layers.Dense(nodes1, 'relu')(inputs)
-> >     layers_dense = keras.layers.Dense(nodes2, 'relu')(layers_dense)
-> >
-> >     # Output layer
-> >     outputs = keras.layers.Dense(1)(layers_dense)
-> >
-> >     return keras.Model(inputs=inputs, outputs=outputs, name="model_small")
-> >
-> > model = create_nn(10, 5)
-> > model.summary()
-> > ~~~
-> > {:.language-python}
-> >
-> > ~~~
-> > Model: "model_small"
-> > _________________________________________________________________
-> > Layer (type)                 Output Shape              Param #   
-> > =================================================================
-> > input (InputLayer)           [(None, 89)]              0         
-> > _________________________________________________________________
-> > dense_9 (Dense)              (None, 10)                900       
-> > _________________________________________________________________
-> > dense_10 (Dense)             (None, 5)                 55        
-> > _________________________________________________________________
-> > dense_11 (Dense)             (None, 1)                 6         
-> > =================================================================
-> > Total params: 961
-> > Trainable params: 961
-> > Non-trainable params: 0
-> > 
-> > ~~~
-> > {:.output}
-> >
-> > ~~~
-> > model.compile(optimizer='adam',
-> >               loss='mse',
-> >               metrics=[keras.metrics.RootMeanSquaredError()])
-> > history = model.fit(X_train, y_train,
-> >                     batch_size = 32,
-> >                     epochs = 200,
-> >                     validation_data=(X_val, y_val), verbose = 2)
-> >                     
-> > history_df = pd.DataFrame.from_dict(history.history)
-> > sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
-> > plt.xlabel("epochs")
-> > plt.ylabel("RMSE")
-> > ~~~
-> > {:.language-python}
-> >
-> > ![Output of plotting sample](../fig/03_training_history_3_rmse_smaller_model.png)
-> >
-> > There is obviously no single correct solution here. But you will have noticed that the number of nodes can be reduced quiet a bit!
-> >
-> > In general, it quickly becomes a very complicated search for the right "sweet spot", i.e. the settings for which overfitting will be (nearly) avoided but which still performes equally well.
-> >
-> {:.solution}
-{:.challenge}
+
+We can keep the network architecture unchanged (2 dense layers + a one-node output layer) and only play with the number of nodes per layer.
+
+~~~
+def create_nn(nodes1, nodes2):
+    # Input layer
+    inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
+
+    # Dense layers
+    layers_dense = keras.layers.Dense(nodes1, 'relu')(inputs)
+    layers_dense = keras.layers.Dense(nodes2, 'relu')(layers_dense)
+
+    # Output layer
+    outputs = keras.layers.Dense(1)(layers_dense)
+
+    return keras.Model(inputs=inputs, outputs=outputs, name="model_small")
+
+model = create_nn(10, 5)
+~~~
+{:.language-python}
+
+Let's check the created model for good measure:
+
+~~~
+model.summary()
+~~~
+{:.language-python}
+
+~~~
+Model: "model_small"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input (InputLayer)           [(None, 89)]              0         
+_________________________________________________________________
+dense_9 (Dense)              (None, 10)                900       
+_________________________________________________________________
+dense_10 (Dense)             (None, 5)                 55        
+_________________________________________________________________
+dense_11 (Dense)             (None, 1)                 6         
+=================================================================
+Total params: 961
+Trainable params: 961
+Non-trainable params: 0
+
+~~~
+{:.output}
+
+With this change, we have reduced the parameters by 92%. Now compile the model and run the training.
+
+~~~
+model.compile(optimizer='adam',
+              loss='mse',
+              metrics=[keras.metrics.RootMeanSquaredError()])
+history = model.fit(X_train, y_train,
+                    batch_size = 32,
+                    epochs = 200,
+                    validation_data=(X_val, y_val), verbose = 2)
+~~~
+{:.language-python}
+
+In order to compare, we use the same code to check the training performance.
+
+~~~
+history_df = pd.DataFrame.from_dict(history.history)
+sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+plt.xlabel("epochs")
+plt.ylabel("RMSE")
+~~~
+{:.language-python}
+
+![Output of plotting sample](../fig/03_training_history_3_rmse_smaller_model.png)
+
 
 We saw that reducing the number of parameters can be a strategy to avoid overfitting.
 In practice, however, this is usually not the (main) way to go when it comes to deep learning.
 One reason is, that finding the sweet spot can be really hard and time consuming. And it has to be repeated every time the model is adapted, e.g. when more training data becomes available.
+
+> ## Sweet Spots
+> Note: There is no single correct solution here. But you will have noticed that the number of nodes can be reduced quiet a bit!
+> In general, it quickly becomes a very complicated search for the right "sweet spot", i.e. the settings for which overfitting will be (nearly) avoided but which still performes equally well.
+{: .callout }
+
 
 ## Early stopping: stop when things are looking best
 Arguable **the** most common technique to avoid (severe) overfitting in deep learning is called **early stopping**.
@@ -613,9 +629,10 @@ Techniques to avoid overfitting, or to improve model generalization, are termed 
 
 
 ## BatchNorm: the "standard scaler" for deep learning
+
 A very common step in classical machine learning pipelines is to scale the features, for instance by using sckit-learn's `StandardScaler`.
 This can in principle also be done for deep learning.
-An alternative, more common approach, is to add **BatchNormalization** layers which will learn how to scale the input values.
+An alternative, more common approach, is to add **BatchNormalization** layers ([documentation of the batch normalization layer](https://keras.io/api/layers/normalization_layers/batch_normalization/)) which will learn how to scale the input values.
 Similar to dropout, batch normalization is available as a network layer in Keras and can be added to the network in a similar way.
 It does not require any additional parameter setting.
 
@@ -624,73 +641,70 @@ from tensorflow.keras.layers import BatchNormalization
 ~~~
 {: .language-python}
 
-> ## Exercise: Add a BatchNormalization layer as the first layer to your neural network.
-> Look at the [documentation of the batch normalization layer](https://keras.io/api/layers/normalization_layers/batch_normalization/). Add this as a first layer to the model we defined above. Then, train the model and compare the performance to the model without batch normalization.
->
-> > ## Solution
-> > ~~~
-> > def create_nn():
-> >     # Input layer
-> >     inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
-> >
-> >     # Dense layers
-> >     layers_dense = keras.layers.BatchNormalization()(inputs)
-> >     layers_dense = keras.layers.Dense(100, 'relu')(layers_dense)
-> >     layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
-> >
-> >     # Output layer
-> >     outputs = keras.layers.Dense(1)(layers_dense)
-> >
-> >     # Defining the model and compiling it
-> >     return keras.Model(inputs=inputs, outputs=outputs, name="model_batchnorm")
-> >
-> > model = create_nn()
-> > model.compile(loss='mse', optimizer='adam', metrics=[keras.metrics.RootMeanSquaredError()])
-> > model.summary()
-> > ~~~
-> > {: .language-python}
-> >
-> > ~~~
-> > Model: "model_batchnorm"
-> > _________________________________________________________________
-> > Layer (type)                 Output Shape              Param #   
-> > =================================================================
-> > input_1 (InputLayer)         [(None, 89)]              0         
-> > _________________________________________________________________
-> > batch_normalization (BatchNo (None, 89)                356       
-> > _________________________________________________________________
-> > dense (Dense)             (None, 100)               9000      
-> > _________________________________________________________________
-> > dense_1 (Dense)             (None, 50)                5050      
-> > _________________________________________________________________
-> > dense_2 (Dense)             (None, 1)                 51        
-> > =================================================================
-> > Total params: 14,457
-> > Trainable params: 14,279
-> > Non-trainable params: 178
-> > ~~~
-> > {:.output}
-> >
-> >
-> > We can train the model again as follows:
-> > ~~~
-> > history = model.fit(X_train, y_train,
-> >                     batch_size = 32,
-> >                     epochs = 1000,
-> >                     validation_data=(X_val, y_val),
-> >                     callbacks=[earlystopper],
-> >                     verbose = 2)
-> >
-> > history_df = pd.DataFrame.from_dict(history.history)
-> > sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
-> > plt.xlabel("epochs")
-> > plt.ylabel("RMSE")
-> > ~~~
-> > {: .language-python}      
-> >
-> > ![Output of plotting sample](../fig/03_training_history_5_rmse_batchnorm.png)
-> {:.solution}
-{:.challenge}
+The `BatchNormalization` can be inserted as yet another layer into the architecture.
+
+~~~
+def create_nn():
+    # Input layer
+    inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
+
+    # Dense layers
+    layers_dense = keras.layers.BatchNormalization()(inputs)
+    layers_dense = keras.layers.Dense(100, 'relu')(layers_dense)
+    layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
+
+    # Output layer
+    outputs = keras.layers.Dense(1)(layers_dense)
+
+    # Defining the model and compiling it
+    return keras.Model(inputs=inputs, outputs=outputs, name="model_batchnorm")
+
+model = create_nn()
+model.compile(loss='mse', optimizer='adam', metrics=[keras.metrics.RootMeanSquaredError()])
+model.summary()
+~~~
+{: .language-python}
+
+This new layer appears in the model summary as well.
+
+~~~
+Model: "model_batchnorm"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 89)]              0         
+_________________________________________________________________
+batch_normalization (BatchNo (None, 89)                356       
+_________________________________________________________________
+dense (Dense)             (None, 100)               9000      
+_________________________________________________________________
+dense_1 (Dense)             (None, 50)                5050      
+_________________________________________________________________
+dense_2 (Dense)             (None, 1)                 51        
+=================================================================
+Total params: 14,457
+Trainable params: 14,279
+Non-trainable params: 178
+~~~
+{:.output}
+
+We can train the model again as follows:
+~~~
+history = model.fit(X_train, y_train,
+                    batch_size = 32,
+                    epochs = 1000,
+                    validation_data=(X_val, y_val),
+                    callbacks=[earlystopper],
+                    verbose = 2)
+
+history_df = pd.DataFrame.from_dict(history.history)
+sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+plt.xlabel("epochs")
+plt.ylabel("RMSE")
+~~~
+{: .language-python}      
+
+![Output of plotting sample](../fig/03_training_history_5_rmse_batchnorm.png)
 
 > ## Batchnorm parameters
 >
@@ -705,6 +719,7 @@ from tensorflow.keras.layers import BatchNormalization
 {: .callout}
 
 ## Run on test set and compare to naive baseline
+
 It seems that no matter what we add, the overall loss does not decrease much further (we at least avoided overfitting though!).
 Let's again plot the results on the test set:
 ~~~
@@ -719,7 +734,7 @@ plt.ylabel("true sunshine hours")
 
 ![Output of plotting sample](../fig/03_regression_test_5_dropout_batchnorm.png)
 
-Well... certainly not perfect. But how good or bad is this? Maybe not good enough to plan your picnic for tomorrow.
+Well, the above is certainly not perfect. But how good or bad is this? Maybe not good enough to plan your picnic for tomorrow.
 But let's better compare it to the naive baseline we created in the beginning. What would you say, did we improve on that?
 
 
