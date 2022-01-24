@@ -200,6 +200,17 @@ In episode 2 we trained a dense neural network on a *classification task*. For t
 This measured how close the distribution of the neural network outputs corresponds to the distribution of the three values in the one hot encoding.
 Now we want to work on a *regression task*, thus not predicting a class label (or integer number) for a datapoint. In regression, we like to predict one (and sometimes many) values of a feature. This is typically a floating point number. 
 
+> ## Designing a neural network
+> 1. What will be the shape of our input layer?
+> 2. What would our output layer look like?
+> 3. What about the activation function? Tip: Remember that the activation function in our  
+> previous classification network scaled the outputs between 0 and 1.
+> > ## Solution
+> > 1. The shape of the input layer will be 89, the number of features in our data
+> > 2. For the output, we are looking to predict a single value per day, so one scalar as output 
+> > 3. Cloud coverage can have a value from 0 to 24. Therefore, we will omit the activation 
+> >     function this time.
+ 
 In our example we want to predict the sunshine hours in Basel (or any other place in the dataset) for tomorrow based on the weather data of all 18 locations today. `BASEL_sunshine` is a floating point value (i.e. `float64`). The network should hence output a single float value which is why the last layer of our network will only consist of a single node. 
 
 We compose a network of two hidden layers to start off with something. We go by a scheme with 100 neurons in the first hidden layer and 50 neurons in the second layer. As activation function we settle on the `relu` function as a it proved very robust and widely used. To make our live easier later, we wrap the definition of the network in a method called `create_nn`.
@@ -506,6 +517,16 @@ def create_nn(nodes1, nodes2):
 model = create_nn(10, 5)
 ~~~
 {:.language-python}
+
+> ## Playing with nodes
+> Try to lower the number of nodes in one or both of the two dense layers and observe the changes to the training and validation losses.
+> * Is it possible to get rid of overfitting this way?
+> * Does the overall performance increase, suffer or does it stay the same?
+> * How low can you go with the number of parameters without a notable effect on the performance 
+>   on the validation set?
+> > ## Solution
+> > TODO: check if this gets rid of overfitting
+
 
 Let's check the created model for good measure:
 
