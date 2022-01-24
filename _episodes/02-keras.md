@@ -203,13 +203,6 @@ as input for the neural network and the target that we want to predict.
 In the rest of this episode we will use the `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, `body_mass_g` attributes.
 The target for the classification task will be the `species`.
 
-Using the following code we can select these columns from the dataframe:
-~~~
-penguin_features = penguins.drop(columns=["species", 'island', 'sex'])
-target = penguins['species']
-~~~
-{:.language-python}
-
 > ## Data Exploration
 > Exploring the data is an important step to familiarize yourself with the problem and to help you
 > determine the relevant inputs and outputs.
@@ -241,7 +234,6 @@ penguins_filtered = penguins.drop(columns=['island', 'sex']).dropna()
 
 # Split the dataset in the features and the target
 penguin_features = penguins_filtered.drop(columns=['species'])
-target = penguins_filtered['species']
 ~~~
 {:.language-python}
 
@@ -500,12 +492,8 @@ It is lower if the distributions are more similar.
 For more information on the available loss functions in Keras you can check the
 [documentation](https://www.tensorflow.org/api_docs/python/tf/keras/losses).
 
-## 6. Train model
-We are now ready to train the model.
-Training the model requires us to make a several more choices, this time we need to
-choose which optimizer to use and if this optimizer has parameters what values
-to use for those.
-Furthermore, we need to specify how many times to show the training samples to the optimizer.
+Next we need to choose which optimizer to use and if this optimizer has parameters what values
+to use for those. Furthermore, we need to specify how many times to show the training samples to the optimizer.
 
 Once more, Keras gives us plenty of choices all of which have their own pro's and cons,
 but for now let us go with the widely used Adam optimizer.
@@ -516,6 +504,14 @@ Combining this with the loss function we decided on earlier we can now compile t
 model using `model.compile`.
 Compiling the model prepares it to start the training.
 
+~~~
+model.compile(optimizer=keras.optimizers.Adam(), loss=keras.losses.CategoricalCrossentropy())
+~~~
+{:.language-python}
+
+## 6. Train model
+We are now ready to train the model.
+
 Training the model is done using the `fit` method, it takes the input data and
 target data as inputs and it has several other parameters for certain options
 of the training.
@@ -524,7 +520,6 @@ One training epoch means that every sample in the training data has been shown
 to the neural network and used to update its parameters.
 
 ~~~
-model.compile(optimizer=keras.optimizers.Adam(), loss=keras.losses.CategoricalCrossentropy())
 history = model.fit(X_train, y_train, epochs=100)
 ~~~
 {:.language-python}

@@ -23,8 +23,10 @@ keypoints:
 # Import & explore the data
 
 ### Import dataset
-Here we want to work with the *weather prediction dataset* which can be [downloaded from Zenodo](https://doi.org/10.5281/zenodo.5071376).
-It contains daily weather observations from 18 different European cities or places through the years 2000 to 2010. For all locations the data contains the variables ‘mean temperature’, ‘max temperature’, and ‘min temperature’. In addition, for multiple of the following variables are provided: 'cloud_cover', 'wind_speed', 'wind_gust', 'humidity', 'pressure', 'global_radiation', 'precipitation', 'sunshine', but not all of them are provided for all locations. A more extensive description of the dataset including the different physical units is given in accompanying metadata file.
+Here we want to work with the *weather prediction dataset* (the light version) which can be 
+[downloaded from Zenodo](https://doi.org/10.5281/zenodo.5071376).
+It contains daily weather observations from 11 different European cities or places through the 
+years 2000 to 2010. For all locations the data contains the variables ‘mean temperature’, ‘max temperature’, and ‘min temperature’. In addition, for multiple of the following variables are provided: 'cloud_cover', 'wind_speed', 'wind_gust', 'humidity', 'pressure', 'global_radiation', 'precipitation', 'sunshine', but not all of them are provided for all locations. A more extensive description of the dataset including the different physical units is given in accompanying metadata file.
 ![18 locations in the weather prediction dataset](../fig/03_weather_prediction_dataset_map.png)
 
 ~~~
@@ -63,13 +65,12 @@ data.columns
 ~~~
 Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
        'BASEL_pressure', 'BASEL_global_radiation', 'BASEL_precipitation',
-       'BASEL_sunshine', 'BASEL_temp_mean', 'BASEL_temp_min',
-       ...
-       'STOCKHOLM_temp_min', 'STOCKHOLM_temp_max', 'TOURS_wind_speed',
-       'TOURS_humidity', 'TOURS_pressure', 'TOURS_global_radiation',
-       'TOURS_precipitation', 'TOURS_temp_mean', 'TOURS_temp_min',
-       'TOURS_temp_max'],
-      dtype='object', length=165)
+       'BASEL_sunshine', 'BASEL_temp_mean', 'BASEL_temp_min', 'BASEL_temp_max',
+        ...
+       'SONNBLICK_temp_min', 'SONNBLICK_temp_max', 'TOURS_humidity',
+       'TOURS_pressure', 'TOURS_global_radiation', 'TOURS_precipitation',
+       'TOURS_temp_mean', 'TOURS_temp_min', 'TOURS_temp_max'],
+      dtype='object')
 ~~~
 {:.output}
 
@@ -86,7 +87,8 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 > > data.shape
 > > ~~~
 > > {:.language-python}
-> > This will give both the number of datapoints (3654) and the number of features (163 + month + date).
+> > This will give both the number of datapoints (3654) and the number of features (89 + month + 
+> date).
 > >
 > > To see what type of features the data contains we could run something like:
 > > ~~~
@@ -94,7 +96,7 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 > > ~~~
 > > {:.language-python}
 > > ~~~
-> > {'humidity', 'radiation', 'sunshine', 'gust', 'mean', 'max', 'precipitation', 'pressure', 'cover', 'min', 'speed'}
+> > {'precipitation', 'max', 'radiation', 'humidity', 'sunshine', 'min', 'pressure', 'mean', 'cover'}
 > > ~~~
 > > {:.output}
 > > An alternative way which is slightly more complicated but gives better results is using regex.
@@ -106,7 +108,7 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 > >     
 > > feature_names
 > > ~~~
-> > In total there are 11 different measured variables.
+> > In total there are 9 different measured variables.
 > {:.solution}
 {:.challenge}
 
@@ -240,18 +242,17 @@ Model: "weather_prediction_model"
 _________________________________________________________________
 Layer (type)                 Output Shape              Param #   
 =================================================================
-input (InputLayer)           [(None, 163)]             0         
+input (InputLayer)           [(None, 89)]              0         
 _________________________________________________________________
-dense_0 (Dense)              (None, 100)               16400     
+dense (Dense)                (None, 100)               9000      
 _________________________________________________________________
 dense_1 (Dense)              (None, 50)                5050      
 _________________________________________________________________
 dense_2 (Dense)              (None, 1)                 51        
 =================================================================
-Total params: 21,501
-Trainable params: 21,501
+Total params: 14,101
+Trainable params: 14,101
 Non-trainable params: 0
-_________________________________________________________________
 ~~~
 {:.output}
 
@@ -377,15 +378,16 @@ print('Train RMSE: {:.2f}, Test RMSE: {:.2f}'.format(rmse_train, rmse_test))
 ~~~
 {: .language-python}
 ~~~
-24/24 [==============================] - 0s 10ms/step - loss: 0.2036 - root_mean_squared_error: 0.4512
-6/6 [==============================] - 0s 3ms/step - loss: 15.4701 - root_mean_squared_error: 3.9332
-Train RMSE: 0.45, Test RMSE: 3.93
+24/24 [==============================] - 0s 442us/step - loss: 0.7092 - root_mean_squared_error: 0.8421
+6/6 [==============================] - 0s 647us/step - loss: 16.4413 - root_mean_squared_error: 4.0548
+Train RMSE: 0.84, Test RMSE: 4.05
 ~~~
 {:.output}
 
 For those experienced with (classical) machine learning this might look familiar.
 The plots above expose the signs of **overfitting** which means that the model has to some extend memorized aspects of the training data.
 As a result, it makes much more accurate predictions on the training data than on unseen test data.
+
 
 Overfitting also happens in classical machine learning, but there it is usually interpreted as the model having more parameters than the training data would justify (say, a decision tree with too many branches for the number of training instances). As a consequence one would reduce the number of parameters to avoid overfitting.
 In deep learning the situation is slightly different. It can -same as for classical machine learning- also be a sign of having a *too big* model, meaning a model with too many parameters (layers and/or nodes). However, in deep learning higher number of model parameters are often still considered acceptable and models often perform best (in terms of prediction accuracy) when they are at the verge of overfitting. So, in a way, training deep learning models is always a bit like playing with fire...
@@ -423,7 +425,7 @@ print('NN RMSE: {:.2f}, baseline RMSE: {:.2f}'.format(rmse_nn, rmse_baseline))
 ~~~
 {: .language-python}
 ~~~
-NN RMSE: 3.93, baseline RMSE: 3.88
+NN RMSE: 4.05, baseline RMSE: 3.88
 ~~~
 {:.output}
 
@@ -484,6 +486,7 @@ That is a clear signature of overfitting.
 Overfitting is a very common issue and there are many strategies to handle it.
 Most similar to classical machine learning might to **reduce the number of parameters**.
 
+
 We can keep the network architecture unchanged (2 dense layers + a one-node output layer) and only play with the number of nodes per layer.
 
 ~~~
@@ -516,18 +519,18 @@ Model: "model_small"
 _________________________________________________________________
 Layer (type)                 Output Shape              Param #   
 =================================================================
-input (InputLayer)           [(None, 163)]             0         
+input (InputLayer)           [(None, 89)]              0         
 _________________________________________________________________
-dense_21 (Dense)             (None, 10)                1640      
+dense_9 (Dense)              (None, 10)                900       
 _________________________________________________________________
-dense_22 (Dense)             (None, 5)                 55        
+dense_10 (Dense)             (None, 5)                 55        
 _________________________________________________________________
-dense_23 (Dense)             (None, 1)                 6         
+dense_11 (Dense)             (None, 1)                 6         
 =================================================================
-Total params: 1,701
-Trainable params: 1,701
+Total params: 961
+Trainable params: 961
 Non-trainable params: 0
-_________________________________________________________________
+
 ~~~
 {:.output}
 
