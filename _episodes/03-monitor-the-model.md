@@ -224,7 +224,7 @@ model = create_nn()
 ~~~
 {:.language-python}
 
-The shape of the input layer has to correspond to the number of features in our data: `163`. We use `X_data.shape[1]` to obtain this value dynamically
+The shape of the input layer has to correspond to the number of features in our data: `89`. We use `X_data.shape[1]` to obtain this value dynamically
 
 The output layer here is a dense layer with only 1 node. And we here have chosen to use *no activation function*.
 While we might use *softmax* for a classification task, here we do not want to restrict the possible outcomes for a start.
