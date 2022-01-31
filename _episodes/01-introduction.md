@@ -252,7 +252,7 @@ Follow the instructions in the [setup]({{ page.root }}//setup) document to insta
 > In your Jupyter notebook or interactive python console run the following commands:
 > ~~~
 > import seaborn
-> print(seaborn.__version__)
+> print(seaborn.__vrsion__)
 > ~~~
 > {:.language-python}
 > > ## Solution
