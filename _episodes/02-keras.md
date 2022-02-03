@@ -11,7 +11,7 @@ questions:
 objectives:
 - "Use the deep learning workflow to structure the notebook"
 - "Explore the dataset using pandas and seaborn"
-- "Use one-hot-encoding to prepare data for classification in Keras"
+- "Use one-hot encoding to prepare data for classification in Keras"
 - "Describe a fully connected layer"
 - "Implement a fully connected layer with Keras"
 - "Use Keras to train a small fully connected network on prepared data"
@@ -20,13 +20,13 @@ objectives:
 keypoints:
 - The deep learning workflow is a useful tool to structure your approach, it helps to make sure you do not forget any important steps.
 - Exploring the data is an important step to familiarize yourself with the problem and to help you determine the relavent inputs and outputs.
-- One-hot-encoding is a preprocessing step to prepare labels for classification in Keras.
+- One-hot encoding is a preprocessing step to prepare labels for classification in Keras.
 - A fully connected layer is a layer which has connections to all neurons in the previous and subsequent layers.
 - keras.layers.Dense is an implement of a fully connected layer, you can set the number of neurons in the layer and the activation function used.
 - To train a neural network with Keras we need to first define the network using layers and the Model class. Then we can train it using the model.fit function.
 - Plotting the loss curve can be used to identify and troubleshoot the training process.
 - The loss curve on the training set does not provide any information on how well a network performs in a real setting.
-- Creating a confusion matrix with results from a test set gives better insight into the networks performance.
+- Creating a confusion matrix with results from a test set gives better insight into the network's performance.
 ---
 
 
@@ -244,11 +244,11 @@ calculating how "far away" the species predicted by the neural network is
 from the true species.
 When the target is a string category column as we have here it is very difficult to determine this "distance" or error.
 Therefore we will transform this column into a more suitable format.
-Again there are many ways to do this, however we will be using the 1-hot encoding.
+Again there are many ways to do this, however we will be using the one-hot encoding.
 This encoding creates multiple columns, as many as there are unique values, and
 puts a 1 in the column with the corresponding correct class, and 0's in
 the other columns.
-For instance, for a penguin of the Adelie species the 1 hot encoding would be 1 0 0
+For instance, for a penguin of the Adelie species the one-hot encoding would be 1 0 0
 
 Fortunately pandas is able to generate this encoding for us.
 ~~~
@@ -397,7 +397,7 @@ Again we use a Dense layer and so the call is very similar to the previous one.
 output_layer = keras.layers.Dense(3, activation="softmax")(hidden_layer)
 ~~~
 {:.language-python}
-Because we chose the one hot encoding, we use `3` neurons for the output layer.
+Because we chose the one-hot encoding, we use `3` neurons for the output layer.
 
 The softmax activation ensures that the three output neurons produce values in the range
 (0, 1) and the sum to 1.
@@ -483,20 +483,19 @@ function that we will use during training.
 This loss function tells the training algorithm how wrong, or how 'far away' from the true
 value the predicted value is.
 
-For the one hot encoding that we selected before a fitting loss function is the Categorical Crossentropy loss.
+For the one-hot encoding that we selected before a fitting loss function is the Categorical Crossentropy loss.
 In keras this is implemented in the `keras.losses.CategoricalCrossentropy` class.
 This loss function works well in combination with the `softmax` activation function
 we chose earlier.
 The Categorical Crossentropy works by comparing the probabilities that the
-neural network predicts with 'true' probabilities that we generated using the one
-hot encoding.
-This is a measure for how close the distribution of the three neural network outputs corresponds to the distribution of the three values in the one hot encoding.
+neural network predicts with 'true' probabilities that we generated using the one-hot encoding.
+This is a measure for how close the distribution of the three neural network outputs corresponds to the distribution of the three values in the one-hot encoding.
 It is lower if the distributions are more similar.
 
 For more information on the available loss functions in Keras you can check the
 [documentation](https://www.tensorflow.org/api_docs/python/tf/keras/losses).
 
-Next we need to choose which optimizer to use and if this optimizer has parameters what values
+Next we need to choose which optimizer to use and, if this optimizer has parameters, what values
 to use for those. Furthermore, we need to specify how many times to show the training samples to the optimizer.
 
 Once more, Keras gives us plenty of choices all of which have their own pro's and cons,
@@ -565,7 +564,7 @@ We will use the neural network to predict the species of the test set
 using the `predict` function.
 We will be using this prediction in the next step to measure the performance of our
 trained network.
-This will return a `numpy` matrix, which I like to convert
+This will return a `numpy` matrix, which we convert
 to a pandas dataframe to easily see the labels.
 ~~~
 y_pred = model.predict(X_test)
