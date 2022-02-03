@@ -23,11 +23,15 @@ jobs:
 
       - name: Install Python modules
         run: |
-          python3 -m pip install --upgrade pip setuptools wheel pyyaml==5.3.1 requests tensorflow seaborn scikit-learn pandas
+          python3 -m pip install --upgrade pip setuptools wheel pyyaml==5.3.1 requests tensorflow seaborn scikit-learn pandas 
 
       - name: Install Code Checker
         run: |
-          python3 -m pip install --upgrade git+https://github.com/bpmweel/cce.git#egg=cce
+          #python3 -m pip install --upgrade git+https://github.com/bpmweel/cce.git#egg=cce
+          #fix to code checker which works on calls to imports inside functions
+          python3 -m pip install --upgrade pytest
+          wget -O /usr/local/bin/cce https://raw.githubusercontent.com/colinsauze/cce/master/cce/main.py 
+          chmod 755 /usr/local/bin/cce
 
       - name: Checkout the lesson
         uses: actions/checkout@v2
@@ -46,5 +50,6 @@ jobs:
           do
             echo "Checking $f"
             cce -f "$f"
+            if [ "$?" != "0" ] ; then exit 1 ; fi
           done
         shell: bash {0} # opt out of fail-fast
