@@ -96,7 +96,7 @@ pip install tensorflow>=2.5 seaborn scikit-learn pandas
 {: .source}
 
 [pip](https://pip.pypa.io/en/stable/) is the package management system for Python software packages.
-It should have been installed with Python and run regardless of your operating system too.
+It is integrated into your local Python installation and runs regardless of your operating system too.
 
 ## Starting a Jupyter Notebook
 
