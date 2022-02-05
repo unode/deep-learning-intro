@@ -83,7 +83,7 @@ Open a terminal and type the command:
 conda install tensorflow seaborn scikit-learn pandas
 ~~~
 {: .source}  
-Note that installing Tensorflow causes Keras to be installed too.
+Note that modern versions of Tensorflow make Keras available as a module.
 
 
 ### Troubleshooting for Windows
