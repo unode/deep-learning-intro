@@ -75,7 +75,7 @@ If you run into any difficulties, please request help before the workshop begins
 [Conda](https://docs.conda.io/projects/conda/en/latest/) is the package management system associated with [Anaconda](https://anaconda.org) and runs on Windows, macOS and Linux. 
 If you have installed Anaconda successfully, Conda should be already available in your system and work regardless of the operating system.
 Make sure you have an up-to-date version of Conda running.
-See [these instructions](https://docs.anaconda.com/anaconda/install/update-version/) for updating Conda. 
+See [these instructions](https://docs.anaconda.com/anaconda/install/update-version/) for updating Conda if required. 
 {: .callout}
 
 Open a terminal and type the command:
