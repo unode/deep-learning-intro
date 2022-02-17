@@ -329,7 +329,7 @@ plt.xlabel("epochs")
 plt.ylabel("RMSE")
 ~~~
 {: .language-python}
-![Output of plotting sample](../fig/03_training_history_1_rmse.png)
+![Output of plotting sample](../fig/03_training_history_1_rmse.png){: width="500px"}
 
 This looks very promising! Our metric ("RMSE") is dropping nicely and while it maybe keeps fluctuating a bit it does end up at fairly low *RMSE* values.
 But the *RMSE* is just the root *mean* squared error, so we might want to look a bit more in detail how well our just trained model does in predicting the sunshine hours.
@@ -562,7 +562,7 @@ In practice, however, this is usually not the (main) way to go when it comes to 
 One reason is, that finding the sweet spot can be really hard and time consuming. And it has to be repeated every time the model is adapted, e.g. when more training data becomes available.
 
 > ## Sweet Spots
-> Note: There is no single correct solution here. But you will have noticed that the number of nodes can be reduced quiet a bit!
+> Note: There is no single correct solution here. But you will have noticed that the number of nodes can be reduced quite a bit!
 > In general, it quickly becomes a very complicated search for the right "sweet spot", i.e. the settings for which overfitting will be (nearly) avoided but which still performes equally well.
 {: .callout }
 
@@ -612,7 +612,7 @@ plt.ylabel("RMSE")
 ~~~
 {: .language-python}
 
-![Output of plotting sample](../fig/03_training_history_3_rmse_early_stopping.png)
+![Output of plotting sample](../fig/03_training_history_3_rmse_early_stopping.png){: width="500px"}
 
 This still seems to reveal the onset of overfitting, but the training stops before the discrepancy between training and validation loss can grow further.
 Despite avoiding severe cases of overfitting, early stopping has the additional advantage that the number of training epochs will be regulated automatically.
@@ -701,7 +701,7 @@ plt.ylabel("RMSE")
 ~~~
 {: .language-python}      
 
-![Output of plotting sample](../fig/03_training_history_5_rmse_batchnorm.png)
+![Output of plotting sample](../fig/03_training_history_5_rmse_batchnorm.png){: width="500px"}
 
 > ## Batchnorm parameters
 >
@@ -729,7 +729,7 @@ plt.ylabel("true sunshine hours")
 ~~~
 {: .language-python}
 
-![Output of plotting sample](../fig/03_regression_test_5_dropout_batchnorm.png)
+![Output of plotting sample](../fig/03_regression_test_5_dropout_batchnorm.png){: width="500px"}
 
 Well, the above is certainly not perfect. But how good or bad is this? Maybe not good enough to plan your picnic for tomorrow.
 But let's better compare it to the naive baseline we created in the beginning. What would you say, did we improve on that?
