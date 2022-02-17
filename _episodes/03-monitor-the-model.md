@@ -336,7 +336,7 @@ But the *RMSE* is just the root *mean* squared error, so we might want to look a
 
 ## Evaluate our model
 
-There is not a single way to evaluate how a model performs. But there is at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly. 
+There is not a single way to evaluate how a model performs. But there are at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly. 
 
 For the present *regression task*, it makes more sense to compare true and predicted values in a scatter plot. Hint: use `plt.scatter()`.
 
@@ -385,12 +385,12 @@ Train RMSE: 0.84, Test RMSE: 4.05
 {:.output}
 
 For those experienced with (classical) machine learning this might look familiar.
-The plots above expose the signs of **overfitting** which means that the model has to some extend memorized aspects of the training data.
+The plots above expose the signs of **overfitting** which means that the model has to some extent memorized aspects of the training data.
 As a result, it makes much more accurate predictions on the training data than on unseen test data.
 
 
 Overfitting also happens in classical machine learning, but there it is usually interpreted as the model having more parameters than the training data would justify (say, a decision tree with too many branches for the number of training instances). As a consequence one would reduce the number of parameters to avoid overfitting.
-In deep learning the situation is slightly different. It can -same as for classical machine learning- also be a sign of having a *too big* model, meaning a model with too many parameters (layers and/or nodes). However, in deep learning higher number of model parameters are often still considered acceptable and models often perform best (in terms of prediction accuracy) when they are at the verge of overfitting. So, in a way, training deep learning models is always a bit like playing with fire...
+In deep learning the situation is slightly different. It can - as for classical machine learning - also be a sign of having a *too big* model, meaning a model with too many parameters (layers and/or nodes). However, in deep learning higher number of model parameters are often still considered acceptable and models often perform best (in terms of prediction accuracy) when they are at the verge of overfitting. So, in a way, training deep learning models is always a bit like playing with fire...
 
 ## Set expectations: How difficult is the defined problem?
 
@@ -413,7 +413,7 @@ plt.ylabel("true sunshine hours")
 ~~~
 {: .language-python}
 
-![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
+![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png){: width="500px"}
 
 It is difficult to interpret from this plot whether our model is doing better than the baseline.
 We can also have a look at the RMSE:
