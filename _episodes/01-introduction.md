@@ -34,7 +34,7 @@ keypoints:
 Deep Learning (DL) is just one of many techniques collectively known as machine learning. Machine learning (ML) refers to techniques where a computer can "learn" patterns in data, usually by being shown numerous examples to train it. People often talk about machine learning being a form of artificial intelligence (AI). Definitions of artificial intelligence vary, but usually involve having computers mimic the behaviour of intelligent biological systems. Since the 1950s many works of science fiction have dealt with the idea of an artificial intelligence which matches (or exceeds) human intelligence in all areas. Although there have been great advances in AI and ML research recently we can only come close to human like intelligence in a few specialist areas and are still a long way from a general purpose AI.
 The image below shows some differences between artificial intelligence, Machine Learning and Deep Learning. 
 
-![An infographics showing the relation of AI, ML, NN and DL](../fig/01_AI_ML_DL_differences.svg){: width="500px" }
+![An infographics showing the relation of AI, ML, NN and DL](../fig/01_AI_ML_DL_differences.png){: width="500px" }
 The image above is by Tukijaaliwa, CC BY-SA 4.0, via Wikimedia Commons, [original source]( https://en.wikipedia.org/wiki/File:AI-ML-DL.svg)
 
 
