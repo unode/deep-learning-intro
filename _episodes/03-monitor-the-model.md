@@ -433,7 +433,7 @@ Judging from the numbers alone, our neural network preduction would be performin
 
 ## Watch your model training closely
 
-As we saw when comparing the predictions for the training and the test set, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a second test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evaluate the model with the *validation set* after every epoch during training, for instance to splot if we see signs of clear overfitting.
+As we saw when comparing the predictions for the training and the test set, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a second test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evaluate the model with the *validation set* after every epoch during training, for instance to spot if we see signs of clear overfitting.
 
 Let's give this a try!
 
@@ -471,14 +471,11 @@ plt.ylabel("RMSE")
 > Is there a difference between the training and validation data? And if so, what would this imply?
 >
 > > ## Solution
-> > This shows that something is not completely right here.
+> > The difference between training and validation data shows that something is not completely right here.
 > > The model predictions on the validation set quickly seem to reach a plateau while the performance on the training set keeps improving.
 > > That is a common signature of *overfitting*.
 > {:.solution}
 {:.challenge}
-This clearly shows that something is not completely right here.
-The model predictions on the validation set quickly seem to reach a plateau while the performance on the training set keeps improving.
-That is a clear signature of overfitting.
 
 
 ## Counteract model overfitting
