@@ -212,7 +212,7 @@ The input data and target data are not yet in a format that is suitable to use f
 
 ### Change types if needed
 First, the species column is our categorical target, however pandas still sees it as the
-generic type `Object`. We can convert this to the pandas categorical type by adding the following line above the code which drops the columns we do not use.
+generic type `Object`. We can convert this to the pandas categorical type:
 ~~~
 penguins['species'] = penguins['species'].astype('category')
 ~~~
@@ -222,23 +222,18 @@ This will make later interaction with this column a little easier.
 ### Clean missing values
 During the exploration phase you may have noticed that some rows in the dataset have missing (NaN)
 values, leaving such values in the input data will ruin the training, so we need to deal with them.
-There are many ways to deal with missing values, but for now we will just remove the offending rows.
-
-Add a call to `dropna()` before the input_data definition that we used above, the cell should now
-look like this:
+There are many ways to deal with missing values, but for now we will just remove the offending rows by adding a call to `dropna()`:
 ~~~
-penguins['species'] = penguins['species'].astype('category')
-
-# Drop the rows that have NaN values in them
+# Drop two columns and the rows that have NaN values in them
 penguins_filtered = penguins.drop(columns=['island', 'sex']).dropna()
 
-# Split the dataset in the features and the target
-penguin_features = penguins_filtered.drop(columns=['species'])
+# Extract columns corresponding to features
+penguins_features = penguins_filtered.drop(columns=['species'])
 ~~~
 {:.language-python}
 
 ### Prepare target data for training
-Second, the target data is also in a format that cannot be used to train.
+Second, the target data is also in a format that cannot be used in training.
 A neural network can only take numerical inputs and outputs, and learns by
 calculating how "far away" the species predicted by the neural network is
 from the true species.
@@ -283,7 +278,7 @@ the same results (assuming you give the same integer) every time it is called.
 ~~~
 from sklearn.model_selection import train_test_split
 
-X_train, X_test, y_train, y_test = train_test_split(penguin_features, target,test_size=0.2, random_state=0, shuffle=True, stratify=target)
+X_train, X_test, y_train, y_test = train_test_split(penguins_features, target,test_size=0.2, random_state=0, shuffle=True, stratify=target)
 ~~~
 {:.language-python}
 
