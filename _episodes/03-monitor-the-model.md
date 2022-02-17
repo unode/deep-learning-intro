@@ -465,7 +465,7 @@ plt.xlabel("epochs")
 plt.ylabel("RMSE")
 ~~~
 {: .language-python}
-![Output of plotting sample](../fig/03_training_history_2_rmse.png)
+![Output of plotting sample](../fig/03_training_history_2_rmse.png){: width="500px"}
 > ## Exercise: plot the training progress.
 >
 > Is there a difference between the training and validation data? And if so, what would this imply?
@@ -554,7 +554,7 @@ plt.ylabel("RMSE")
 ~~~
 {:.language-python}
 
-![Output of plotting sample](../fig/03_training_history_3_rmse_smaller_model.png)
+![Output of plotting sample](../fig/03_training_history_3_rmse_smaller_model.png){: width="500px"}
 
 
 We saw that reducing the number of parameters can be a strategy to avoid overfitting.
