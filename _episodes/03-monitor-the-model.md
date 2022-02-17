@@ -164,7 +164,7 @@ Setting the `random_state` to `0` is a short-hand at this point. Note however, t
 > We have been rather generous at selecting rows from the dataset. Our holdout set above amounts to almost an entire year of data. How would the code need to be rewritten in order to obtain two months of data for the validation and test set each?
 >
 > 1. `X_train, X_holdout ... = train_test_split( ..., test_size = .12, ...)`  
-> ``X_val, X_test ... = train_test_split( ..., test_size = 2, ...)`
+> `X_val, X_test ... = train_test_split( ..., test_size = 2, ...)`
 >
 > 2. `X_train, X_holdout ... = train_test_split( ..., test_size = .33, ...)`  
 > `X_val, X_test ... = train_test_split( ..., test_size = .33, ...)`
