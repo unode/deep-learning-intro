@@ -516,79 +516,80 @@ That is a clear signature of overfitting.
 Overfitting is a very common issue and there are many strategies to handle it.
 Most similar to classical machine learning might to **reduce the number of parameters**.
 
-
-We can keep the network architecture unchanged (2 dense layers + a one-node output layer) and only play with the number of nodes per layer.
-
-~~~
-def create_nn(nodes1, nodes2):
-    # Input layer
-    inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
-
-    # Dense layers
-    layers_dense = keras.layers.Dense(nodes1, 'relu')(inputs)
-    layers_dense = keras.layers.Dense(nodes2, 'relu')(layers_dense)
-
-    # Output layer
-    outputs = keras.layers.Dense(1)(layers_dense)
-
-    return keras.Model(inputs=inputs, outputs=outputs, name="model_small")
-
-model = create_nn(10, 5)
-~~~
-{:.language-python}
-
-Let's check the created model for good measure:
-
-~~~
-model.summary()
-~~~
-{:.language-python}
-
-~~~
-Model: "model_small"
-_________________________________________________________________
-Layer (type)                 Output Shape              Param #   
-=================================================================
-input (InputLayer)           [(None, 89)]              0         
-_________________________________________________________________
-dense_9 (Dense)              (None, 10)                900       
-_________________________________________________________________
-dense_10 (Dense)             (None, 5)                 55        
-_________________________________________________________________
-dense_11 (Dense)             (None, 1)                 6         
-=================================================================
-Total params: 961
-Trainable params: 961
-Non-trainable params: 0
-
-~~~
-{:.output}
-
-With this change, we have reduced the parameters by 92%. Now compile the model and run the training.
-
-~~~
-model.compile(optimizer='adam',
-              loss='mse',
-              metrics=[keras.metrics.RootMeanSquaredError()])
-history = model.fit(X_train, y_train,
-                    batch_size = 32,
-                    epochs = 200,
-                    validation_data=(X_val, y_val), verbose = 2)
-~~~
-{:.language-python}
-
-In order to compare, we use the same code to check the training performance.
-
-~~~
-history_df = pd.DataFrame.from_dict(history.history)
-sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
-plt.xlabel("epochs")
-plt.ylabel("RMSE")
-~~~
-{:.language-python}
-
-![Output of plotting sample](../fig/03_training_history_3_rmse_smaller_model.png)
-
+> ## Try to reduce the degree of overfitting by lowering the number of parameters
+>
+> We can keep the network architecture unchanged (2 dense layers + a one-node output layer) and only play with the number of nodes per layer.
+> Try to lower the number of nodes in one or both of the two dense layers and observe the changes to the training and validation losses.
+> If time is short: Suggestion is to run one network with only 10 and 5 nodes in the first and second layer.
+>
+> * Is it possible to get rid of overfitting this way?
+> * Does the overall performance suffer or does it mostly stay the same?
+> * How low can you go with the number of parameters without notable effect on the performance on the validation set?
+>
+> > ## Solution
+> > ~~~
+> > def create_nn(nodes1=100, nodes2=50):
+> >     # Input layer
+> >     inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
+> >
+> >     # Dense layers
+> >     layers_dense = keras.layers.Dense(nodes1, 'relu')(inputs)
+> >     layers_dense = keras.layers.Dense(nodes2, 'relu')(layers_dense)
+> >
+> >     # Output layer
+> >     outputs = keras.layers.Dense(1)(layers_dense)
+> >
+> >     return keras.Model(inputs=inputs, outputs=outputs, name="model_small")
+> >
+> > model = create_nn(10, 5)
+> > model.summary()
+> > ~~~
+> > {:.language-python}
+> >
+> > ~~~
+> > Model: "model_small"
+> > _________________________________________________________________
+> > Layer (type)                 Output Shape              Param #   
+> > =================================================================
+> > input (InputLayer)           [(None, 89)]              0         
+> > _________________________________________________________________
+> > dense_9 (Dense)              (None, 10)                900       
+> > _________________________________________________________________
+> > dense_10 (Dense)             (None, 5)                 55        
+> > _________________________________________________________________
+> > dense_11 (Dense)             (None, 1)                 6         
+> > =================================================================
+> > Total params: 961
+> > Trainable params: 961
+> > Non-trainable params: 0
+> >
+> > ~~~
+> > {:.output}
+> >
+> > ~~~
+> > model.compile(optimizer='adam',
+> >               loss='mse',
+> >               metrics=[keras.metrics.RootMeanSquaredError()])
+> > history = model.fit(X_train, y_train,
+> >                     batch_size = 32,
+> >                     epochs = 200,
+> >                     validation_data=(X_val, y_val), verbose = 2)
+> >                     
+> > history_df = pd.DataFrame.from_dict(history.history)
+> > sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+> > plt.xlabel("epochs")
+> > plt.ylabel("RMSE")
+> > ~~~
+> > {:.language-python}
+> >
+> > ![Output of plotting sample](../fig/03_training_history_3_rmse_smaller_model.png)
+> >
+> > There is obviously no single correct solution here. But you will have noticed that the number of nodes can be reduced quiet a bit!
+> >
+> > In general, it quickly becomes a very complicated search for the right "sweet spot", i.e. the settings for which overfitting will be (nearly) avoided but which still performes equally well.
+> >
+> {:.solution}
+{:.challenge}
 
 We saw that reducing the number of parameters can be a strategy to avoid overfitting.
 In practice, however, this is usually not the (main) way to go when it comes to deep learning.
@@ -608,7 +609,7 @@ Early stopping is both intuitive and effective to use, so it has become a standa
 
 To better study the effect, we can now safely go back to models with many (too many?) parameters:
 ~~~
-model = create_nn(100, 50)
+model = create_nn()
 model.compile(optimizer='adam',
               loss='mse',
               metrics=[keras.metrics.RootMeanSquaredError()])
