@@ -380,6 +380,17 @@ axes[1].set_ylabel("true sunshine hours")
 {: .language-python}
 ![Scatter plot to evaluate training and test set](../fig/03_regression_training_test_comparison.png)
 
+> ## Exercise: Reflecting on our results
+> 1. Is the performance of the model as you expected (or better/worse)?
+> 2. Is there a noteable difference between training set and test set? And if so, any idea why?
+>
+> > ## Solution
+> >  
+> > While the performance on the train set seems reasonable, the performance on the test set is much worse.
+> >
+> {:.solution}
+{:.challenge}
+
 The accuracy on the training set seems fairly good.
 In fact, considering that the task of predicting the daily sunshine hours is really not easy it might even be surprising how well the model predicts that
 (at least on the training set). Maybe a little too good?
@@ -444,6 +455,11 @@ NN RMSE: 4.05, baseline RMSE: 3.88
 {:.output}
 
 Judging from the numbers alone, our neural network preduction would be performing worse than the baseline.
+
+> ## Exercise: Baseline
+> Looking at this baseline: Would you consider this a simple or a hard problem to solve?
+>
+{:.challenge}
 
 ## Watch your model training closely
 
