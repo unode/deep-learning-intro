@@ -278,6 +278,7 @@ The loss is what the neural network will be optimized on during training, so cho
 In the given case we want to stimulate that the predicted values are as close as possible to the true values. This is commonly done by using the *mean squared error* (mse) or the *mean absolute error* (mae), both of which should work OK in this case. Often, mse is preferred over mae because it "punishes" large prediction errors more severely.
 In Keras this is implemented in the `keras.losses.MeanSquaredError` class (see Keras documentation: https://keras.io/api/losses/). This can be provided into the `model.compile` method with the `loss` parameter and setting it to `mse`, e.g.
 
+<!--cce:skip-->
 ~~~
 model.compile(#...
               loss='mse',
@@ -290,6 +291,7 @@ model.compile(#...
 Somewhat coupled to the loss function is the *optimizer* that we want to use.
 The *optimizer* here refers to the algorithm with which the model learns to optimize on the provided loss function. A basic example for such an optimizer would be *stochastic gradient descent*. For now, we can largely skip this step and pick one of the most common optimizers that works well for most tasks: the *Adam optimizer*. Similar to activation functions, the choice of optimizer depends on the problem you are trying to solve, your model architecture and your data. *Adam* is a good starting point though, which is why we chose it.
 
+<!--cce:skip-->
 ~~~
 model.compile(optimizer='adam',
               loss='mse',
