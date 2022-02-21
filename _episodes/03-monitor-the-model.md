@@ -32,7 +32,7 @@ years 2000 to 2010. For all locations the data contains the variables ‘mean te
 ~~~
 import pandas as pd
 
-filename_data = "weather_prediction_dataset.csv"
+filename_data = "weather_prediction_dataset_light.csv"
 data = pd.read_csv(filename_data)
 data.head()
 ~~~
@@ -584,7 +584,7 @@ model.compile(optimizer='adam',
 
 To apply early stopping during training it is easiest to use Keras `EarlyStopping` class.
 This allows to define the condition of when to stop training. In our case we will say when the validation loss is lowest.
-However, since we have seen quiet some fluctuation of the losses during training above we will also set `patience=10` which means that the model will stop training of the validation loss has not gone down for 10 epochs.
+However, since we have seen quite some fluctuation of the losses during training above we will also set `patience=10` which means that the model will stop training of the validation loss has not gone down for 10 epochs.
 ~~~
 from tensorflow.keras.callbacks import EarlyStopping
 
@@ -618,9 +618,9 @@ This still seems to reveal the onset of overfitting, but the training stops befo
 Despite avoiding severe cases of overfitting, early stopping has the additional advantage that the number of training epochs will be regulated automatically.
 Instead of comparing training runs for different number of epochs, early stopping allows to simply set the number of epochs to a desired maximum value.
 
-What might be a bit unintuitive is that the training runs might now end very rapidly
+What might be a bit unintuitive is that the training runs might now end very rapidly.
 This might spark the question: have we really reached an optimum yet?
-And often the answer to this is "no", which is why early stopping frequently is combined with other approaches to hinder overfitting from happening.
+And often the answer to this is "no", which is why early stopping frequently is combined with other approaches to avoid overfitting.
 Overfitting means that a model (seemingly) performs better on seen data compared to unseen data. One then often also says that it does not "generalize" well.
 Techniques to avoid overfitting, or to improve model generalization, are termed **regularization techniques** and we will come back to this in **episode 4**.
 
@@ -737,7 +737,7 @@ But let's better compare it to the naive baseline we created in the beginning. W
 
 # Outlook
 Correctly predicting tomorrow's sunshine hours is apparently not that simple.
-Our models get the general trends right, but still predictions vary quiet a bit and can even be far off.
+Our models get the general trends right, but still predictions vary quite a bit and can even be far off.
 
 > ## Open question: What could be next steps to further improve the model?
 >
