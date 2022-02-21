@@ -731,6 +731,35 @@ plt.ylabel("true sunshine hours")
 Well, the above is certainly not perfect. But how good or bad is this? Maybe not good enough to plan your picnic for tomorrow.
 But let's better compare it to the naive baseline we created in the beginning. What would you say, did we improve on that?
 
+> ## Exercise: Simplify the model
+>
+> You may have been wondering why we are including weather observations from
+> multiple cities to predict sunshine hours only in Basel. The weather is
+> a complex phenomenon with correlations over large distances and time scales,
+> but what happens if we limit ourselves to only one city?
+> 
+> 1. First remove all cities from the training data that are not for Basel.
+>    You can use something like:
+>    ~~~
+>    cols = [c for c in X_data.columns if c[:5] == 'BASEL']
+>    X_data = X_data[cols]
+>    ~~~
+>    {: .language-python}
+> 2. Since we will be reducing the number of features quite significantly,
+>    we should afford to include more data. Instead of using only 3 years, use
+>    8 or 9 years!
+> 3. Now rerun the last model we defined which included the BatchNorm layer.
+>    Recreate the scatter plot comparing your prediction with the baseline
+>    prediction based on yesterday's sunshine hours, and compute also the RMSE.
+>    Is the prediction better compared to what we had before?
+>
+> > ## Solution
+> > 
+> >  WRITEME
+> > 
+> {:.solution}
+{:.challenge}
+
 
 # Outlook
 Correctly predicting tomorrow's sunshine hours is apparently not that simple.
