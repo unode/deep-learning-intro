@@ -117,7 +117,7 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 
 ### Select a subset and split into data (X) and labels (y)
 The full dataset comprises 10 years (3654 days) from which we here will only select the first 3 years.
-We will then define what exactly we want to predict from this data. A very common task with weather data is to make a prediction about the weather somewhere in the future, say the next day. The present dataset is sorted by "DATE", so for each row `i` in the table we can pick a corresponding feature and location from row `i+1` that we later want to predict with our model.
+We will then define what exactly we want to predict from this data. A very common task with weather data is to make a prediction about the weather sometime in the future, say the next day. The present dataset is sorted by "DATE", so for each row `i` in the table we can pick a corresponding feature and location from row `i+1` that we later want to predict with our model.
 Here we will pick a rather difficult-to-predict feature, sunshine hours, which we want to predict for the location: BASEL.
 
 ~~~
@@ -132,7 +132,7 @@ y_data = data.loc[1:(nr_rows + 1)]["BASEL_sunshine"]
 
 
 # Prepare the data for machine learning
-In general, it is important to check if the data contains any unexpected values such as `9999` or `NaN` or `NoneType`. You can use the using pandas `data.describe()` function for this. If so, such values must be removed or replaced.
+In general, it is important to check if the data contains any unexpected values such as `9999` or `NaN` or `NoneType`. You can use the pandas `data.describe()` function for this. If so, such values must be removed or replaced.
 In the present case the data is luckily well prepared and shouldn't contain such values, so that this step can be omitted.
 
 ### Split data and labels into training, validation, and test set
@@ -192,9 +192,6 @@ Setting the `random_state` to `0` is a short-hand at this point. Note however, t
 ## Build a dense neural network
 
 ### Regression and classification - how to set a training goal
-
-- Explain how to define the output part of a neural network
-- What is the loss function (and which one to chose for a regression or classification task)?
 
 In episode 2 we trained a dense neural network on a *classification task*. For this one hot encoding was used together with a `Categorical Crossentropy` loss function.
 This measured how close the distribution of the neural network outputs corresponds to the distribution of the three values in the one hot encoding.
