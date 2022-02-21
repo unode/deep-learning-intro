@@ -97,9 +97,9 @@ Here are just a few examples of how Deep Learning has been applied to some resea
 
 ### What sort of problems can Deep Learning solve, but shouldn't be used for?
 
-Deep Learning needs a lot of computational power, for this reason it often relies on specialist hardware like graphical processing units (GPUs). Many computational problems can be solved using less intensive techniques, but could still technically be solved with Deep Learning.
+Deep Learning needs a lot of computational power, for this reason it often relies on specialised hardware like graphical processing units (GPUs). Many computational problems can be solved using less intensive techniques, but could still technically be solved with Deep Learning.
 
-The following could technically be achieved using Deep Learning, but it would probably be very wasteful way to do it:
+The following could technically be achieved using Deep Learning, but it would probably be a very wasteful way to do it:
 
 * Logic operations, such as computing totals, averages, ranges etc. (see [this example](https://joelgrus.com/2016/05/23/fizz-buzz-in-tensorflow) applying Deep Learning to solve the "FizzBuzz" problem often used for programming interviews)
 * Modelling well defined systems, where the equations governing them are known and understood.
