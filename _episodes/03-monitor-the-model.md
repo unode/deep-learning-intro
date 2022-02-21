@@ -731,23 +731,23 @@ plt.ylabel("true sunshine hours")
 Well, the above is certainly not perfect. But how good or bad is this? Maybe not good enough to plan your picnic for tomorrow.
 But let's better compare it to the naive baseline we created in the beginning. What would you say, did we improve on that?
 
-> ## Exercise: Simplify the model
+> ## Exercise: Simplify the model and add data
 >
 > You may have been wondering why we are including weather observations from
 > multiple cities to predict sunshine hours only in Basel. The weather is
 > a complex phenomenon with correlations over large distances and time scales,
 > but what happens if we limit ourselves to only one city?
 > 
-> 1. First remove all cities from the training data that are not for Basel.
+> 1. Since we will be reducing the number of features quite significantly,
+>    we should afford to include more data. Instead of using only 3 years, use
+>    8 or 9 years!
+> 2. Remove all cities from the training data that are not for Basel.
 >    You can use something like:
 >    ~~~
 >    cols = [c for c in X_data.columns if c[:5] == 'BASEL']
 >    X_data = X_data[cols]
 >    ~~~
 >    {: .language-python}
-> 2. Since we will be reducing the number of features quite significantly,
->    we should afford to include more data. Instead of using only 3 years, use
->    8 or 9 years!
 > 3. Now rerun the last model we defined which included the BatchNorm layer.
 >    Recreate the scatter plot comparing your prediction with the baseline
 >    prediction based on yesterday's sunshine hours, and compute also the RMSE.
@@ -755,8 +755,69 @@ But let's better compare it to the naive baseline we created in the beginning. W
 >
 > > ## Solution
 > > 
-> >  WRITEME
-> > 
+> >    ~~~
+> >    # use 9 years out of the total dataset
+> >    nr_rows = 365*9
+> >    # data
+> >    X_data = data.loc[:nr_rows].drop(columns=['DATE', 'MONTH'])
+> >    # labels (sunshine hours the next day)
+> >    y_data = data.loc[1:(nr_rows + 1)]["BASEL_sunshine"]
+> >    # only use columns with 'BASEL'
+> >    cols = [c for c in X_data.columns if c[:5] == 'BASEL']
+> >    X_data = X_data[cols]
+> >
+> >    # do the train-test-validation split
+> >    X_train, X_holdout, y_train, y_holdout = train_test_split(X_data, y_data, test_size=0.3, random_state=0)
+> >    X_val, X_test, y_val, y_test = train_test_split(X_holdout, y_holdout, test_size=0.5, random_state=0)
+> >    
+> >    # function to create network
+> >    def create_nn():
+> >        # Input layer
+> >        inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
+> >    
+> >        # Dense layers
+> >        layers_dense = keras.layers.BatchNormalization()(inputs)
+> >        layers_dense = keras.layers.Dense(100, 'relu')(layers_dense)
+> >        layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
+> >    
+> >        # Output layer
+> >        outputs = keras.layers.Dense(1)(layers_dense)
+> >    
+> >        # Defining the model and compiling it
+> >        return keras.Model(inputs=inputs, outputs=outputs, name="model_batchnorm")
+> >
+> >    # create the network and view its summary
+> >    model = create_nn()
+> >    model.compile(loss='mse', optimizer='adam', metrics=[keras.metrics.RootMeanSquaredError()])
+> >    model.summary()
+> >
+> >    # fit with early stopping and output showing performance on validation set
+> >    history = model.fit(X_train, y_train,
+> >                        batch_size = 32,
+> >                        epochs = 1000,
+> >                        validation_data=(X_val, y_val),
+> >                        callbacks=[earlystopper],
+> >                        verbose = 2)
+> >
+> >    # plot RMSE
+> >    history_df = pd.DataFrame.from_dict(history.history)
+> >    sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+> >    plt.xlabel("epochs")
+> >    
+> >    # create a scatter plot to compare with baseline 
+> >    y_test_predicted = model.predict(X_test)
+> >    plt.figure(figsize=(5, 5), dpi=100)
+> >    plt.scatter(y_test_predicted, y_test, s=10, alpha=0.5)
+> >    plt.xlabel("predicted sunshine hours")
+> >    plt.ylabel("true sunshine hours")
+> >
+> >    # compare the mean squared error with baseline prediction
+> >    from sklearn.metrics import mean_squared_error
+> >    rmse_nn = mean_squared_error(y_test, y_test_predicted, squared=False)
+> >    rmse_baseline = mean_squared_error(y_test, y_baseline_prediction, squared=False)
+> >    print('NN RMSE: {:.2f}, baseline RMSE: {:.2f}'.format(rmse_nn, rmse_baseline))
+> >    ~~~
+> >    {: .language-python}
 > {:.solution}
 {:.challenge}
 
