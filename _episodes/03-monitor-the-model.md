@@ -262,9 +262,7 @@ In the given case we want to stimulate that the predicted values are as close as
 In Keras this is implemented in the `keras.losses.MeanSquaredError` class (see Keras documentation: https://keras.io/api/losses/). This can be provided into the `model.compile` method with the `loss` parameter and setting it to `mse`, e.g. 
 
 ~~~
-model.compile(#...
-              loss='mse',
-              #...)
+model.compile(loss='mse')
 ~~~
 {: .language-python}
 
@@ -275,8 +273,7 @@ The *optimizer* here refers to the algorithm with which the model learns to opti
 
 ~~~
 model.compile(optimizer='adam',
-              loss='mse',
-              #...)
+              loss='mse')
 ~~~
 {: .language-python}
 
