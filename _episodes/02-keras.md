@@ -22,7 +22,7 @@ keypoints:
 - Exploring the data is an important step to familiarize yourself with the problem and to help you determine the relavent inputs and outputs.
 - One-hot encoding is a preprocessing step to prepare labels for classification in Keras.
 - A fully connected layer is a layer which has connections to all neurons in the previous and subsequent layers.
-- keras.layers.Dense is an implement of a fully connected layer, you can set the number of neurons in the layer and the activation function used.
+- keras.layers.Dense is an implementation of a fully connected layer, you can set the number of neurons in the layer and the activation function used.
 - To train a neural network with Keras we need to first define the network using layers and the Model class. Then we can train it using the model.fit function.
 - Plotting the loss curve can be used to identify and troubleshoot the training process.
 - The loss curve on the training set does not provide any information on how well a network performs in a real setting.
@@ -499,7 +499,7 @@ model using `model.compile`.
 Compiling the model prepares it to start the training.
 
 ~~~
-model.compile(optimizer=keras.optimizers.Adam(), loss=keras.losses.CategoricalCrossentropy())
+model.compile(optimizer='adam', loss=keras.losses.CategoricalCrossentropy())
 ~~~
 {:.language-python}
 
