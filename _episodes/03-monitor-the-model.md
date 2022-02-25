@@ -389,6 +389,7 @@ axes[1].set_ylabel("true sunshine hours")
 > > ## Solution
 > >  
 > > While the performance on the train set seems reasonable, the performance on the test set is much worse.
+> > This is a common problem called **overfitting**, which we will discuss in more detail later.
 > >
 > {:.solution}
 {:.challenge}
@@ -461,6 +462,13 @@ Judging from the numbers alone, our neural network preduction would be performin
 > ## Exercise: Baseline
 > Looking at this baseline: Would you consider this a simple or a hard problem to solve?
 >
+> > ## Solution
+> >  
+> > This really depends on your definition of hard! The baseline gives a more accurate prediction than just
+> > randomly predicting a number, so the problem is not impossible. However, if no model is going to
+> > perform better than the baseline, the problem may still be very hard.
+> >
+> {:.solution}
 {:.challenge}
 
 ## Watch your model training closely
