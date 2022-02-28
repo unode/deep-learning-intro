@@ -748,12 +748,17 @@ But let's better compare it to the naive baseline we created in the beginning. W
 > 3. Now rerun the last model we defined which included the BatchNorm layer.
 >    Recreate the scatter plot comparing your prediction with the baseline
 >    prediction based on yesterday's sunshine hours, and compute also the RMSE.
+>    Note that even though we will use many more observations than previously,
+>    the network should still train quickly because we reduce the number of
+>    features (columns).
 >    Is the prediction better compared to what we had before?
 >
 > > ## Solution
-> > 
+> >    
+> > Use 9 years out of the total dataset. This means 3 times as many
+> > rows as we used previously, but by removing columns not containing
+> > "BASEL" we reduce the number of columns from 89 to 11.
 > >    ~~~
-> >    # use 9 years out of the total dataset
 > >    nr_rows = 365*9
 > >    # data
 > >    X_data = data.loc[:nr_rows].drop(columns=['DATE', 'MONTH'])
@@ -762,12 +767,19 @@ But let's better compare it to the naive baseline we created in the beginning. W
 > >    # only use columns with 'BASEL'
 > >    cols = [c for c in X_data.columns if c[:5] == 'BASEL']
 > >    X_data = X_data[cols]
+> >    ~~~
+> >    {: .language-python}
+> > 
+> > Do the train-test-validation split:
 > >
-> >    # do the train-test-validation split
+> >    ~~~
 > >    X_train, X_holdout, y_train, y_holdout = train_test_split(X_data, y_data, test_size=0.3, random_state=0)
 > >    X_val, X_test, y_val, y_test = train_test_split(X_holdout, y_holdout, test_size=0.5, random_state=0)
-> >    
-> >    # function to create network
+> >    ~~~
+> >    {: .language-python}
+> >
+> > Function to create a network including the BatchNorm layer:   
+> >    ~~~
 > >    def create_nn():
 > >        # Input layer
 > >        inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
@@ -782,13 +794,21 @@ But let's better compare it to the naive baseline we created in the beginning. W
 > >    
 > >        # Defining the model and compiling it
 > >        return keras.Model(inputs=inputs, outputs=outputs, name="model_batchnorm")
+> >    ~~~
+> >    {: .language-python}
 > >
+> > Create the network. Because we have reduced the number of input features
+> > the number of parameters in the network goes down from 14457 to 6137.
+> >    ~~~
 > >    # create the network and view its summary
 > >    model = create_nn()
 > >    model.compile(loss='mse', optimizer='adam', metrics=[keras.metrics.RootMeanSquaredError()])
 > >    model.summary()
-> >
-> >    # fit with early stopping and output showing performance on validation set
+> >    ~~~
+> >    {: .language-python}
+> > 
+> > Fit with early stopping and output showing performance on validation set:
+> >    ~~~
 > >    history = model.fit(X_train, y_train,
 > >                        batch_size = 32,
 > >                        epochs = 1000,
@@ -800,16 +820,24 @@ But let's better compare it to the naive baseline we created in the beginning. W
 > >    history_df = pd.DataFrame.from_dict(history.history)
 > >    sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
 > >    plt.xlabel("epochs")
-> >    
-> >    # create a scatter plot to compare with baseline 
+> >    ~~~
+> >    {: .language-python}
+> >
+> > Create a scatter plot to compare with true observations:
+> >    ~~~
 > >    y_test_predicted = model.predict(X_test)
 > >    plt.figure(figsize=(5, 5), dpi=100)
 > >    plt.scatter(y_test_predicted, y_test, s=10, alpha=0.5)
 > >    plt.xlabel("predicted sunshine hours")
 > >    plt.ylabel("true sunshine hours")
-> >
-> >    # compare the mean squared error with baseline prediction
+> >    ~~~
+> >    {: .language-python}
+> > 
+> > Compare the mean squared error with baseline prediction. It should be
+> > similar or even a little better than what we saw with the larger model!
+> >    ~~~
 > >    from sklearn.metrics import mean_squared_error
+> >    y_baseline_prediction = X_test['BASEL_sunshine']
 > >    rmse_nn = mean_squared_error(y_test, y_test_predicted, squared=False)
 > >    rmse_baseline = mean_squared_error(y_test, y_baseline_prediction, squared=False)
 > >    print('NN RMSE: {:.2f}, baseline RMSE: {:.2f}'.format(rmse_nn, rmse_baseline))
