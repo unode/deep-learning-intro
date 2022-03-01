@@ -172,7 +172,7 @@ print(dim)
 > > width, height = (32, 32)
 > > n_hidden_neurons = 100
 > > n_bias = 100
-> > n_input_items = width * height
+> > n_input_items = width * height * 3
 > > n_parameters = (n_input_items * n_hidden_neurons) + n_bias
 > > n_parameters
 > > ~~~
