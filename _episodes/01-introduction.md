@@ -32,23 +32,42 @@ keypoints:
 ### Deep Learning, Machine Learning and Artificial Intelligence
 
 Deep Learning (DL) is just one of many techniques collectively known as machine learning. Machine learning (ML) refers to techniques where a computer can "learn" patterns in data, usually by being shown numerous examples to train it. People often talk about machine learning being a form of artificial intelligence (AI). Definitions of artificial intelligence vary, but usually involve having computers mimic the behaviour of intelligent biological systems. Since the 1950s many works of science fiction have dealt with the idea of an artificial intelligence which matches (or exceeds) human intelligence in all areas. Although there have been great advances in AI and ML research recently we can only come close to human like intelligence in a few specialist areas and are still a long way from a general purpose AI.
+The image below shows some differences between artificial intelligence, Machine Learning and Deep Learning. 
+
+![An infographics showing the relation of AI, ML, NN and DL](../fig/01_AI_ML_DL_differences.svg){: width="500px" }
+The image above is by Tukijaaliwa, CC BY-SA 4.0, via Wikimedia Commons, [original source]( https://en.wikipedia.org/wiki/File:AI-ML-DL.svg)
 
 
 #### Neural Networks
 
-A neural network is an artificial intelligence technique loosely based on the way neurons in the brain work. A neural network consists of connected computational units called neurons. Each neuron takes the sum of all its inputs, performs some, typically non-linear, calculation on them and produces one output. This calculation is called the activation function. The connections between neurons are called edges, these edges typically have a weight associated with them. This weight determines the 'strength' of the connection, these weights are adjusted during training. In this way, the combination of neurons and edges describe a computational graph, an example can be seen in the image below. In most neural networks neurons are aggregated into layers. Signals travel from the input layer to the output layer, possibly through one or more intermediate layers called hidden layers.
+A neural network is an artificial intelligence technique loosely based on the way neurons in the brain work. A neural network consists of connected computational units called **neurons**. Each neuron ... 
+
+- has one or more inputs, e.g. input data expressed as floating point numbers
+- most of the time, each neuron conducts 3 main operations:
+  + take the weighted sum of the inputs
+  + add an extra constant weight (i.e. a bias term) to this weighted sum
+  + apply a non-linear function to the output so far (using a predefined activation function)
+- return one output value, again a floating point number
+
+![A diagram of a single artificial neuron](../fig/01_neuron.png){: width="600px"}
+
+Multiple neurons can be joined together by connecting the output of one to the input of another. These connections are associated with weights that determine the 'strength' of the connection, the weights are adjusted during training. In this way, the combination of neurons and connections describe a computational graph, an example can be seen in the image below. In most neural networks neurons are aggregated into layers. Signals travel from the input layer to the output layer, possibly through one or more intermediate layers called hidden layers. 
+The image below shows an example of a neural network with three layers, each circle is a neuron, each line is an edge and the arrows indicate the direction data moves in.
+
+![A diagram of a three layer neural network.](../fig/01_neural_net.png){: width="400px"}
+The image above is by Glosser.ca, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons, [original source](https://commons.wikimedia.org/wiki/File:Colored_neural_network.svg)
+
 
 Neural networks aren't a new technique, they have been around since the late 1940s. But until around 2010 neural networks tended to be quite small, consisting of only 10s or perhaps 100s of neurons. This limited them to only solving quite basic problems. Around 2010 improvements in computing power and the algorithms for training the networks made much larger and more powerful networks practical. These are known as deep neural networks or Deep Learning.
 
-![An infographics showing the relation of AI, ML, NN and DL](../fig/AI_ML_DL_bubble_square_draft.png){: width="600px" }
-
 Deep Learning requires extensive training using example data which shows the network what output it should produce for a given input. One common application of Deep Learning is classifying images. Here the network will be trained by being "shown" a series of images and told what they contain. Once the network is trained it should be able to take another image and correctly classify its contents. But we are not restricted to just using images, any kind of data can be learned by a Deep Learning neural network. This makes them able to appear to learn a set of complex rules only by being shown what the inputs and outputs of those rules are instead of being taught the actual rules. Using these approaches Deep Learning networks have been taught to play video games and even drive cars. The data on which networks are trained usually has to be quite extensive, typically including thousands of examples. For this reason they are not suited to all applications and should be considered just one of many machine learning techniques which are available.
 
-The image below shows the architecture of a traditional "shallow" network (top) and a deep network (bottom). In the shallow network we have to do some extra pre-processing of the data to make it suitable to for the network to understand it. Each circle represents one neuron in the network and the lines the edges connecting them. In both cases the final (right most) layer of the network outputs a zero or one to determine if the input data belongs to the class of data we're interested in.
+While traditional "shallow" networks might have had between three and five layers, deep networks often have tens or even hundreds of layers. This leads to them having millions of individual weights.
+The image below shows a diagram of all the layers (there are too many neurons to draw them all) on a Deep Learning network designed to detect pedestrians in images. 
+The input (left most) layer of the network is an image and the final (right most) layer of the network outputs a zero or one to determine if the input data belongs to the class of data we're interested in.
+This image is from the paper ["An Efficient Pedestrian Detection Method Based on YOLOv2" by Zhongmin Liu, Zhicai Chen, Zhanming Li, and Wenjin Hu published in Mathematical Problems in Engineering, Volume 2018](https://doi.org/10.1155/2018/3518959)
 
-[//]: # "![An example neural network with ][neural-network][*Glosser.ca, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons*](https://commons.wikimedia.org/wiki/File:Colored_neural_network.svg)"
-
-![An example of a neural network](../fig/ML_DL_draft.png){: width="600px" }
+![An example of a deep neural network](../fig/01_deep_network.png){: width="600px" }
 
 
 ### What sort of problems can Deep Learning solve?
@@ -104,14 +123,18 @@ The following could technically be achieved using Deep Learning, but it would pr
 > {: .solution}
 {: .challenge}
 
-
+> ## How much data do you need for Deep Learning?
+> The rise of Deep Learning is partially due to the increased availability of very large datasets.
+> But how much data do you actually need to train a Deep Learning model?
+> Unfortunately, this question is not easy to answer. It depends, among other things, on the
+> complexity of the task (which you often don't know beforehand), the quality of the available dataset and the complexity of the network. For complex tasks with large neural networks, we often see that adding more data continues to improve performance. However, this is also not a generic truth: if the data you add is too similar to the data you already have, it will not give much new information to the neural network.
+>
+> In case you have too little data available to train a complex network from scratch, it is sometimes possible to use a pretrained network that was trained on a similar problem. Another trick is data augmentation, where you expand the dataset with artificial data points that could be real. An example of this is mirroring images when trying to classify cats and dogs. An horizontally mirrored animal retains the label, but exposes a different view.
+{: .callout}
 
 ## Deep Learning workflow
 
 To apply Deep Learning to a problem there are several steps we need to go through:
-
-![A visualisation of the Deep Learning Workflow](../fig/graphviz/pipeline.png){: width="800px" }
-
 
 ### 1. Formulate/ Outline the problem
 
