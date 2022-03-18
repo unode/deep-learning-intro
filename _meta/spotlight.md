@@ -40,8 +40,8 @@ As we entered the beta stage, we are currently looking for volunteers to test th
 
 ## What is your preferred way for community members to contact you for further discussion of your lesson?
 *For example, to an email address; via an issue on your lesson repository; on Slack (by direct message or via a channel dedicated to your lesson), etc. Please include a link to the relevant email, lesson repository issue page, Slack channel, etc as appropriate.*
-If you plan to teach this lesson, you can notify us by [opening a new issue on the lesson repository](https://github.com/carpentries-incubator/deep-learning-intro/issues/new)
+If you plan to teach this lesson, you can notify us by [opening a new issue on the lesson repository](https://github.com/carpentries-incubator/deep-learning-intro/issues/178)
 or posting to the [`#machine_learning` Slack channel](https://swcarpentry.slack.com/archives/CKLUYLY2F)
 on [The Carpentries Slack](https://swc-slack-invite.herokuapp.com/).
 
-Feedback on the lesson material can be posted as an [GitHub issue](https://github.com/carpentries-incubator/deep-learning-intro/issues/new), you are also very welcome to create a pull request with suggested improvements.
+Feedback on the lesson material can be posted as an [GitHub issue](https://github.com/carpentries-incubator/deep-learning-intro/issues/178), you are also very welcome to create a pull request with suggested improvements.
