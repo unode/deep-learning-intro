@@ -382,7 +382,7 @@ on hyperparameter tuning.
 The second parameter is the activation function to use, here we choose relu which is 0
 for inputs that are 0 and below and the identity function (returning the same value)
 for inputs above 0.
-This is a commonly used activation functions in deep neural networks that is proven to work well.
+This is a commonly used activation function in deep neural networks that is proven to work well.
 Next we see an extra set of parenthenses with inputs in them, this means that after creating an
 instance of the Dense layer we call it as if it was a function.
 This tells the Dense layer to connect the layer passed as a parameter, in this case the inputs.
