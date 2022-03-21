@@ -4,7 +4,7 @@ title: "Setup"
 permalink: /setup/
 ---
 
-## Installing Python Using Anaconda
+## Installing Python using Anaconda
 
 [Python][python] is a popular language for scientific computing, and a frequent choice
 for machine learning as well. Installing all of its scientific packages
@@ -70,30 +70,33 @@ If you run into any difficulties, please request help before the workshop begins
         press enter to prepend Anaconda to your `PATH` (this makes the Anaconda
         distribution the default Python).
 
-> ## conda version
->
-> If you already have anaconda installed at your computer, make sure you have an up-to-date version of conda running.
-> See [these instructions](https://docs.anaconda.com/anaconda/install/update-version/) for updating conda.
->
-{: .callout}
-
 ## Installing the required packages
 
-Open a terminal and type the command (note that installing tensorflow causes keras to
-be installed too):
+[Conda](https://docs.conda.io/projects/conda/en/latest/) is the package management system associated with [Anaconda](https://anaconda.org) and runs on Windows, macOS and Linux. 
+Conda should already be available in your system once you installed Anaconda successfully. Conda thus works regardless of the operating system.
+Make sure you have an up-to-date version of Conda running.
+See [these instructions](https://docs.anaconda.com/anaconda/install/update-version/) for updating Conda if required. 
+{: .callout}
+
+Open a terminal and type the command:
 ~~~
-$ conda install tensorflow seaborn scikit-learn pandas
+conda install tensorflow seaborn scikit-learn pandas
 ~~~
-{: .language-bash}
+{: .source}  
+Note that modern versions of Tensorflow make Keras available as a module.
+
 
 ### Troubleshooting for Windows
 It is possible that Windows users will run into version conflicts. If you are on Windows and get 
 errors running the command, you can try installing the packages using pip:
 
 ~~~
-$ pip install tensorflow>=2.5 seaborn scikit-learn pandas
+pip install tensorflow>=2.5 seaborn scikit-learn pandas
 ~~~
-{: .language-bash}
+{: .source}
+
+[pip](https://pip.pypa.io/en/stable/) is the package management system for Python software packages.
+It is integrated into your local Python installation and runs regardless of your operating system too.
 
 ## Starting a Jupyter Notebook
 
@@ -105,12 +108,12 @@ installed Python using Anaconda, Jupyter should already be on your system. If
 you did not use Anaconda, use the Python package manager pip
 (see the [Jupyter website][jupyter-install] for details.)
 
-To start the notebook, open a terminal or git bash and type the command:
+To start the notebook, open a terminal and type the command:
 
 ~~~
 $ jupyter notebook
 ~~~
-{: .language-bash}
+{: .source}
 
 To start the Python interpreter without the notebook, open a terminal
 or git bash and type the command:
@@ -118,7 +121,7 @@ or git bash and type the command:
 ~~~
 $ python
 ~~~
-{: .language-bash}
+{: .source}
 
 ## Check your setup
 To check whether all packages installed correctly, start a jupyter notebook as
