@@ -370,8 +370,8 @@ It seems that the model is overfitting somewhat, because the validation accuracy
 > The model definition that we used previously needs to be adjusted as follows:
 > ~~~
 > inputs = keras.Input(shape=train_images.shape[1:])
-> x = keras.layers.MaxPooling2D((2, 2))(x)
 > x = keras.layers.Conv2D(32, (3, 3), activation='relu')(inputs)
+> x = keras.layers.MaxPooling2D((2, 2))(x)
 > x = keras.layers.Conv2D(32, (3, 3), activation='relu')(x)
 > x = keras.layers.MaxPooling2D((2, 2))(x)
 > # Add your extra layer here
