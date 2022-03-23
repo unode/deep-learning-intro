@@ -80,7 +80,7 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 >
 > * How many data points do we have?
 > * How many features does the data have (don't count month and date as a feature)?
-> * What are the different measured variabel types in the data and how many are there (humidity etc.) ?
+> * What are the different measured variable types in the data and how many are there (humidity etc.) ?
 >
 > > ## Solution
 > > ~~~
@@ -427,7 +427,7 @@ Judging from the numbers alone, our neural network preduction would be performin
 
 ## Watch your model training closely
 
-As we saw when comparing the predictions for the training and the test set, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a second test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evaluate the model with the *validation set* after every epoch during training, for instance to spot if we see signs of clear overfitting.
+As we saw when comparing the predictions for the training and the test set, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a second test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evaluate the model with the *validation set* after every epoch during training, for instance to split if we see signs of clear overfitting.
 
 Let's give this a try!
 
@@ -578,7 +578,7 @@ model.compile(optimizer='adam',
 
 To apply early stopping during training it is easiest to use Keras `EarlyStopping` class.
 This allows to define the condition of when to stop training. In our case we will say when the validation loss is lowest.
-However, since we have seen quite some fluctuation of the losses during training above we will also set `patience=10` which means that the model will stop training of the validation loss has not gone down for 10 epochs.
+However, since we have seen quiet some fluctuation of the losses during training above we will also set `patience=10` which means that the model will stop training if the validation loss has not gone down for 10 epochs.
 ~~~
 from tensorflow.keras.callbacks import EarlyStopping
 
