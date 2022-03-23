@@ -134,7 +134,7 @@ After this module, learners can ...
 -  explain in what situations transfer learning is beneficial
 - solve common issues of transfer learning (such as different resolutions of the original training and the training at hand)
 - test training under different data shape mitigation strategies
-- relate training time of a de-novo networt and a pretrained one
-- relate prediction quality of a de-novo networt and a pretrained one
+- relate training time of a de-novo network and a pretrained one
+- relate prediction quality of a de-novo network and a pretrained one
 
 {% include links.md %}
