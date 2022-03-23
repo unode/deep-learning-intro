@@ -58,7 +58,7 @@ In this episode we will focus on a minimal example for each of these steps, late
 > Using a GPU becomes necessary when tackling larger datasets or complex problems which
 > require a more complex Neural Network.
 {: .callout}
-## 1. Formulate / Outline the problem: Penguin classification
+## 1. Formulate/outline the problem: penguin classification
 In this episode we will be using the [penguin dataset](https://zenodo.org/record/3960218), this is a dataset that was published in 2020 by Allison Horst and contains data on three different species of the penguins.
 
 We will use the penguin dataset to train a neural network which can classify which species a
@@ -311,7 +311,9 @@ X_train, X_test, y_train, y_test = train_test_split(penguins_features, target,te
 > {:.solution}
 {:.challenge}
 
-## Keras for Neural Networks
+## 4. Build an architecture from scratch or choose a pretrained model
+
+### Keras for neural networks
 For this lesson we will be using [Keras](https://keras.io/) to define and train our neural network
 models.
 Keras is a machine learning framework with ease of use as one of its main features.
@@ -337,7 +339,8 @@ set_seed(2)
 ~~~
 {:.language-python}
 
-## 4. Choose a pretrained model or start building architecture from scratch
+### Build a neural network from scratch
+
 Now we will build a neural network from scratch, and although this sounds like
 a daunting task, with Keras it is actually surprisingly straightforward.
 
@@ -458,12 +461,13 @@ The model summary here can show you some information about the neural network we
 > You might wonder how you should make these architectural choices.
 > Unfortunately, there are no clear rules to follow here, and it often boils down to a lot of
 > trial and error. However, it is recommended to look what others have done with similar datasets and problems.
-> Another best practice is to start with a relatively simple architecture. Once it is running, start to add layers and tweak the network to see if performance increases.
->
-> If your data and problem is very similar to what others have done, you can often use a *pretrained network*.
-> Even if your problem is different, but the data type is common (for example images), you can use a pretrained network and finetune it for your problem.
-> A large number of openly available pretrained networks can be found in the [Model Zoo](https://modelzoo.co/), [PyTorch Hub](https://pytorch.org/hub/) or [TensorFlow Hub](https://www.tensorflow.org/hub/).
+> Another best practice is to start with a relatively simple architecture. Once running start to add layers and tweak the network to see if performance increases.
 {: .callout}
+
+### Choose a pretrained model
+If your data and problem is very similar to what others have done, you can often use a *pretrained network*.
+Even if your problem is different, but the data type is common (for example images), you can use a pretrained network and finetune it for your problem.
+A large number of openly available pretrained networks can be found in the [Model Zoo](https://modelzoo.co/), [pytorch hub](https://pytorch.org/hub/) or [tensorflow hub](https://www.tensorflow.org/hub/).
 
 
 ## 5. Choose a loss function and optimizer
@@ -547,7 +551,7 @@ are problems that need to be addressed.
 > {:.solution}
 {:.challenge}
 
-## 7. Perform a Prediction/Classification
+## 7. Perform a prediction/classification
 Now that we have a trained neural network, we can use it to predict new samples
 of penguin using the `predict` function.
 
@@ -611,7 +615,7 @@ predicted_species
 > {:.output}
 {:.solution}
 
-## 8. Measuring Performance
+## 8. Measuring performance
 Now that we have a trained neural network it is important to assess how well it performs.
 We want to know how well it will perform in a realistic prediction scenario, measuring
 performance will also come back when tuning the hyperparameters.
@@ -705,7 +709,7 @@ For now it is important to realize that the parameters we chose were
 somewhat arbitrary and more careful consideration needs to be taken to
 pick hyperparameter values.
 
-## 10. Share Model
+## 10. Share model
 It is very useful to be able to use the trained neural network at a later
 stage without having to retrain it.
 This can be done by using the `save` method of the model.
