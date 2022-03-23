@@ -22,7 +22,7 @@ keypoints:
 - Exploring the data is an important step to familiarize yourself with the problem and to help you determine the relavent inputs and outputs.
 - One-hot encoding is a preprocessing step to prepare labels for classification in Keras.
 - A fully connected layer is a layer which has connections to all neurons in the previous and subsequent layers.
-- keras.layers.Dense is an implement of a fully connected layer, you can set the number of neurons in the layer and the activation function used.
+- keras.layers.Dense is an implementation of a fully connected layer, you can set the number of neurons in the layer and the activation function used.
 - To train a neural network with Keras we need to first define the network using layers and the Model class. Then we can train it using the model.fit function.
 - Plotting the loss curve can be used to identify and troubleshoot the training process.
 - The loss curve on the training set does not provide any information on how well a network performs in a real setting.
@@ -212,7 +212,7 @@ The input data and target data are not yet in a format that is suitable to use f
 
 ### Change types if needed
 First, the species column is our categorical target, however pandas still sees it as the
-generic type `Object`. We can convert this to the pandas categorical type by adding the following line above the code which drops the columns we do not use.
+generic type `Object`. We can convert this to the pandas categorical type:
 ~~~
 penguins['species'] = penguins['species'].astype('category')
 ~~~
@@ -222,23 +222,18 @@ This will make later interaction with this column a little easier.
 ### Clean missing values
 During the exploration phase you may have noticed that some rows in the dataset have missing (NaN)
 values, leaving such values in the input data will ruin the training, so we need to deal with them.
-There are many ways to deal with missing values, but for now we will just remove the offending rows.
-
-Add a call to `dropna()` before the input_data definition that we used above, the cell should now
-look like this:
+There are many ways to deal with missing values, but for now we will just remove the offending rows by adding a call to `dropna()`:
 ~~~
-penguins['species'] = penguins['species'].astype('category')
-
-# Drop the rows that have NaN values in them
+# Drop two columns and the rows that have NaN values in them
 penguins_filtered = penguins.drop(columns=['island', 'sex']).dropna()
 
-# Split the dataset in the features and the target
-penguin_features = penguins_filtered.drop(columns=['species'])
+# Extract columns corresponding to features
+penguins_features = penguins_filtered.drop(columns=['species'])
 ~~~
 {:.language-python}
 
 ### Prepare target data for training
-Second, the target data is also in a format that cannot be used to train.
+Second, the target data is also in a format that cannot be used in training.
 A neural network can only take numerical inputs and outputs, and learns by
 calculating how "far away" the species predicted by the neural network is
 from the true species.
@@ -283,7 +278,7 @@ the same results (assuming you give the same integer) every time it is called.
 ~~~
 from sklearn.model_selection import train_test_split
 
-X_train, X_test, y_train, y_test = train_test_split(penguin_features, target,test_size=0.2, random_state=0, shuffle=True, stratify=target)
+X_train, X_test, y_train, y_test = train_test_split(penguins_features, target,test_size=0.2, random_state=0, shuffle=True, stratify=target)
 ~~~
 {:.language-python}
 
@@ -397,7 +392,7 @@ output_layer = keras.layers.Dense(3, activation="softmax")(hidden_layer)
 Because we chose the one-hot encoding, we use `3` neurons for the output layer.
 
 The softmax activation ensures that the three output neurons produce values in the range
-(0, 1) and the sum to 1.
+(0, 1) and they sum to 1.
 We can interpret this as a kind of 'probability' that the sample belongs to a certain
 species.
 
@@ -458,16 +453,16 @@ The model summary here can show you some information about the neural network we
 {:.challenge}
 
 > ## How to choose an architecture?
-> Even for this small neural network, we had to make a choice on the number of hidden nodes.
+> Even for this small neural network, we had to make a choice on the number of hidden neurons.
 > Other choices to be made are the number of layers and type of layers (as we will see later).
 > You might wonder how you should make these architectural choices.
 > Unfortunately, there are no clear rules to follow here, and it often boils down to a lot of
 > trial and error. However, it is recommended to look what others have done with similar datasets and problems.
-> Another best practice is to start with a relatively simple architecture. Once running start to add layers and tweak the network to see if performance increases.
+> Another best practice is to start with a relatively simple architecture. Once it is running, start to add layers and tweak the network to see if performance increases.
 >
 > If your data and problem is very similar to what others have done, you can often use a *pretrained network*.
 > Even if your problem is different, but the data type is common (for example images), you can use a pretrained network and finetune it for your problem.
-> A large number of openly available pretrained networks can be found in the [Model Zoo](https://modelzoo.co/), [pytorch hub](https://pytorch.org/hub/) or [tensorflow hub](https://www.tensorflow.org/hub/).
+> A large number of openly available pretrained networks can be found in the [Model Zoo](https://modelzoo.co/), [PyTorch Hub](https://pytorch.org/hub/) or [TensorFlow Hub](https://www.tensorflow.org/hub/).
 {: .callout}
 
 
@@ -480,7 +475,7 @@ This loss function tells the training algorithm how wrong, or how 'far away' fro
 value the predicted value is.
 
 For the one-hot encoding that we selected before a fitting loss function is the Categorical Crossentropy loss.
-In keras this is implemented in the `keras.losses.CategoricalCrossentropy` class.
+In Keras this is implemented in the `keras.losses.CategoricalCrossentropy` class.
 This loss function works well in combination with the `softmax` activation function
 we chose earlier.
 The Categorical Crossentropy works by comparing the probabilities that the
@@ -494,7 +489,7 @@ For more information on the available loss functions in Keras you can check the
 Next we need to choose which optimizer to use and, if this optimizer has parameters, what values
 to use for those. Furthermore, we need to specify how many times to show the training samples to the optimizer.
 
-Once more, Keras gives us plenty of choices all of which have their own pro's and cons,
+Once more, Keras gives us plenty of choices all of which have their own pros and cons,
 but for now let us go with the widely used Adam optimizer.
 Adam has a number of parameters, but the default values work well for most problems.
 So we will use it with its default parameters.
@@ -504,7 +499,7 @@ model using `model.compile`.
 Compiling the model prepares it to start the training.
 
 ~~~
-model.compile(optimizer=keras.optimizers.Adam(), loss=keras.losses.CategoricalCrossentropy())
+model.compile(optimizer='adam', loss=keras.losses.CategoricalCrossentropy())
 ~~~
 {:.language-python}
 
@@ -710,7 +705,7 @@ For now it is important to realize that the parameters we chose were
 somewhat arbitrary and more careful consideration needs to be taken to
 pick hyperparameter values.
 
-### 10. Share Model
+## 10. Share Model
 It is very useful to be able to use the trained neural network at a later
 stage without having to retrain it.
 This can be done by using the `save` method of the model.
