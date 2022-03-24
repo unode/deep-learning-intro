@@ -283,7 +283,7 @@ the same results (assuming you give the same integer) every time it is called.
 ~~~
 from sklearn.model_selection import train_test_split
 
-x_train, x_test, y_train, y_test = train_test_split(penguins_features, target,test_size=0.2, random_state=0, shuffle=True, stratify=target)
+X_train, X_test, y_train, y_test = train_test_split(penguins_features, target,test_size=0.2, random_state=0, shuffle=True, stratify=target)
 ~~~
 {:.language-python}
 
@@ -362,7 +362,7 @@ This means we need to let Keras now how big our input is going to be.
 We do this by instantiating a `keras.Input` class and tell it how big our input is.
 
 ~~~
-inputs = keras.Input(shape=x_train.shape[1])
+inputs = keras.Input(shape=X_train.shape[1])
 ~~~
 {:.language-python}
 
@@ -422,7 +422,7 @@ The model summary here can show you some information about the neural network we
 >
 > > ## Solution
 > > ~~~
-> > inputs = keras.Input(shape=x_train.shape[1])
+> > inputs = keras.Input(shape=X_train.shape[1])
 > > hidden_layer = keras.layers.Dense(10, activation="relu")(inputs)
 > > output_layer = keras.layers.Dense(3, activation="softmax")(hidden_layer)
 > >
@@ -519,7 +519,7 @@ One training epoch means that every sample in the training data has been shown
 to the neural network and used to update its parameters.
 
 ~~~
-history = model.fit(x_train, y_train, epochs=100)
+history = model.fit(X_train, y_train, epochs=100)
 ~~~
 {:.language-python}
 
@@ -563,7 +563,7 @@ trained network.
 This will return a `numpy` matrix, which we convert
 to a pandas dataframe to easily see the labels.
 ~~~
-y_pred = model.predict(x_test)
+y_pred = model.predict(X_test)
 prediction = pd.DataFrame(y_pred, columns=target.columns)
 prediction
 ~~~
@@ -731,7 +731,7 @@ This loaded model can be used as before to predict.
 
 ~~~
 # use the pretrained model here
-y_pretrained_pred = pretrained_model.predict(x_test)
+y_pretrained_pred = pretrained_model.predict(X_test)
 pretrained_prediction = pd.DataFrame(y_pretrained_pred, columns=target.columns.values)
 
 # idxmax will select the column for each row with the highest value
