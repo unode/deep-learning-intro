@@ -19,7 +19,7 @@ https://carpentries-incubator.github.io/deep-learning-intro
 https://github.com/carpentries-incubator/deep-learning-intro
 
 ## Who is the target audience of your lesson? (1-3 sentences)
-The main audience of this carpentry lesson is PhD students that have little to no experience with deep learning. In addition, we expect them to know basics of statistics and machine learning.
+The main audience of this carpentry lesson is considered to have an academic background at any level. More importantly, we expect them to know basics of statistics and machine learning to follow through with the material.
 
 ## What are the main learning objectives of your lesson? (1-5 bullet points)
 - Prepare input data for use for deep learning
