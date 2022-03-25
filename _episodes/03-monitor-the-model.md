@@ -204,7 +204,8 @@ Now we want to work on a *regression task*, thus not predicting a class label (o
 > As we want to design a neural network architecture for a regression task,
 > see if you can first come up with the answers to the following questions:
 > 1. What must be the dimension of our input layer?
-> 2. How would our output layer look like? What about the activation function? Tip: Remember that the activation function in our previous classification network scaled the outputs between 0 and 1.
+> 2. We want to to output the prediction of a single number. The output layer of the NN hence cannot be the same as for the classification task earlier. This is because the `softmax` activation being used had a concrete meaning with respect to the class labels which is not needed here. What output layer design would you choose for regression?  
+Hint: A layer with `relu` activation, with `sigmoid` activation or no activation at all? 
 >
 > > ## Solution
 > >  
