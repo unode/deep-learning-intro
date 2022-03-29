@@ -216,7 +216,7 @@ There are many software libraries available for Deep Learning including:
 
 ### PyTorch
 
-[PyTorch](https://pytorch.org/) was developed by Facebook in 2016 and is a popular choice for Deep Learning applications. It was developed for Python from the start and feels a lot more "pythonic" than TensorFlow. Like TensorFlow it was designed to do more than just Deep Learning and offers some very low level interfaces. Like TensorFlow it's also very easy to integrate PyTorch with a GPU. In many benchmarks it out performs the other libraries.
+[PyTorch](https://pytorch.org/) was developed by Facebook in 2016 and is a popular choice for Deep Learning applications. It was developed for Python from the start and feels a lot more "pythonic" than TensorFlow. Like TensorFlow it was designed to do more than just Deep Learning and offers some very low level interfaces. [PyTorch Lightning](https://www.pytorchlightning.ai/) offers a higher level interface to PyTorch to set up experiments. Like TensorFlow it's also very easy to integrate PyTorch with a GPU. In many benchmarks it outperforms the other libraries.
 
 ### Keras
 
