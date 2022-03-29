@@ -147,7 +147,7 @@ This will give you a pandas dataframe which contains the penguin data.
 > > ~~~
 > > {:.language-python}
 > > ~~~
-> > ['Adelie', 'Chinstrap', 'Gentoo']
+> > array(['Adelie', 'Chinstrap', 'Gentoo'], dtype=object)
 > > ~~~
 > > {:.output}
 > >
@@ -430,7 +430,7 @@ The model summary here can show you some information about the neural network we
 > > {:.language-python}
 > >
 > > ~~~
-> Model: "functional_1"
+> > Model: "model_1"
 > > _________________________________________________________________
 > > Layer (type)                 Output Shape              Param #
 > > =================================================================
@@ -450,9 +450,9 @@ The model summary here can show you some information about the neural network we
 > > The model has 83 trainable parameters.
 > > If you increase the number of neurons in the hidden layer the number of
 > > trainable parameters in both the hidden and output layer increases or
-> > decreases accordingly
-> > of neurons.
-> {:.solution}
+> > decreases accordingly of neurons.  
+> > The name in quotes within the string `Model: "model_1"` may be different in your view; this detail is not important.  
+> {:.solution}  
 {:.challenge}
 
 > ## How to choose an architecture?
