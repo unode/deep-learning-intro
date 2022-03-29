@@ -137,7 +137,8 @@ In the present case the data is luckily well prepared and shouldn't contain such
 
 ### Split data and labels into training, validation, and test set
 
-As with classical machine learning techniques, it is required in deep learning to split off a hold-out *test set* which remains untouched during model training and tuning. It is later used to evaluate the model performance. On top, we will also split off an additional *validation set*, the reason of which will hopefully become clearer later in this lesson.
+As with classical machine learning techniques, it is required in deep learning to split off a hold-out *test set* which remains untouched during model training and tuning. It is later used to evaluate the model performance. On top, we will also split off an additional *validation set*. As you will see later, it will be used to tune our hyperparameters.
+Because we will (indirectly) adapt our model based on our validation set we need to keep it separate from our regular test set. If we wouldn't do this, then we couldn't be sure whether the model truly generalizes to new data or is actually overfitting.
 
 To make our lives a bit easier, we employ a trick to create these 3 datasets, `training set`, `test set` and `validation set`, by calling the `train_test_split` method of `scikit-learn` twice.
 
