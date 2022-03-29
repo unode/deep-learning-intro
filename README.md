@@ -33,12 +33,10 @@ This indicates that the maintainers will welcome a pull request fixing this issu
 ## Maintainer(s)
 
 Current maintainers of this lesson are
-* Anne Fouilloux
-* Florian Huber
 * Dafne van Kuppevelt
 * Peter Steinbach
-* Berend Weel
 * Colin Sauze
+* Djura Smits
 
 
 ## Authors
