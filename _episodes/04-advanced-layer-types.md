@@ -1,5 +1,5 @@
 ---
-title: "Networks are like onions"
+title: "Advanced layer types"
 teaching: 30
 exercises: 45
 questions:
@@ -22,7 +22,7 @@ keypoints:
 ---
 
 ## Different types of layers
-'Networks are like onions': a typical neural network consists of many layers. In fact, the word *deep* in *Deep Learning*
+Networks are like onions: a typical neural network consists of many layers. In fact, the word *deep* in *Deep Learning*
 refers to the many layers that make the network deep.
 
 So far, we have seen one type of layer, namely the **fully connected**, or **dense** layer. This layer is called fully connected, because all input neurons are taken into account by each output neuron. The number of parameters that need to be learned by the network, is thus in the order of magnitude of the number of input neurons times the number of hidden neurons.
