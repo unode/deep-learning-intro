@@ -43,6 +43,9 @@ from tensorflow import keras
 > The CIFAR-10 dataset consists of images of 10 different classes: airplanes, cars, birds, cats, deer, dogs, frogs, horses, ships, and trucks.
 > It is widely used as a benchmark dataset for image classification. The low resolution of the images in the dataset allows for quick loading and testing models.
 >
+> For more information about this dataset and how it was collected you can check out 
+> [Learning Multiple Layers of Features from Tiny Images by  Alex Krizhevsky, 2009](https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf).
+>
 {: .callout}
 
 We take a small sample of the data as training set for demonstration purposes.
