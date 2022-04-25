@@ -873,6 +873,8 @@ But let's better compare it to the naive baseline we created in the beginning. W
 > %load_ext tensorboard
 > %tensorboard --logdir logs/fit
 > ~~~
+> Which will show an interface that looks something like this:
+> ![Screenshot of tensorboard](../fig/03_tensorboard.png)
 > {: .language-python}
 >
 {: .callout}
