@@ -184,7 +184,7 @@ of the network.
 
 ### 8. Measure Performance
 
-Once we think the network is performing well we want to measure its performance. To do this we use some additional data that wasn't part of the training, this is known as a test set. There are many different methods available for measuring performance and which one is best depends on the type of task we are attempting. These metrics are often published as an indication of how well our network performs.
+Once we trained the network we want to measure its performance. To do this we use some additional data that wasn't part of the training, this is known as a test set. There are many different methods available for measuring performance and which one is best depends on the type of task we are attempting. These metrics are often published as an indication of how well our network performs.
 
 ### 9. Tune Hyperparameters
 
