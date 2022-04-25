@@ -431,6 +431,14 @@ As we saw when comparing the predictions for the training and the test set, deep
 This is the *validation set* which can be regarded as a second test set. As with the test set, the datapoints of the *validation set* are not used for the actual model training itself. Instead, we evaluate the model with the *validation set* after every epoch during training, for instance to stop if we see signs of clear overfitting.
 Since we are adapting our model (tuning our hyperparameters) based on this validation set, it is *very* important that it is kept separate from the test set. If we used the same set, we wouldn't know whether our model truly generalizes or is only overfitting.   
 
+> ## Training vs. validation set
+> Not everybody agrees on the terminology of training set versus validation set. You might find 
+> examples in literature where these terms are used the other way around.
+> 
+> We are sticking to the definition that is consistent with the Keras api. In there, the validation 
+> set can be used during training, and the test set is reserved for afterwards.
+{: .callout }
+
 Let's give this a try!
 
 We need to initiate a new model -- otherwise Keras will simply assume that we want to continue training the model we already trained above.
