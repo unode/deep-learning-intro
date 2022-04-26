@@ -435,7 +435,7 @@ Since we are adapting our model (tuning our hyperparameters) based on this valid
 > Not everybody agrees on the terminology of training set versus validation set. You might find 
 > examples in literature where these terms are used the other way around.
 > 
-> We are sticking to the definition that is consistent with the Keras api. In there, the validation 
+> We are sticking to the definition that is consistent with the Keras API. In there, the validation 
 > set can be used during training, and the test set is reserved for afterwards.
 {: .callout }
 
