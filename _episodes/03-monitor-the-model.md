@@ -869,6 +869,7 @@ But let's better compare it to the naive baseline we created in the beginning. W
 > ~~~
 > {: .language-python}
 > You can launch the tensorboard interface from a Jupyter notebook, showing all trained models:
+> <!--cce:skip-->
 > ~~~
 > %load_ext tensorboard
 > %tensorboard --logdir logs/fit
