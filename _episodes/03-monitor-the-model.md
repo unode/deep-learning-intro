@@ -850,11 +850,11 @@ But let's better compare it to the naive baseline we created in the beginning. W
 
 > ## Tensorboard
 >
-> If we run many different experiments with different architecture,
-> it can be difficult to keep track of and compare the performance of the different models.
+> If we run many different experiments with different architectures,
+> it can be difficult to keep track of these different models or compare the achieved performance.
 > We can use *tensorboard*, a framework that keeps track of our experiments and shows graphs like we plotted above.
 > Tensorboard is included in our tensorflow installation by default.
-> We first need to add a *callback* to our (compiled) model that saves the training performance in a logs directory:
+> To use it, we first need to add a *callback* to our (compiled) model that saves the progress of training performance in a logs directory:
 > ~~~
 > from tensorflow.keras.callbacks import TensorBoard
 > import datetime
