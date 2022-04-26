@@ -23,9 +23,9 @@ keypoints:
 # Import & explore the data
 
 ### Import dataset
-Here we want to work with the *weather prediction dataset* (the light version) which can be 
+Here we want to work with the *weather prediction dataset* (the light version) which can be
 [downloaded from Zenodo](https://doi.org/10.5281/zenodo.5071376).
-It contains daily weather observations from 11 different European cities or places through the 
+It contains daily weather observations from 11 different European cities or places through the
 years 2000 to 2010. For all locations the data contains the variables ‘mean temperature’, ‘max temperature’, and ‘min temperature’. In addition, for multiple of the following variables are provided: 'cloud_cover', 'wind_speed', 'wind_gust', 'humidity', 'pressure', 'global_radiation', 'precipitation', 'sunshine', but not all of them are provided for all locations. A more extensive description of the dataset including the different physical units is given in accompanying metadata file.
 ![18 locations in the weather prediction dataset](../fig/03_weather_prediction_dataset_map.png)
 
@@ -87,7 +87,7 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 > > data.shape
 > > ~~~
 > > {:.language-python}
-> > This will give both the number of datapoints (3654) and the number of features (89 + month + 
+> > This will give both the number of datapoints (3654) and the number of features (89 + month +
 > date).
 > >
 > > To see what type of features the data contains we could run something like:
@@ -180,9 +180,9 @@ Setting the `random_state` to `0` is a short-hand at this point. Note however, t
 > > In the code above, we selected the first `365*3 = 1095` days from the original dataset as the number of rows to use. This is the total number of days we have in our dataset here.
 > >
 > > 1. The first `test_size = .12` would leave `.12*3*365` for the holdout set. This would amount to 131 days or 4.32 months. This is more than we need. Take caution as well with the second `test_size = 2`. According to the [API reference of `train_test_split`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split), this would select only 2 days into `X_test`.
-> > 
-> > 2. The first `test_size = .33` would leave `.33*3*365` for the holdout set. This would amount to 361 days or almost 12 months. This is more than we need. 
-> > 
+> >
+> > 2. The first `test_size = .33` would leave `.33*3*365` for the holdout set. This would amount to 361 days or almost 12 months. This is more than we need.
+> >
 > > 3. The first `test_size = (4./36.)` would leave `.11*3*365` for the holdout set. This would amount to 4 out of 36 months. This is exactly than we need. With the subsequent `test_size = .5` we obtain 2 months of data into the validation and into the test set each.
 > >
 > > 4. The first `test_size = 365` selects 365 rows or days into the holdout. This would be too many for the task at hand.
@@ -195,9 +195,9 @@ Setting the `random_state` to `0` is a short-hand at this point. Note however, t
 
 In episode 2 we trained a dense neural network on a *classification task*. For this one hot encoding was used together with a `Categorical Crossentropy` loss function.
 This measured how close the distribution of the neural network outputs corresponds to the distribution of the three values in the one hot encoding.
-Now we want to work on a *regression task*, thus not predicting a class label (or integer number) for a datapoint. In regression, we like to predict one (and sometimes many) values of a feature. This is typically a floating point number. 
+Now we want to work on a *regression task*, thus not predicting a class label (or integer number) for a datapoint. In regression, we like to predict one (and sometimes many) values of a feature. This is typically a floating point number.
 
-In our example we want to predict the sunshine hours in Basel (or any other place in the dataset) for tomorrow based on the weather data of all 18 locations today. `BASEL_sunshine` is a floating point value (i.e. `float64`). The network should hence output a single float value which is why the last layer of our network will only consist of a single node. 
+In our example we want to predict the sunshine hours in Basel (or any other place in the dataset) for tomorrow based on the weather data of all 18 locations today. `BASEL_sunshine` is a floating point value (i.e. `float64`). The network should hence output a single float value which is why the last layer of our network will only consist of a single node.
 
 We compose a network of two hidden layers to start off with something. We go by a scheme with 100 neurons in the first hidden layer and 50 neurons in the second layer. As activation function we settle on the `relu` function as a it proved very robust and widely used. To make our live easier later, we wrap the definition of the network in a method called `create_nn`.
 
@@ -259,7 +259,7 @@ When compiling the model we can define a few very important aspects. We will dis
 ### Loss function
 The loss is what the neural network will be optimized on during training, so choosing a suitable loss function is crucial for training neural networks.
 In the given case we want to stimulate that the predicted values are as close as possible to the true values. This is commonly done by using the *mean squared error* (mse) or the *mean absolute error* (mae), both of which should work OK in this case. Often, mse is preferred over mae because it "punishes" large prediction errors more severely.
-In Keras this is implemented in the `keras.losses.MeanSquaredError` class (see Keras documentation: https://keras.io/api/losses/). This can be provided into the `model.compile` method with the `loss` parameter and setting it to `mse`, e.g. 
+In Keras this is implemented in the `keras.losses.MeanSquaredError` class (see Keras documentation: https://keras.io/api/losses/). This can be provided into the `model.compile` method with the `loss` parameter and setting it to `mse`, e.g.
 
 ~~~
 model.compile(loss='mse')
@@ -330,7 +330,7 @@ But the *RMSE* is just the root *mean* squared error, so we might want to look a
 
 ## Evaluate our model
 
-There is not a single way to evaluate how a model performs. But there are at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly. 
+There is not a single way to evaluate how a model performs. But there are at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly.
 
 For the present *regression task*, it makes more sense to compare true and predicted values in a scatter plot. Hint: use `plt.scatter()`.
 
@@ -427,7 +427,7 @@ Judging from the numbers alone, our neural network preduction would be performin
 
 ## Watch your model training closely
 
-As we saw when comparing the predictions for the training and the test set, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training. 
+As we saw when comparing the predictions for the training and the test set, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training.
 This is the *validation set* which can be regarded as a second test set. As with the test set, the datapoints of the *validation set* are not used for the actual model training itself. Instead, we evaluate the model with the *validation set* after every epoch during training, for instance to stop if we see signs of clear overfitting.
 Since we are adapting our model (tuning our hyperparameters) based on this validation set, it is *very* important that it is kept separate from the test set. If we used the same set, we wouldn't know whether our model truly generalizes or is only overfitting.   
 
@@ -744,7 +744,7 @@ But let's better compare it to the naive baseline we created in the beginning. W
 > multiple cities to predict sunshine hours only in Basel. The weather is
 > a complex phenomenon with correlations over large distances and time scales,
 > but what happens if we limit ourselves to only one city?
-> 
+>
 > 1. Since we will be reducing the number of features quite significantly,
 >    we should afford to include more data. Instead of using only 3 years, use
 >    8 or 9 years!
@@ -779,7 +779,7 @@ But let's better compare it to the naive baseline we created in the beginning. W
 > >    X_data = X_data[cols]
 > >    ~~~
 > >    {: .language-python}
-> > 
+> >
 > > Do the train-test-validation split:
 > >
 > >    ~~~
@@ -816,7 +816,7 @@ But let's better compare it to the naive baseline we created in the beginning. W
 > >    model.summary()
 > >    ~~~
 > >    {: .language-python}
-> > 
+> >
 > > Fit with early stopping and output showing performance on validation set:
 > >    ~~~
 > >    history = model.fit(X_train, y_train,
@@ -842,7 +842,7 @@ But let's better compare it to the naive baseline we created in the beginning. W
 > >    plt.ylabel("true sunshine hours")
 > >    ~~~
 > >    {: .language-python}
-> > 
+> >
 > > Compare the mean squared error with baseline prediction. It should be
 > > similar or even a little better than what we saw with the larger model!
 > >    ~~~
@@ -856,6 +856,37 @@ But let's better compare it to the naive baseline we created in the beginning. W
 > {:.solution}
 {:.challenge}
 
+> ## Tensorboard
+>
+> If we run many different experiments with different architectures,
+> it can be difficult to keep track of these different models or compare the achieved performance.
+> We can use *tensorboard*, a framework that keeps track of our experiments and shows graphs like we plotted above.
+> Tensorboard is included in our tensorflow installation by default.
+> To use it, we first need to add a *callback* to our (compiled) model that saves the progress of training performance in a logs directory:
+> ~~~
+> from tensorflow.keras.callbacks import TensorBoard
+> import datetime
+> log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") # You can adjust this to add a more meaningful model name
+> tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
+> history = model.fit(X_train, y_train,
+>                     batch_size = 32,
+>                     epochs = 200,
+>                     validation_data=(X_val, y_val),
+>                     callbacks=[tensorboard_callback],
+>                     verbose = 2)
+> ~~~
+> {: .language-python}
+> You can launch the tensorboard interface from a Jupyter notebook, showing all trained models:
+> <!--cce:skip-->
+> ~~~
+> %load_ext tensorboard
+> %tensorboard --logdir logs/fit
+> ~~~
+> Which will show an interface that looks something like this:
+> ![Screenshot of tensorboard](../fig/03_tensorboard.png)
+> {: .language-python}
+>
+{: .callout}
 
 # Outlook
 Correctly predicting tomorrow's sunshine hours is apparently not that simple.
