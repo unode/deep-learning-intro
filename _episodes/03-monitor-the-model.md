@@ -466,8 +466,7 @@ Judging from the numbers alone, our neural network preduction would be performin
 > > ## Solution
 > >  
 > > This really depends on your definition of hard! The baseline gives a more accurate prediction than just
-> > randomly predicting a number, so the problem is not impossible. However, if no model is going to
-> > perform better than the baseline, the problem may still be very hard.
+> > randomly predicting a number, so the problem is not impossible to solve with machine learning. However, given the structure of the data and our expectations with respect to quality of prediction, it may remain hard to find a good algorithm which exceeds our baseline by orders of magnitude. 
 > >
 > {:.solution}
 {:.challenge}
@@ -595,7 +594,7 @@ Most similar to classical machine learning might to **reduce the number of param
 > >
 > > ![Output of plotting sample](../fig/03_training_history_3_rmse_smaller_model.png)
 > >
-> > There is obviously no single correct solution here. But you will have noticed that the number of nodes can be reduced quiet a bit!
+> > There is no single correct solution here. But you will have noticed that the number of nodes can be reduced quite a bit!
 > >
 > > In general, it quickly becomes a very complicated search for the right "sweet spot", i.e. the settings for which overfitting will be (nearly) avoided but which still performes equally well.
 > >
