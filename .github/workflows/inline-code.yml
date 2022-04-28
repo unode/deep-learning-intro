@@ -39,6 +39,7 @@ jobs:
       - name: Download prerequisite files
         run: |
           wget -O weather_prediction_dataset.csv https://zenodo.org/record/4980359/files/weather_prediction_dataset.csv?download=1
+          wget -O weather_prediction_dataset_light.csv https://zenodo.org/record/5071376/files/weather_prediction_dataset_light.csv?download=1
 
       - name: Run code checker
         run: |

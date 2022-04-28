@@ -32,7 +32,7 @@ years 2000 to 2010. For all locations the data contains the variables ‘mean te
 ~~~
 import pandas as pd
 
-filename_data = "weather_prediction_dataset.csv"
+filename_data = "weather_prediction_dataset_light.csv"
 data = pd.read_csv(filename_data)
 data.head()
 ~~~
@@ -80,7 +80,7 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 >
 > * How many data points do we have?
 > * How many features does the data have (don't count month and date as a feature)?
-> * What are the different measured variabel types in the data and how many are there (humidity etc.) ?
+> * What are the different measured variable types in the data and how many are there (humidity etc.) ?
 >
 > > ## Solution
 > > ~~~
@@ -117,7 +117,7 @@ Index(['DATE', 'MONTH', 'BASEL_cloud_cover', 'BASEL_humidity',
 
 ### Select a subset and split into data (X) and labels (y)
 The full dataset comprises 10 years (3654 days) from which we here will only select the first 3 years.
-We will then define what exactly we want to predict from this data. A very common task with weather data is to make a prediction about the weather somewhere in the future, say the next day. The present dataset is sorted by "DATE", so for each row `i` in the table we can pick a corresponding feature and location from row `i+1` that we later want to predict with our model.
+We will then define what exactly we want to predict from this data. A very common task with weather data is to make a prediction about the weather sometime in the future, say the next day. The present dataset is sorted by "DATE", so for each row `i` in the table we can pick a corresponding feature and location from row `i+1` that we later want to predict with our model.
 Here we will pick a rather difficult-to-predict feature, sunshine hours, which we want to predict for the location: BASEL.
 
 ~~~
@@ -132,7 +132,7 @@ y_data = data.loc[1:(nr_rows + 1)]["BASEL_sunshine"]
 
 
 # Prepare the data for machine learning
-In general, it is important to check if the data contains any unexpected values such as `9999` or `NaN` or `NoneType`. You can use the using pandas `data.describe()` function for this. If so, such values must be removed or replaced.
+In general, it is important to check if the data contains any unexpected values such as `9999` or `NaN` or `NoneType`. You can use the pandas `data.describe()` function for this. If so, such values must be removed or replaced.
 In the present case the data is luckily well prepared and shouldn't contain such values, so that this step can be omitted.
 
 ### Split data and labels into training, validation, and test set
@@ -163,9 +163,6 @@ Setting the `random_state` to `0` is a short-hand at this point. Note however, t
 ## Build a dense neural network
 
 ### Regression and classification - how to set a training goal
-
-- Explain how to define the output part of a neural network
-- What is the loss function (and which one to chose for a regression or classification task)?
 
 In episode 2 we trained a dense neural network on a *classification task*. For this one hot encoding was used together with a `Categorical Crossentropy` loss function.
 This measured how close the distribution of the neural network outputs corresponds to the distribution of the three values in the one hot encoding.
@@ -252,9 +249,7 @@ In Keras this is implemented in the `keras.losses.MeanSquaredError` class (see K
 
 <!--cce:skip-->
 ~~~
-model.compile(#...
-              loss='mse',
-              #...)
+model.compile(loss='mse')
 ~~~
 {: .language-python}
 
@@ -266,8 +261,7 @@ The *optimizer* here refers to the algorithm with which the model learns to opti
 <!--cce:skip-->
 ~~~
 model.compile(optimizer='adam',
-              loss='mse',
-              #...)
+              loss='mse')
 ~~~
 {: .language-python}
 
@@ -317,14 +311,14 @@ plt.xlabel("epochs")
 plt.ylabel("RMSE")
 ~~~
 {: .language-python}
-![Output of plotting sample](../fig/03_training_history_1_rmse.png)
+![Output of plotting sample](../fig/03_training_history_1_rmse.png){: width="500px"}
 
 This looks very promising! Our metric ("RMSE") is dropping nicely and while it maybe keeps fluctuating a bit it does end up at fairly low *RMSE* values.
 But the *RMSE* is just the root *mean* squared error, so we might want to look a bit more in detail how well our just trained model does in predicting the sunshine hours.
 
 ## Evaluate our model
 
-There is not a single way to evaluate how a model performs. But there is at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly.
+There is not a single way to evaluate how a model performs. But there are at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly. 
 
 For the present *regression task*, it makes more sense to compare true and predicted values in a scatter plot.
 
@@ -385,12 +379,12 @@ Train RMSE: 0.84, Test RMSE: 4.05
 {:.output}
 
 For those experienced with (classical) machine learning this might look familiar.
-The plots above expose the signs of **overfitting** which means that the model has to some extend memorized aspects of the training data.
+The plots above expose the signs of **overfitting** which means that the model has to some extent memorized aspects of the training data.
 As a result, it makes much more accurate predictions on the training data than on unseen test data.
 
 
 Overfitting also happens in classical machine learning, but there it is usually interpreted as the model having more parameters than the training data would justify (say, a decision tree with too many branches for the number of training instances). As a consequence one would reduce the number of parameters to avoid overfitting.
-In deep learning the situation is slightly different. It can -same as for classical machine learning- also be a sign of having a *too big* model, meaning a model with too many parameters (layers and/or nodes). However, in deep learning higher number of model parameters are often still considered acceptable and models often perform best (in terms of prediction accuracy) when they are at the verge of overfitting. So, in a way, training deep learning models is always a bit like playing with fire...
+In deep learning the situation is slightly different. It can - as for classical machine learning - also be a sign of having a *too big* model, meaning a model with too many parameters (layers and/or nodes). However, in deep learning higher number of model parameters are often still considered acceptable and models often perform best (in terms of prediction accuracy) when they are at the verge of overfitting. So, in a way, training deep learning models is always a bit like playing with fire...
 
 ## Set expectations: How difficult is the defined problem?
 
@@ -413,7 +407,7 @@ plt.ylabel("true sunshine hours")
 ~~~
 {: .language-python}
 
-![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png)
+![Output of plotting sample](../fig/03_regression_test_5_naive_baseline.png){: width="500px"}
 
 It is difficult to interpret from this plot whether our model is doing better than the baseline.
 We can also have a look at the RMSE:
@@ -444,7 +438,9 @@ Judging from the numbers alone, our neural network preduction would be performin
 
 ## Watch your model training closely
 
-As we saw when comparing the predictions for the training and the test set, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training. This is the *validation set* which can be regarded as a second test set. As with the test set the datapoints of the *validation set* are not used for the actual model training itself. Instead we evaluate the model with the *validation set* after every epoch during training, for instance to splot if we see signs of clear overfitting.
+As we saw when comparing the predictions for the training and the test set, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training.
+This is the *validation set* which can be regarded as a second test set. As with the test set, the datapoints of the *validation set* are not used for the actual model training itself. Instead, we evaluate the model with the *validation set* after every epoch during training, for instance to stop if we see signs of clear overfitting.
+Since we are adapting our model (tuning our hyperparameters) based on this validation set, it is *very* important that it is kept separate from the test set. If we used the same set, we wouldn't know whether our model truly generalizes or is only overfitting.   
 
 Let's give this a try!
 
@@ -476,20 +472,17 @@ plt.xlabel("epochs")
 plt.ylabel("RMSE")
 ~~~
 {: .language-python}
-![Output of plotting sample](../fig/03_training_history_2_rmse.png)
+![Output of plotting sample](../fig/03_training_history_2_rmse.png){: width="500px"}
 > ## Exercise: plot the training progress.
 >
 > Is there a difference between the training and validation data? And if so, what would this imply?
 >
 > > ## Solution
-> > This shows that something is not completely right here.
+> > The difference between training and validation data shows that something is not completely right here.
 > > The model predictions on the validation set quickly seem to reach a plateau while the performance on the training set keeps improving.
 > > That is a common signature of *overfitting*.
 > {:.solution}
 {:.challenge}
-This clearly shows that something is not completely right here.
-The model predictions on the validation set quickly seem to reach a plateau while the performance on the training set keeps improving.
-That is a clear signature of overfitting.
 
 
 ## Counteract model overfitting
@@ -577,7 +570,7 @@ In practice, however, this is usually not the (main) way to go when it comes to 
 One reason is, that finding the sweet spot can be really hard and time consuming. And it has to be repeated every time the model is adapted, e.g. when more training data becomes available.
 
 > ## Sweet Spots
-> Note: There is no single correct solution here. But you will have noticed that the number of nodes can be reduced quiet a bit!
+> Note: There is no single correct solution here. But you will have noticed that the number of nodes can be reduced quite a bit!
 > In general, it quickly becomes a very complicated search for the right "sweet spot", i.e. the settings for which overfitting will be (nearly) avoided but which still performes equally well.
 {: .callout }
 
@@ -599,7 +592,7 @@ model.compile(optimizer='adam',
 
 To apply early stopping during training it is easiest to use Keras `EarlyStopping` class.
 This allows to define the condition of when to stop training. In our case we will say when the validation loss is lowest.
-However, since we have seen quiet some fluctuation of the losses during training above we will also set `patience=10` which means that the model will stop training of the validation loss has not gone down for 10 epochs.
+However, since we have seen quiet some fluctuation of the losses during training above we will also set `patience=10` which means that the model will stop training if the validation loss has not gone down for 10 epochs.
 ~~~
 from tensorflow.keras.callbacks import EarlyStopping
 
@@ -627,15 +620,15 @@ plt.ylabel("RMSE")
 ~~~
 {: .language-python}
 
-![Output of plotting sample](../fig/03_training_history_3_rmse_early_stopping.png)
+![Output of plotting sample](../fig/03_training_history_3_rmse_early_stopping.png){: width="500px"}
 
 This still seems to reveal the onset of overfitting, but the training stops before the discrepancy between training and validation loss can grow further.
 Despite avoiding severe cases of overfitting, early stopping has the additional advantage that the number of training epochs will be regulated automatically.
 Instead of comparing training runs for different number of epochs, early stopping allows to simply set the number of epochs to a desired maximum value.
 
-What might be a bit unintuitive is that the training runs might now end very rapidly
+What might be a bit unintuitive is that the training runs might now end very rapidly.
 This might spark the question: have we really reached an optimum yet?
-And often the answer to this is "no", which is why early stopping frequently is combined with other approaches to hinder overfitting from happening.
+And often the answer to this is "no", which is why early stopping frequently is combined with other approaches to avoid overfitting.
 Overfitting means that a model (seemingly) performs better on seen data compared to unseen data. One then often also says that it does not "generalize" well.
 Techniques to avoid overfitting, or to improve model generalization, are termed **regularization techniques** and we will come back to this in **episode 4**.
 
@@ -716,7 +709,7 @@ plt.ylabel("RMSE")
 ~~~
 {: .language-python}      
 
-![Output of plotting sample](../fig/03_training_history_5_rmse_batchnorm.png)
+![Output of plotting sample](../fig/03_training_history_5_rmse_batchnorm.png){: width="500px"}
 
 > ## Batchnorm parameters
 >
@@ -744,15 +737,133 @@ plt.ylabel("true sunshine hours")
 ~~~
 {: .language-python}
 
-![Output of plotting sample](../fig/03_regression_test_5_dropout_batchnorm.png)
+![Output of plotting sample](../fig/03_regression_test_5_dropout_batchnorm.png){: width="500px"}
 
 Well, the above is certainly not perfect. But how good or bad is this? Maybe not good enough to plan your picnic for tomorrow.
 But let's better compare it to the naive baseline we created in the beginning. What would you say, did we improve on that?
 
+> ## Exercise: Simplify the model and add data
+>
+> You may have been wondering why we are including weather observations from
+> multiple cities to predict sunshine hours only in Basel. The weather is
+> a complex phenomenon with correlations over large distances and time scales,
+> but what happens if we limit ourselves to only one city?
+>
+> 1. Since we will be reducing the number of features quite significantly,
+>    we should afford to include more data. Instead of using only 3 years, use
+>    8 or 9 years!
+> 2. Remove all cities from the training data that are not for Basel.
+>    You can use something like:
+>    ~~~
+>    cols = [c for c in X_data.columns if c[:5] == 'BASEL']
+>    X_data = X_data[cols]
+>    ~~~
+>    {: .language-python}
+> 3. Now rerun the last model we defined which included the BatchNorm layer.
+>    Recreate the scatter plot comparing your prediction with the baseline
+>    prediction based on yesterday's sunshine hours, and compute also the RMSE.
+>    Note that even though we will use many more observations than previously,
+>    the network should still train quickly because we reduce the number of
+>    features (columns).
+>    Is the prediction better compared to what we had before?
+>
+> > ## Solution
+> >    
+> > Use 9 years out of the total dataset. This means 3 times as many
+> > rows as we used previously, but by removing columns not containing
+> > "BASEL" we reduce the number of columns from 89 to 11.
+> >    ~~~
+> >    nr_rows = 365*9
+> >    # data
+> >    X_data = data.loc[:nr_rows].drop(columns=['DATE', 'MONTH'])
+> >    # labels (sunshine hours the next day)
+> >    y_data = data.loc[1:(nr_rows + 1)]["BASEL_sunshine"]
+> >    # only use columns with 'BASEL'
+> >    cols = [c for c in X_data.columns if c[:5] == 'BASEL']
+> >    X_data = X_data[cols]
+> >    ~~~
+> >    {: .language-python}
+> >
+> > Do the train-test-validation split:
+> >
+> >    ~~~
+> >    X_train, X_holdout, y_train, y_holdout = train_test_split(X_data, y_data, test_size=0.3, random_state=0)
+> >    X_val, X_test, y_val, y_test = train_test_split(X_holdout, y_holdout, test_size=0.5, random_state=0)
+> >    ~~~
+> >    {: .language-python}
+> >
+> > Function to create a network including the BatchNorm layer:   
+> >    ~~~
+> >    def create_nn():
+> >        # Input layer
+> >        inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
+> >    
+> >        # Dense layers
+> >        layers_dense = keras.layers.BatchNormalization()(inputs)
+> >        layers_dense = keras.layers.Dense(100, 'relu')(layers_dense)
+> >        layers_dense = keras.layers.Dense(50, 'relu')(layers_dense)
+> >    
+> >        # Output layer
+> >        outputs = keras.layers.Dense(1)(layers_dense)
+> >    
+> >        # Defining the model and compiling it
+> >        return keras.Model(inputs=inputs, outputs=outputs, name="model_batchnorm")
+> >    ~~~
+> >    {: .language-python}
+> >
+> > Create the network. Because we have reduced the number of input features
+> > the number of parameters in the network goes down from 14457 to 6137.
+> >    ~~~
+> >    # create the network and view its summary
+> >    model = create_nn()
+> >    model.compile(loss='mse', optimizer='adam', metrics=[keras.metrics.RootMeanSquaredError()])
+> >    model.summary()
+> >    ~~~
+> >    {: .language-python}
+> >
+> > Fit with early stopping and output showing performance on validation set:
+> >    ~~~
+> >    history = model.fit(X_train, y_train,
+> >                        batch_size = 32,
+> >                        epochs = 1000,
+> >                        validation_data=(X_val, y_val),
+> >                        callbacks=[earlystopper],
+> >                        verbose = 2)
+> >
+> >    # plot RMSE
+> >    history_df = pd.DataFrame.from_dict(history.history)
+> >    sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+> >    plt.xlabel("epochs")
+> >    ~~~
+> >    {: .language-python}
+> >
+> > Create a scatter plot to compare with true observations:
+> >    ~~~
+> >    y_test_predicted = model.predict(X_test)
+> >    plt.figure(figsize=(5, 5), dpi=100)
+> >    plt.scatter(y_test_predicted, y_test, s=10, alpha=0.5)
+> >    plt.xlabel("predicted sunshine hours")
+> >    plt.ylabel("true sunshine hours")
+> >    ~~~
+> >    {: .language-python}
+> >
+> > Compare the mean squared error with baseline prediction. It should be
+> > similar or even a little better than what we saw with the larger model!
+> >    ~~~
+> >    from sklearn.metrics import mean_squared_error
+> >    y_baseline_prediction = X_test['BASEL_sunshine']
+> >    rmse_nn = mean_squared_error(y_test, y_test_predicted, squared=False)
+> >    rmse_baseline = mean_squared_error(y_test, y_baseline_prediction, squared=False)
+> >    print('NN RMSE: {:.2f}, baseline RMSE: {:.2f}'.format(rmse_nn, rmse_baseline))
+> >    ~~~
+> >    {: .language-python}
+> {:.solution}
+{:.challenge}
+
 
 # Outlook
 Correctly predicting tomorrow's sunshine hours is apparently not that simple.
-Our models get the general trends right, but still predictions vary quiet a bit and can even be far off.
+Our models get the general trends right, but still predictions vary quite a bit and can even be far off.
 
 > ## Open question: What could be next steps to further improve the model?
 >

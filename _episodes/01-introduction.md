@@ -34,7 +34,7 @@ keypoints:
 Deep Learning (DL) is just one of many techniques collectively known as machine learning. Machine learning (ML) refers to techniques where a computer can "learn" patterns in data, usually by being shown numerous examples to train it. People often talk about machine learning being a form of artificial intelligence (AI). Definitions of artificial intelligence vary, but usually involve having computers mimic the behaviour of intelligent biological systems. Since the 1950s many works of science fiction have dealt with the idea of an artificial intelligence which matches (or exceeds) human intelligence in all areas. Although there have been great advances in AI and ML research recently we can only come close to human like intelligence in a few specialist areas and are still a long way from a general purpose AI.
 The image below shows some differences between artificial intelligence, Machine Learning and Deep Learning. 
 
-![An infographics showing the relation of AI, ML, NN and DL](../fig/01_AI_ML_DL_differences.svg){: width="500px" }
+![An infographics showing the relation of AI, ML, NN and DL](../fig/01_AI_ML_DL_differences.png){: width="750px" }
 The image above is by Tukijaaliwa, CC BY-SA 4.0, via Wikimedia Commons, [original source]( https://en.wikipedia.org/wiki/File:AI-ML-DL.svg)
 
 
@@ -97,9 +97,9 @@ Here are just a few examples of how Deep Learning has been applied to some resea
 
 ### What sort of problems can Deep Learning solve, but shouldn't be used for?
 
-Deep Learning needs a lot of computational power, for this reason it often relies on specialist hardware like graphical processing units (GPUs). Many computational problems can be solved using less intensive techniques, but could still technically be solved with Deep Learning.
+Deep Learning needs a lot of computational power, for this reason it often relies on specialised hardware like graphical processing units (GPUs). Many computational problems can be solved using less intensive techniques, but could still technically be solved with Deep Learning.
 
-The following could technically be achieved using Deep Learning, but it would probably be very wasteful way to do it:
+The following could technically be achieved using Deep Learning, but it would probably be a very wasteful way to do it:
 
 * Logic operations, such as computing totals, averages, ranges etc. (see [this example](https://joelgrus.com/2016/05/23/fizz-buzz-in-tensorflow) applying Deep Learning to solve the "FizzBuzz" problem often used for programming interviews)
 * Modelling well defined systems, where the equations governing them are known and understood.
@@ -216,7 +216,7 @@ There are many software libraries available for Deep Learning including:
 
 ### PyTorch
 
-[PyTorch](https://pytorch.org/) was developed by Facebook in 2016 and is a popular choice for Deep Learning applications. It was developed for Python from the start and feels a lot more "pythonic" than TensorFlow. Like TensorFlow it was designed to do more than just Deep Learning and offers some very low level interfaces. Like TensorFlow it's also very easy to integrate PyTorch with a GPU. In many benchmarks it out performs the other libraries.
+[PyTorch](https://pytorch.org/) was developed by Facebook in 2016 and is a popular choice for Deep Learning applications. It was developed for Python from the start and feels a lot more "pythonic" than TensorFlow. Like TensorFlow it was designed to do more than just Deep Learning and offers some very low level interfaces. [PyTorch Lightning](https://www.pytorchlightning.ai/) offers a higher level interface to PyTorch to set up experiments. Like TensorFlow it's also very easy to integrate PyTorch with a GPU. In many benchmarks it outperforms the other libraries.
 
 ### Keras
 

@@ -1,5 +1,5 @@
 ---
-title: "Networks are like onions"
+title: "Advanced layer types"
 teaching: 30
 exercises: 45
 questions:
@@ -22,7 +22,7 @@ keypoints:
 ---
 
 ## Different types of layers
-'Networks are like onions': a typical neural network consists of many layers. In fact, the word *deep* in *Deep Learning*
+Networks are like onions: a typical neural network consists of many layers. In fact, the word *deep* in *Deep Learning*
 refers to the many layers that make the network deep.
 
 So far, we have seen one type of layer, namely the **fully connected**, or **dense** layer. This layer is called fully connected, because all input neurons are taken into account by each output neuron. The number of parameters that need to be learned by the network, is thus in the order of magnitude of the number of input neurons times the number of hidden neurons.
@@ -167,12 +167,12 @@ print(dim)
 >
 > > ## Solution
 > >
-> > Each entry of the input dimensions, i.e. the `shape` of one signal data point, is connected with 100 neurons of our hidden layer, and each of these neurons has a bias term associated to it. So we have `307300` parameters to learn.
+> > Each entry of the input dimensions, i.e. the `shape` of one single data point, is connected with 100 neurons of our hidden layer, and each of these neurons has a bias term associated to it. So we have `307300` parameters to learn.
 > > ~~~
 > > width, height = (32, 32)
 > > n_hidden_neurons = 100
 > > n_bias = 100
-> > n_input_items = width * height
+> > n_input_items = width * height * 3
 > > n_parameters = (n_input_items * n_hidden_neurons) + n_bias
 > > n_parameters
 > > ~~~
@@ -370,8 +370,8 @@ It seems that the model is overfitting somewhat, because the validation accuracy
 > The model definition that we used previously needs to be adjusted as follows:
 > ~~~
 > inputs = keras.Input(shape=train_images.shape[1:])
-> x = keras.layers.MaxPooling2D((2, 2))(x)
 > x = keras.layers.Conv2D(32, (3, 3), activation='relu')(inputs)
+> x = keras.layers.MaxPooling2D((2, 2))(x)
 > x = keras.layers.Conv2D(32, (3, 3), activation='relu')(x)
 > x = keras.layers.MaxPooling2D((2, 2))(x)
 > # Add your extra layer here
@@ -382,7 +382,7 @@ It seems that the model is overfitting somewhat, because the validation accuracy
 > {: language-python}
 > >
 > > ## Solution
-> > We add a an extra Conv2D layer after the second pooling layer:
+> > We add an extra Conv2D layer after the second pooling layer:
 > > ~~~
 > > inputs = keras.Input(shape=train_images.shape[1:])
 > > x = keras.layers.Conv2D(32, (3, 3), activation='relu')(inputs)

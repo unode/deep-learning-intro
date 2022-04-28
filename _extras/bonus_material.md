@@ -1,3 +1,11 @@
+## ML Pipeline Visualisation
+
+To apply Deep Learning to a problem there are several steps we need to go through:
+
+![A visualisation of the Machine Learning Pipeline](../fig/graphviz/pipeline.png){: width="800px" }
+
+Feel free to use this figure as [png](../fig/graphviz/pipeline.png). The figure is contained in `fig/graphviz/` of this repository. Use the `Makefile` there in order to reproduce it in different output formats.
+
 ## Optional part - prediction uncertainty using Monte-Carlo Dropout
 Depending on the data and the question asked, model predictions can be highly accuracte. Or, as in the present case, show a high degree of error.
 In both cases, however, it often is highly relevant to not get model predictions but also an estimate of how reliable those predictions are.
