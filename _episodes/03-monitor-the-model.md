@@ -159,35 +159,6 @@ X_val, X_test, y_val, y_test = train_test_split(X_holdout, y_holdout, test_size=
 
 Setting the `random_state` to `0` is a short-hand at this point. Note however, that changing this seed of the pseudo-random number generator will also change the composition of your data sets. For the sake of reproducibility, this is one example of a parameters that should not change at all.
 
-> ## Exercise: Split data into training, validation, and test set
->
-> We have been rather generous at selecting rows from the dataset. Our holdout set above amounts to almost an entire year of data. How would the code need to be rewritten in order to obtain two months of data for the validation and test set each?
->
-> 1. `X_train, X_holdout ... = train_test_split( ..., test_size = .12, ...)`  
-> ``X_val, X_test ... = train_test_split( ..., test_size = 2, ...)`
->
-> 2. `X_train, X_holdout ... = train_test_split( ..., test_size = .33, ...)`  
-> `X_val, X_test ... = train_test_split( ..., test_size = .33, ...)`
->
-> 3. `X_train, X_holdout ... = train_test_split( ..., test_size = (4./36.), ...)`  
-> `X_val, X_test ... = train_test_split( ..., test_size = .5, ...)`
->
-> 4. `X_train, X_holdout ... = train_test_split( ..., test_size = 365, ...)`  
-> `X_val, X_test ... = train_test_split( ..., test_size = .5, ...)`
->
-> > ## Solution
-> >  
-> > In the code above, we selected the first `365*3 = 1095` days from the original dataset as the number of rows to use. This is the total number of days we have in our dataset here.
-> >
-> > 1. The first `test_size = .12` would leave `.12*3*365` for the holdout set. This would amount to 131 days or 4.32 months. This is more than we need. Take caution as well with the second `test_size = 2`. According to the [API reference of `train_test_split`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split), this would select only 2 days into `X_test`.
-> >
-> > 2. The first `test_size = .33` would leave `.33*3*365` for the holdout set. This would amount to 361 days or almost 12 months. This is more than we need.
-> >
-> > 3. The first `test_size = (4./36.)` would leave `.11*3*365` for the holdout set. This would amount to 4 out of 36 months. This is exactly than we need. With the subsequent `test_size = .5` we obtain 2 months of data into the validation and into the test set each.
-> >
-> > 4. The first `test_size = 365` selects 365 rows or days into the holdout. This would be too many for the task at hand.
-> {:.solution}
-{:.challenge}
 
 ## Build a dense neural network
 
@@ -205,7 +176,7 @@ Now we want to work on a *regression task*, thus not predicting a class label (o
 > see if you can first come up with the answers to the following questions:
 > 1. What must be the dimension of our input layer?
 > 2. We want to to output the prediction of a single number. The output layer of the NN hence cannot be the same as for the classification task earlier. This is because the `softmax` activation being used had a concrete meaning with respect to the class labels which is not needed here. What output layer design would you choose for regression?  
-Hint: A layer with `relu` activation, with `sigmoid` activation or no activation at all? 
+Hint: A layer with `relu` activation, with `sigmoid` activation or no activation at all?
 >
 > > ## Solution
 > >  
@@ -466,7 +437,7 @@ Judging from the numbers alone, our neural network preduction would be performin
 > > ## Solution
 > >  
 > > This really depends on your definition of hard! The baseline gives a more accurate prediction than just
-> > randomly predicting a number, so the problem is not impossible to solve with machine learning. However, given the structure of the data and our expectations with respect to quality of prediction, it may remain hard to find a good algorithm which exceeds our baseline by orders of magnitude. 
+> > randomly predicting a number, so the problem is not impossible to solve with machine learning. However, given the structure of the data and our expectations with respect to quality of prediction, it may remain hard to find a good algorithm which exceeds our baseline by orders of magnitude.
 > >
 > {:.solution}
 {:.challenge}
