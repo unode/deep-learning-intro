@@ -285,6 +285,24 @@ model.compile(optimizer='adam',
 
 With this, we complete the compilation of our network and are ready to start training.
 
+> ## Challenge: Metrics
+>
+> Look into the [Keras documentation on metrics](https://keras.io/api/metrics/).
+> Choose an additional metric that you would like to track, and compile the model again with this metric added.
+>
+> > ## Solution
+> > As we are facing a regression task, we should pick one of the metrics under [Regression metrics](https://keras.io/api/metrics/regression_metrics/).
+> > For example, if we choose Mean Absolute Error, we can compile the model as follows:
+> > ~~~
+> > model.compile(optimizer='adam',
+> >               loss='mse',
+> >               metrics=[keras.metrics.RootMeanSquaredError(), keras.metrics.MeanAbsoluteError()])
+> > ~~~
+> > {: .language-python}
+> >
+> {:.solution}
+{:.challenge}
+
 ## Train a dense neural network
 
 Now that we created and compiled our dense neural network, we can start training it.
@@ -318,7 +336,7 @@ But the *RMSE* is just the root *mean* squared error, so we might want to look a
 
 ## Evaluate our model
 
-There is not a single way to evaluate how a model performs. But there are at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly. 
+There is not a single way to evaluate how a model performs. But there are at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly.
 
 For the present *regression task*, it makes more sense to compare true and predicted values in a scatter plot.
 
