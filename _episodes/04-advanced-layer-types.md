@@ -332,13 +332,19 @@ model.summary()
 ~~~
 {: .output}
 
-We compile the model and train it on our training data for 10 epochs
+We compile the model using the adam optimizer (other optimizers could also be used here!). Similar to the penguin classification task, we will use the crossentropy function to calculate the model's loss. This loss function is appropriate to use when the data has two or more label classes. 
 
+To calculate crossentropy loss for data that has its classes represented by integers (i.e., not one-hot encoded), we use the SparseCategoricalCrossentropy() function:
 ~~~
 model.compile(optimizer='adam',
               loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
+~~~
+{: .language-python}
 
+We then train the model for 10 epochs:
+
+~~~
 history = model.fit(train_images, train_labels, epochs=10,
                     validation_data=(test_images, test_labels))
 ~~~
