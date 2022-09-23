@@ -384,9 +384,9 @@ In fact, considering that the task of predicting the daily sunshine hours is rea
 We also see the noticeable difference between train and test set when calculating the exact value of the RMSE:
 
 ~~~
-loss_train, rmse_train = model.evaluate(X_train, y_train)
-loss_test, rmse_test = model.evaluate(X_test, y_test)
-print('Train RMSE: {:.2f}, Test RMSE: {:.2f}'.format(rmse_train, rmse_test))
+train_metrics = model.evaluate(X_train, y_train, return_dict=True)
+test_metrics = model.evaluate(X_test, y_test, return_dict=True)
+print('Train RMSE: {:.2f}, Test RMSE: {:.2f}'.format(train_metrics['root_mean_squared_error'], test_metrics['root_mean_squared_error']))
 ~~~
 {: .language-python}
 ~~~
