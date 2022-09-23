@@ -1,4 +1,6 @@
-# Survey templates
+---
+title: Workshop survey templates
+---
 
 This page lists possible questions for both pre-workshop and post-workshop surveys, that instructors are free to use. Note, the nature of questions might change throughout the course of development of this lesson module.
 

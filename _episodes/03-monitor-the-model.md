@@ -159,7 +159,6 @@ X_val, X_test, y_val, y_test = train_test_split(X_holdout, y_holdout, test_size=
 
 Setting the `random_state` to `0` is a short-hand at this point. Note however, that changing this seed of the pseudo-random number generator will also change the composition of your data sets. For the sake of reproducibility, this is one example of a parameters that should not change at all.
 
-
 ## Build a dense neural network
 
 ### Regression and classification - how to set a training goal
@@ -182,6 +181,7 @@ Hint: A layer with `relu` activation, with `sigmoid` activation or no activation
 > >
 > {:.solution}
 {:.challenge}
+
 
 In our example we want to predict the sunshine hours in Basel (or any other place in the dataset) for tomorrow based on the weather data of all 18 locations today. `BASEL_sunshine` is a floating point value (i.e. `float64`). The network should hence output a single float value which is why the last layer of our network will only consist of a single node.
 
@@ -459,6 +459,14 @@ Judging from the numbers alone, our neural network preduction would be performin
 As we saw when comparing the predictions for the training and the test set, deep learning models are prone to overfitting. Instead of iterating through countless cycles of model trainings and subsequent evaluations with a reserved test set, it is common practice to work with a second split off dataset to monitor the model during training.
 This is the *validation set* which can be regarded as a second test set. As with the test set, the datapoints of the *validation set* are not used for the actual model training itself. Instead, we evaluate the model with the *validation set* after every epoch during training, for instance to stop if we see signs of clear overfitting.
 Since we are adapting our model (tuning our hyperparameters) based on this validation set, it is *very* important that it is kept separate from the test set. If we used the same set, we wouldn't know whether our model truly generalizes or is only overfitting.   
+
+> ## Training vs. validation set
+> Not everybody agrees on the terminology of training set versus validation set. You might find 
+> examples in literature where these terms are used the other way around.
+> 
+> We are sticking to the definition that is consistent with the Keras API. In there, the validation 
+> set can be used during training, and the test set is reserved for afterwards.
+{: .callout }
 
 Let's give this a try!
 
@@ -878,6 +886,37 @@ But let's better compare it to the naive baseline we created in the beginning. W
 > {:.solution}
 {:.challenge}
 
+> ## Tensorboard
+>
+> If we run many different experiments with different architectures,
+> it can be difficult to keep track of these different models or compare the achieved performance.
+> We can use *tensorboard*, a framework that keeps track of our experiments and shows graphs like we plotted above.
+> Tensorboard is included in our tensorflow installation by default.
+> To use it, we first need to add a *callback* to our (compiled) model that saves the progress of training performance in a logs directory:
+> ~~~
+> from tensorflow.keras.callbacks import TensorBoard
+> import datetime
+> log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") # You can adjust this to add a more meaningful model name
+> tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
+> history = model.fit(X_train, y_train,
+>                     batch_size = 32,
+>                     epochs = 200,
+>                     validation_data=(X_val, y_val),
+>                     callbacks=[tensorboard_callback],
+>                     verbose = 2)
+> ~~~
+> {: .language-python}
+> You can launch the tensorboard interface from a Jupyter notebook, showing all trained models:
+> <!--cce:skip-->
+> ~~~
+> %load_ext tensorboard
+> %tensorboard --logdir logs/fit
+> ~~~
+> Which will show an interface that looks something like this:
+> ![Screenshot of tensorboard](../fig/03_tensorboard.png)
+> {: .language-python}
+>
+{: .callout}
 
 # Outlook
 Correctly predicting tomorrow's sunshine hours is apparently not that simple.

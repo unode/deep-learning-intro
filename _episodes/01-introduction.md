@@ -153,7 +153,7 @@ For the outputs we'll need to look at what we want to identify from the data. If
 
 Many datasets aren't ready for immediate use in a neural network and will require some preparation. Neural networks can only really deal with numerical data, so any non-numerical data (for example words) will have to be somehow converted to numerical data.
 
-Next we'll need to divide the data into multiple sets. One of these will be used by the training process and we'll call it the training set. Another will be used to evaluate the accuracy of the training and we'll call that one the test set. Sometimes we'll also use a 3rd set known as a validation set to check our results after training is complete.
+Next we'll need to divide the data into multiple sets. One of these will be used by the training process and we'll call it the training set. Another will be used to evaluate the accuracy of the training and we'll call that one the test set. Sometimes we'll also use a 3rd set known as a validation set to tune hyperparameters.
 
 ### 4. Choose a pre-trained model or build a new architecture from scratch
 
@@ -184,11 +184,11 @@ of the network.
 
 ### 8. Measure Performance
 
-Once we think the network is performing well we want to measure its performance. To do this we can use some additional data that wasn't part of the training, this is known as a validation set. There are many different methods available for doing this and which one is best depends on the type of task we are attempting. These metrics are often published as an indication of how well our network performs.
+Once we trained the network we want to measure its performance. To do this we use some additional data that wasn't part of the training, this is known as a test set. There are many different methods available for measuring performance and which one is best depends on the type of task we are attempting. These metrics are often published as an indication of how well our network performs.
 
 ### 9. Tune Hyperparameters
 
-Hyperparameters are all the parameters set by the person configuring the machine learning instead of those learned by the algorithm itself. The Hyperparameters include the number of epochs or the parameters for the optimizer. It might be necessary to adjust these and re-run the training many times before we are happy with the result.
+Hyperparameters are all the parameters set by the person configuring the machine learning instead of those learned by the algorithm itself. The hyperparameters include the number of epochs or the parameters for the optimizer. It might be necessary to adjust these and re-run the training many times before we are happy with the result.
 
 ### 10. Share Model
 

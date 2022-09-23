@@ -29,16 +29,29 @@ in Pro Git by Scott Chacon.
 Look for the tag ![good_first_issue](https://img.shields.io/badge/-good%20first%20issue-gold.svg).
 This indicates that the maintainers will welcome a pull request fixing this issue.
 
+### Teaching this lesson?
+We would be very grateful if you can provide us with feedback on this lesson. You can read more about hosting a lesson pilot for an incubator lesson [here](https://docs.carpentries.org/topic_folders/lesson_development/lesson_pilots.html).
+
+You can notify us that you plan to teach this lesson by creating an issue in this repository (and labeling it with beta) or posting a message in the carpentries Slack Machine Learning channel. Please note the questions below to get an indication of the sort of feedback we expect.
+
+After the workshop, lease create an issue (or comment on the issue you created before teaching) with general feedback on teaching the lesson, and label it with beta. As a template, you can use the following questions:
+* How much time did you need for the material? (preferably per episode)
+* How much time did you need for the exercises?
+* Where there any technical issues that arose during setup?
+* Where there any bugs or parts of the lesson code that did not work as expected?
+* Where there any incorrect or missing exercise solutions?
+* Which parts of the lesson were confusing for learners?
+* Which questions did learners ask?
+
+In addition, you are very welcome to add issues or pull requests that address more specific feedback.
 
 ## Maintainer(s)
 
 Current maintainers of this lesson are
-* Anne Fouilloux
-* Florian Huber
 * Dafne van Kuppevelt
 * Peter Steinbach
-* Berend Weel
 * Colin Sauze
+* Djura Smits
 
 
 ## Authors
