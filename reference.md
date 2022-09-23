@@ -23,9 +23,7 @@ layout: reference
 * ...
 
 ## Troubleshooting
-
-* Ways to deal with overfitting
-* [Installation issues with Apple M1](https://medium.com/codex/installing-tensorflow-on-m1-macs-958767a7a4b3)
+* For installation issues with Apple M1, have a look at [these instructions](https://developer.apple.com/metal/tensorflow-plugin/) or [these](https://betterdatascience.com/install-tensorflow-2-7-on-macbook-pro-m1-pro/).
 
 
 ## External references
