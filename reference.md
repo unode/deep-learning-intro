@@ -36,7 +36,6 @@ Here is a (non exhaustive) list of external resources for further study after th
 - [underfitting and overfitting](https://machinelearningmastery.com/learning-curves-for-diagnosing-machine-learning-model-performance/)
 - [Unbalanced data](https://towardsdatascience.com/handling-imbalanced-datasets-in-deep-learning-f48407a0e758)
 - [Unbalanced data in Keras](https://www.tensorflow.org/tutorials/structured_data/imbalanced_data)
-- [visualization of convolutional neural networks](https://www.cs.ryerson.ca/~aharley/vis/conv/)
 - [Tensorflow Playground, for visualizing neural networks](http://playground.tensorflow.org/)
 
 ### Some ML challenges or benchmarks
