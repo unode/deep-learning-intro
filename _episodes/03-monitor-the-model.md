@@ -159,36 +159,6 @@ X_val, X_test, y_val, y_test = train_test_split(X_holdout, y_holdout, test_size=
 
 Setting the `random_state` to `0` is a short-hand at this point. Note however, that changing this seed of the pseudo-random number generator will also change the composition of your data sets. For the sake of reproducibility, this is one example of a parameters that should not change at all.
 
-> ## Exercise: Split data into training, validation, and test set
->
-> We have been rather generous at selecting rows from the dataset. Our holdout set above amounts to almost an entire year of data. How would the code need to be rewritten in order to obtain two months of data for the validation and test set each?
->
-> 1. `X_train, X_holdout ... = train_test_split( ..., test_size = .12, ...)`  
-> `X_val, X_test ... = train_test_split( ..., test_size = 2, ...)`
->
-> 2. `X_train, X_holdout ... = train_test_split( ..., test_size = .33, ...)`  
-> `X_val, X_test ... = train_test_split( ..., test_size = .33, ...)`
->
-> 3. `X_train, X_holdout ... = train_test_split( ..., test_size = (4./36.), ...)`  
-> `X_val, X_test ... = train_test_split( ..., test_size = .5, ...)`
->
-> 4. `X_train, X_holdout ... = train_test_split( ..., test_size = 365, ...)`  
-> `X_val, X_test ... = train_test_split( ..., test_size = .5, ...)`
->
-> > ## Solution
-> >  
-> > In the code above, we selected the first `365*3 = 1095` days from the original dataset as the number of rows to use. This is the total number of days we have in our dataset here.
-> >
-> > 1. The first `test_size = .12` would leave `.12*3*365` for the holdout set. This would amount to 131 days or 4.32 months. This is more than we need. Take caution as well with the second `test_size = 2`. According to the [API reference of `train_test_split`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split), this would select only 2 days into `X_test`.
-> >
-> > 2. The first `test_size = .33` would leave `.33*3*365` for the holdout set. This would amount to 361 days or almost 12 months. This is more than we need.
-> >
-> > 3. The first `test_size = (4./36.)` would leave `.11*3*365` for the holdout set. This would amount to 4 out of 36 months. This is exactly than we need. With the subsequent `test_size = .5` we obtain 2 months of data into the validation and into the test set each.
-> >
-> > 4. The first `test_size = 365` selects 365 rows or days into the holdout. This would be too many for the task at hand.
-> {:.solution}
-{:.challenge}
-
 ## Build a dense neural network
 
 ### Regression and classification - how to set a training goal
@@ -196,6 +166,22 @@ Setting the `random_state` to `0` is a short-hand at this point. Note however, t
 In episode 2 we trained a dense neural network on a *classification task*. For this one hot encoding was used together with a `Categorical Crossentropy` loss function.
 This measured how close the distribution of the neural network outputs corresponds to the distribution of the three values in the one hot encoding.
 Now we want to work on a *regression task*, thus not predicting a class label (or integer number) for a datapoint. In regression, we like to predict one (and sometimes many) values of a feature. This is typically a floating point number.
+
+> ## Exercise: Architecture of the network
+> As we want to design a neural network architecture for a regression task,
+> see if you can first come up with the answers to the following questions:
+> 1. What must be the dimension of our input layer?
+> 2. We want to to output the prediction of a single number. The output layer of the NN hence cannot be the same as for the classification task earlier. This is because the `softmax` activation being used had a concrete meaning with respect to the class labels which is not needed here. What output layer design would you choose for regression?  
+Hint: A layer with `relu` activation, with `sigmoid` activation or no activation at all?
+>
+> > ## Solution
+> >  
+> > 1. The shape of the input layer has to correspond to the number of features in our data: 89
+> > 2. The output is a single value per prediction, so the output layer can consist of a dense layer with only one node. The *softmax* activiation function works well for a classification task, but here we do not want to restrict the possible outcomes to the range of zero and one. In fact, we can omit the activation in the output layer.
+> >
+> {:.solution}
+{:.challenge}
+
 
 In our example we want to predict the sunshine hours in Basel (or any other place in the dataset) for tomorrow based on the weather data of all 18 locations today. `BASEL_sunshine` is a floating point value (i.e. `float64`). The network should hence output a single float value which is why the last layer of our network will only consist of a single node.
 
@@ -261,6 +247,7 @@ The loss is what the neural network will be optimized on during training, so cho
 In the given case we want to stimulate that the predicted values are as close as possible to the true values. This is commonly done by using the *mean squared error* (mse) or the *mean absolute error* (mae), both of which should work OK in this case. Often, mse is preferred over mae because it "punishes" large prediction errors more severely.
 In Keras this is implemented in the `keras.losses.MeanSquaredError` class (see Keras documentation: https://keras.io/api/losses/). This can be provided into the `model.compile` method with the `loss` parameter and setting it to `mse`, e.g.
 
+<!--cce:skip-->
 ~~~
 model.compile(loss='mse')
 ~~~
@@ -271,6 +258,7 @@ model.compile(loss='mse')
 Somewhat coupled to the loss function is the *optimizer* that we want to use.
 The *optimizer* here refers to the algorithm with which the model learns to optimize on the provided loss function. A basic example for such an optimizer would be *stochastic gradient descent*. For now, we can largely skip this step and pick one of the most common optimizers that works well for most tasks: the *Adam optimizer*. Similar to activation functions, the choice of optimizer depends on the problem you are trying to solve, your model architecture and your data. *Adam* is a good starting point though, which is why we chose it.
 
+<!--cce:skip-->
 ~~~
 model.compile(optimizer='adam',
               loss='mse')
@@ -296,6 +284,24 @@ model.compile(optimizer='adam',
 {: .language-python}
 
 With this, we complete the compilation of our network and are ready to start training.
+
+> ## Challenge: Metrics
+>
+> Look into the [Keras documentation on metrics](https://keras.io/api/metrics/).
+> Choose an additional metric that you would like to track, and compile the model again with this metric added.
+>
+> > ## Solution
+> > As we are facing a regression task, we should pick one of the metrics under [Regression metrics](https://keras.io/api/metrics/regression_metrics/).
+> > For example, if we choose Mean Absolute Error, we can compile the model as follows:
+> > ~~~
+> > model.compile(optimizer='adam',
+> >               loss='mse',
+> >               metrics=[keras.metrics.RootMeanSquaredError(), keras.metrics.MeanAbsoluteError()])
+> > ~~~
+> > {: .language-python}
+> >
+> {:.solution}
+{:.challenge}
 
 ## Train a dense neural network
 
@@ -332,7 +338,7 @@ But the *RMSE* is just the root *mean* squared error, so we might want to look a
 
 There is not a single way to evaluate how a model performs. But there are at least two very common approaches. For a *classification task* that is to compute a *confusion matrix* for the test set which shows how often particular classes were predicted correctly or incorrectly.
 
-For the present *regression task*, it makes more sense to compare true and predicted values in a scatter plot. Hint: use `plt.scatter()`.
+For the present *regression task*, it makes more sense to compare true and predicted values in a scatter plot.
 
 First, we will do the actual prediction step.
 
@@ -360,15 +366,27 @@ axes[1].set_ylabel("true sunshine hours")
 {: .language-python}
 ![Scatter plot to evaluate training and test set](../fig/03_regression_training_test_comparison.png)
 
+> ## Exercise: Reflecting on our results
+> 1. Is the performance of the model as you expected (or better/worse)?
+> 2. Is there a noteable difference between training set and test set? And if so, any idea why?
+>
+> > ## Solution
+> >  
+> > While the performance on the train set seems reasonable, the performance on the test set is much worse.
+> > This is a common problem called **overfitting**, which we will discuss in more detail later.
+> >
+> {:.solution}
+{:.challenge}
+
 The accuracy on the training set seems fairly good.
 In fact, considering that the task of predicting the daily sunshine hours is really not easy it might even be surprising how well the model predicts that
 (at least on the training set). Maybe a little too good?
 We also see the noticeable difference between train and test set when calculating the exact value of the RMSE:
 
 ~~~
-loss_train, rmse_train = model.evaluate(X_train, y_train)
-loss_test, rmse_test = model.evaluate(X_test, y_test)
-print('Train RMSE: {:.2f}, Test RMSE: {:.2f}'.format(rmse_train, rmse_test))
+train_metrics = model.evaluate(X_train, y_train, return_dict=True)
+test_metrics = model.evaluate(X_test, y_test, return_dict=True)
+print('Train RMSE: {:.2f}, Test RMSE: {:.2f}'.format(train_metrics['root_mean_squared_error'], test_metrics['root_mean_squared_error']))
 ~~~
 {: .language-python}
 ~~~
@@ -424,6 +442,17 @@ NN RMSE: 4.05, baseline RMSE: 3.88
 {:.output}
 
 Judging from the numbers alone, our neural network preduction would be performing worse than the baseline.
+
+> ## Exercise: Baseline
+> Looking at this baseline: Would you consider this a simple or a hard problem to solve?
+>
+> > ## Solution
+> >  
+> > This really depends on your definition of hard! The baseline gives a more accurate prediction than just
+> > randomly predicting a number, so the problem is not impossible to solve with machine learning. However, given the structure of the data and our expectations with respect to quality of prediction, it may remain hard to find a good algorithm which exceeds our baseline by orders of magnitude.
+> >
+> {:.solution}
+{:.challenge}
 
 ## Watch your model training closely
 
@@ -487,79 +516,80 @@ plt.ylabel("RMSE")
 Overfitting is a very common issue and there are many strategies to handle it.
 Most similar to classical machine learning might to **reduce the number of parameters**.
 
-
-We can keep the network architecture unchanged (2 dense layers + a one-node output layer) and only play with the number of nodes per layer.
-
-~~~
-def create_nn(nodes1, nodes2):
-    # Input layer
-    inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
-
-    # Dense layers
-    layers_dense = keras.layers.Dense(nodes1, 'relu')(inputs)
-    layers_dense = keras.layers.Dense(nodes2, 'relu')(layers_dense)
-
-    # Output layer
-    outputs = keras.layers.Dense(1)(layers_dense)
-
-    return keras.Model(inputs=inputs, outputs=outputs, name="model_small")
-
-model = create_nn(10, 5)
-~~~
-{:.language-python}
-
-Let's check the created model for good measure:
-
-~~~
-model.summary()
-~~~
-{:.language-python}
-
-~~~
-Model: "model_small"
-_________________________________________________________________
-Layer (type)                 Output Shape              Param #   
-=================================================================
-input (InputLayer)           [(None, 89)]              0         
-_________________________________________________________________
-dense_9 (Dense)              (None, 10)                900       
-_________________________________________________________________
-dense_10 (Dense)             (None, 5)                 55        
-_________________________________________________________________
-dense_11 (Dense)             (None, 1)                 6         
-=================================================================
-Total params: 961
-Trainable params: 961
-Non-trainable params: 0
-
-~~~
-{:.output}
-
-With this change, we have reduced the parameters by 92%. Now compile the model and run the training.
-
-~~~
-model.compile(optimizer='adam',
-              loss='mse',
-              metrics=[keras.metrics.RootMeanSquaredError()])
-history = model.fit(X_train, y_train,
-                    batch_size = 32,
-                    epochs = 200,
-                    validation_data=(X_val, y_val), verbose = 2)
-~~~
-{:.language-python}
-
-In order to compare, we use the same code to check the training performance.
-
-~~~
-history_df = pd.DataFrame.from_dict(history.history)
-sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
-plt.xlabel("epochs")
-plt.ylabel("RMSE")
-~~~
-{:.language-python}
-
-![Output of plotting sample](../fig/03_training_history_3_rmse_smaller_model.png){: width="500px"}
-
+> ## Try to reduce the degree of overfitting by lowering the number of parameters
+>
+> We can keep the network architecture unchanged (2 dense layers + a one-node output layer) and only play with the number of nodes per layer.
+> Try to lower the number of nodes in one or both of the two dense layers and observe the changes to the training and validation losses.
+> If time is short: Suggestion is to run one network with only 10 and 5 nodes in the first and second layer.
+>
+> * Is it possible to get rid of overfitting this way?
+> * Does the overall performance suffer or does it mostly stay the same?
+> * How low can you go with the number of parameters without notable effect on the performance on the validation set?
+>
+> > ## Solution
+> > ~~~
+> > def create_nn(nodes1=100, nodes2=50):
+> >     # Input layer
+> >     inputs = keras.layers.Input(shape=(X_data.shape[1],), name='input')
+> >
+> >     # Dense layers
+> >     layers_dense = keras.layers.Dense(nodes1, 'relu')(inputs)
+> >     layers_dense = keras.layers.Dense(nodes2, 'relu')(layers_dense)
+> >
+> >     # Output layer
+> >     outputs = keras.layers.Dense(1)(layers_dense)
+> >
+> >     return keras.Model(inputs=inputs, outputs=outputs, name="model_small")
+> >
+> > model = create_nn(10, 5)
+> > model.summary()
+> > ~~~
+> > {:.language-python}
+> >
+> > ~~~
+> > Model: "model_small"
+> > _________________________________________________________________
+> > Layer (type)                 Output Shape              Param #   
+> > =================================================================
+> > input (InputLayer)           [(None, 89)]              0         
+> > _________________________________________________________________
+> > dense_9 (Dense)              (None, 10)                900       
+> > _________________________________________________________________
+> > dense_10 (Dense)             (None, 5)                 55        
+> > _________________________________________________________________
+> > dense_11 (Dense)             (None, 1)                 6         
+> > =================================================================
+> > Total params: 961
+> > Trainable params: 961
+> > Non-trainable params: 0
+> >
+> > ~~~
+> > {:.output}
+> >
+> > ~~~
+> > model.compile(optimizer='adam',
+> >               loss='mse',
+> >               metrics=[keras.metrics.RootMeanSquaredError()])
+> > history = model.fit(X_train, y_train,
+> >                     batch_size = 32,
+> >                     epochs = 200,
+> >                     validation_data=(X_val, y_val), verbose = 2)
+> >                     
+> > history_df = pd.DataFrame.from_dict(history.history)
+> > sns.lineplot(data=history_df[['root_mean_squared_error', 'val_root_mean_squared_error']])
+> > plt.xlabel("epochs")
+> > plt.ylabel("RMSE")
+> > ~~~
+> > {:.language-python}
+> >
+> > ![Output of plotting sample](../fig/03_training_history_3_rmse_smaller_model.png)
+> >
+> > There is no single correct solution here. But you will have noticed that the number of nodes can be reduced quite a bit!
+> >
+> > In general, it quickly becomes a very complicated search for the right "sweet spot", i.e. the settings for which overfitting will be (nearly) avoided but which still performes equally well.
+> >
+> {:.solution}
+{:.challenge}
 
 We saw that reducing the number of parameters can be a strategy to avoid overfitting.
 In practice, however, this is usually not the (main) way to go when it comes to deep learning.
@@ -579,7 +609,7 @@ Early stopping is both intuitive and effective to use, so it has become a standa
 
 To better study the effect, we can now safely go back to models with many (too many?) parameters:
 ~~~
-model = create_nn(100, 50)
+model = create_nn()
 model.compile(optimizer='adam',
               loss='mse',
               metrics=[keras.metrics.RootMeanSquaredError()])
