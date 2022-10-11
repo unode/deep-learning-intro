@@ -43,7 +43,7 @@ from tensorflow import keras
 > The CIFAR-10 dataset consists of images of 10 different classes: airplanes, cars, birds, cats, deer, dogs, frogs, horses, ships, and trucks.
 > It is widely used as a benchmark dataset for image classification. The low resolution of the images in the dataset allows for quick loading and testing models.
 >
-> For more information about this dataset and how it was collected you can check out 
+> For more information about this dataset and how it was collected you can check out
 > [Learning Multiple Layers of Features from Tiny Images by  Alex Krizhevsky, 2009](https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf).
 >
 {: .callout}
@@ -259,8 +259,8 @@ So let's look at a network with a few convolutional layers. We need to finish wi
 
 ~~~
 inputs = keras.Input(shape=train_images.shape[1:])
-x = keras.layers.Conv2D(32, (3, 3), activation='relu')(inputs)
-x = keras.layers.Conv2D(32, (3, 3), activation='relu')(x)
+x = keras.layers.Conv2D(50, (3, 3), activation='relu')(inputs)
+x = keras.layers.Conv2D(50, (3, 3), activation='relu')(x)
 x = keras.layers.Flatten()(x)
 outputs = keras.layers.Dense(10)(x)
 
@@ -278,7 +278,7 @@ model.summary()
 >
 > > ## Solution
 > >
-> > * The Flatten layer converts the 28x28x32 output of the convolutional layer into a single one-dimensional vector, that can be used as input for a dense layer.
+> > * The Flatten layer converts the 28x28x50 output of the convolutional layer into a single one-dimensional vector, that can be used as input for a dense layer.
 > > * The last dense layer has the most parameters. This layer connects every single output 'pixel' from the convolutional layer to the 10 output classes.
 > >  That results in a large number of connections, so a large number of parameters. This undermines a bit the expressiveness of the convolutional layers, that have much fewer parameters.
 > {: .solution}
@@ -291,12 +291,12 @@ Let's put it into practice. We compose a Convolutional network with two convolut
 
 ~~~
 inputs = keras.Input(shape=train_images.shape[1:])
-x = keras.layers.Conv2D(32, (3, 3), activation='relu')(inputs)
+x = keras.layers.Conv2D(50, (3, 3), activation='relu')(inputs)
 x = keras.layers.MaxPooling2D((2, 2))(x)
-x = keras.layers.Conv2D(32, (3, 3), activation='relu')(x)
+x = keras.layers.Conv2D(50, (3, 3), activation='relu')(x)
 x = keras.layers.MaxPooling2D((2, 2))(x)
 x = keras.layers.Flatten()(x)
-x = keras.layers.Dense(32, activation='relu')(x)
+x = keras.layers.Dense(50, activation='relu')(x)
 outputs = keras.layers.Dense(10)(x)
 
 model = keras.Model(inputs=inputs, outputs=outputs, name="cifar_model_small")
@@ -305,34 +305,41 @@ model.summary()
 ~~~
 {: .language-python}
 ~~~
-    Model: "cifar_model_small"
+     Model: "cifar_model"
     _________________________________________________________________
-    Layer (type)                 Output Shape              Param #
+     Layer (type)                Output Shape              Param #
     =================================================================
-    input_6 (InputLayer)         [(None, 32, 32, 3)]       0
-    _________________________________________________________________
-    conv2d_3 (Conv2D)            (None, 30, 30, 32)        896
-    _________________________________________________________________
-    max_pooling2d (MaxPooling2D) (None, 15, 15, 32)        0
-    _________________________________________________________________
-    conv2d_4 (Conv2D)            (None, 13, 13, 32)        9248
-    _________________________________________________________________
-    max_pooling2d_1 (MaxPooling2 (None, 6, 6, 32)          0
-    _________________________________________________________________
-    flatten (Flatten)            (None, 1152)              0
-    _________________________________________________________________
-    dense_1 (Dense)              (None, 32)                36896
-    _________________________________________________________________
-    dense_2 (Dense)              (None, 10)                330
+     input_6 (InputLayer)        [(None, 32, 32, 3)]       0
+
+     conv2d_13 (Conv2D)          (None, 30, 30, 50)        1400
+
+     max_pooling2d_8 (MaxPooling  (None, 15, 15, 50)       0
+     2D)
+
+     conv2d_14 (Conv2D)          (None, 13, 13, 50)        22550
+
+     max_pooling2d_9 (MaxPooling  (None, 6, 6, 50)         0
+     2D)
+
+     conv2d_15 (Conv2D)          (None, 4, 4, 50)          22550
+
+     flatten_5 (Flatten)         (None, 800)               0
+
+     dense_9 (Dense)             (None, 50)                40050
+
+     dense_10 (Dense)            (None, 10)                510
+
     =================================================================
-    Total params: 47,370
-    Trainable params: 47,370
+    Total params: 87,060
+    Trainable params: 87,060
     Non-trainable params: 0
     _________________________________________________________________
 ~~~
 {: .output}
 
-We compile the model using the adam optimizer (other optimizers could also be used here!). Similar to the penguin classification task, we will use the crossentropy function to calculate the model's loss. This loss function is appropriate to use when the data has two or more label classes. 
+We compile the model using the adam optimizer (other optimizers could also be used here!).
+Similar to the penguin classification task, we will use the crossentropy function to calculate the model's loss.
+This loss function is appropriate to use when the data has two or more label classes.
 
 To calculate crossentropy loss for data that has its classes represented by integers (i.e., not one-hot encoded), we use the SparseCategoricalCrossentropy() function:
 ~~~
@@ -373,19 +380,19 @@ It seems that the model is overfitting somewhat, because the validation accuracy
 > ## Network depth
 >
 > What, do you think, will be the effect of adding a convolutional layer to your model? Will this model have more or fewer parameters?
-> Try it out. Create a `model` that has an additional `Conv2d` layer with 32 filters after the last MaxPooling2D layer. Train it for 20 epochs and plot the results.
+> Try it out. Create a `model` that has an additional `Conv2d` layer with 50 filters after the last MaxPooling2D layer. Train it for 20 epochs and plot the results.
 >
 > **HINT**:
 > The model definition that we used previously needs to be adjusted as follows:
 > ~~~
 > inputs = keras.Input(shape=train_images.shape[1:])
-> x = keras.layers.Conv2D(32, (3, 3), activation='relu')(inputs)
+> x = keras.layers.Conv2D(50, (3, 3), activation='relu')(inputs)
 > x = keras.layers.MaxPooling2D((2, 2))(x)
-> x = keras.layers.Conv2D(32, (3, 3), activation='relu')(x)
+> x = keras.layers.Conv2D(50, (3, 3), activation='relu')(x)
 > x = keras.layers.MaxPooling2D((2, 2))(x)
 > # Add your extra layer here
 > x = keras.layers.Flatten()(x)
-> x = keras.layers.Dense(32, activation='relu')(x)
+> x = keras.layers.Dense(50, activation='relu')(x)
 > outputs = keras.layers.Dense(10)(x)
 > ~~~
 > {: language-python}
@@ -394,13 +401,13 @@ It seems that the model is overfitting somewhat, because the validation accuracy
 > > We add an extra Conv2D layer after the second pooling layer:
 > > ~~~
 > > inputs = keras.Input(shape=train_images.shape[1:])
-> > x = keras.layers.Conv2D(32, (3, 3), activation='relu')(inputs)
+> > x = keras.layers.Conv2D(50, (3, 3), activation='relu')(inputs)
 > > x = keras.layers.MaxPooling2D((2, 2))(x)
-> > x = keras.layers.Conv2D(32, (3, 3), activation='relu')(x)
+> > x = keras.layers.Conv2D(50, (3, 3), activation='relu')(x)
 > > x = keras.layers.MaxPooling2D((2, 2))(x)
-> > x = keras.layers.Conv2D(32, (3, 3), activation='relu')(x)
+> > x = keras.layers.Conv2D(50, (3, 3), activation='relu')(x)
 > > x = keras.layers.Flatten()(x)
-> > x = keras.layers.Dense(32, activation='relu')(x)
+> > x = keras.layers.Dense(50, activation='relu')(x)
 > > outputs = keras.layers.Dense(10)(x)
 > >
 > > model = keras.Model(inputs=inputs, outputs=outputs, name="cifar_model")
@@ -414,28 +421,31 @@ It seems that the model is overfitting somewhat, because the validation accuracy
 > > ~~~
 > > Model: "cifar_model"
     _________________________________________________________________
-    Layer (type)                 Output Shape              Param #
+     Layer (type)                Output Shape              Param #
     =================================================================
-    input_4 (InputLayer)         [(None, 32, 32, 3)]       0
-    _________________________________________________________________
-    conv2d_6 (Conv2D)            (None, 30, 30, 32)        896
-    _________________________________________________________________
-    max_pooling2d_4 (MaxPooling2 (None, 15, 15, 32)        0
-    _________________________________________________________________
-    conv2d_7 (Conv2D)            (None, 13, 13, 32)        9248
-    _________________________________________________________________
-    max_pooling2d_5 (MaxPooling2 (None, 6, 6, 32)          0
-    _________________________________________________________________
-    conv2d_8 (Conv2D)            (None, 4, 4, 32)          9248
-    _________________________________________________________________
-    flatten_3 (Flatten)          (None, 512)               0
-    _________________________________________________________________
-    dense_6 (Dense)              (None, 32)                16416
-    _________________________________________________________________
-    dense_7 (Dense)              (None, 10)                330
+     input_7 (InputLayer)        [(None, 32, 32, 3)]       0
+
+     conv2d_16 (Conv2D)          (None, 30, 30, 50)        1400
+
+     max_pooling2d_10 (MaxPoolin  (None, 15, 15, 50)       0
+     g2D)
+
+     conv2d_17 (Conv2D)          (None, 13, 13, 50)        22550
+
+     max_pooling2d_11 (MaxPoolin  (None, 6, 6, 50)         0
+     g2D)
+
+     conv2d_18 (Conv2D)          (None, 4, 4, 50)          22550
+
+     flatten_6 (Flatten)         (None, 800)               0
+
+     dense_11 (Dense)            (None, 50)                40050
+
+     dense_12 (Dense)            (None, 10)                510
+
     =================================================================
-    Total params: 36,138
-    Trainable params: 36,138
+    Total params: 87,060
+    Trainable params: 87,060
     Non-trainable params: 0
     _________________________________________________________________
 > > ~~~
@@ -496,14 +506,14 @@ Let's add one dropout layer towards the end of the network, that randomly drops 
 
 ~~~
 inputs = keras.Input(shape=train_images.shape[1:])
-x = keras.layers.Conv2D(32, (3, 3), activation='relu')(inputs)
+x = keras.layers.Conv2D(50, (3, 3), activation='relu')(inputs)
 x = keras.layers.MaxPooling2D((2, 2))(x)
-x = keras.layers.Conv2D(32, (3, 3), activation='relu')(x)
+x = keras.layers.Conv2D(50, (3, 3), activation='relu')(x)
 x = keras.layers.MaxPooling2D((2, 2))(x)
-x = keras.layers.Conv2D(32, (3, 3), activation='relu')(x)
-x = keras.layers.Dropout(0.2)(x) # This is new!
+x = keras.layers.Conv2D(50, (3, 3), activation='relu')(x)
+x = keras.layers.Dropout(0.8)(x) # This is new!
 x = keras.layers.Flatten()(x)
-x = keras.layers.Dense(32, activation='relu')(x)
+x = keras.layers.Dense(50, activation='relu')(x)
 outputs = keras.layers.Dense(10)(x)
 
 model_dropout = keras.Model(inputs=inputs, outputs=outputs, name="cifar_model")
@@ -514,36 +524,39 @@ model_dropout.summary()
 ~~~
     Model: "cifar_model"
     _________________________________________________________________
-    Layer (type)                 Output Shape              Param #
+     Layer (type)                Output Shape              Param #
     =================================================================
-    input_5 (InputLayer)         [(None, 32, 32, 3)]       0
-    _________________________________________________________________
-    conv2d_9 (Conv2D)            (None, 30, 30, 32)        896
-    _________________________________________________________________
-    max_pooling2d_6 (MaxPooling2 (None, 15, 15, 32)        0
-    _________________________________________________________________
-    conv2d_10 (Conv2D)           (None, 13, 13, 32)        9248
-    _________________________________________________________________
-    max_pooling2d_7 (MaxPooling2 (None, 6, 6, 32)          0
-    _________________________________________________________________
-    conv2d_11 (Conv2D)           (None, 4, 4, 32)          9248
-    _________________________________________________________________
-    dropout (Dropout)            (None, 4, 4, 32)          0
-    _________________________________________________________________
-    flatten_4 (Flatten)          (None, 512)               0
-    _________________________________________________________________
-    dense_8 (Dense)              (None, 32)                16416
-    _________________________________________________________________
-    dense_9 (Dense)              (None, 10)                330
+     input_8 (InputLayer)        [(None, 32, 32, 3)]       0
+
+     conv2d_19 (Conv2D)          (None, 30, 30, 50)        1400
+
+     max_pooling2d_12 (MaxPoolin  (None, 15, 15, 50)       0
+     g2D)
+
+     conv2d_20 (Conv2D)          (None, 13, 13, 50)        22550
+
+     max_pooling2d_13 (MaxPoolin  (None, 6, 6, 50)         0
+     g2D)
+
+     conv2d_21 (Conv2D)          (None, 4, 4, 50)          22550
+
+     dropout_2 (Dropout)         (None, 4, 4, 50)          0
+
+     flatten_7 (Flatten)         (None, 800)               0
+
+     dense_13 (Dense)            (None, 50)                40050
+
+     dense_14 (Dense)            (None, 10)                510
+
     =================================================================
-    Total params: 36,138
-    Trainable params: 36,138
+    Total params: 87,060
+    Trainable params: 87,060
     Non-trainable params: 0
     _________________________________________________________________
 
 ~~~
 {: .output}
-We can see that the dropout does note alter the dimensions of the image, and has zero parameters.
+We can see that the dropout does not alter the dimensions of the image, and has zero parameters.
 
 We again compile and train the model.
 ~~~
