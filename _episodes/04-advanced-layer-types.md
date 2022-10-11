@@ -43,7 +43,7 @@ from tensorflow import keras
 > The CIFAR-10 dataset consists of images of 10 different classes: airplanes, cars, birds, cats, deer, dogs, frogs, horses, ships, and trucks.
 > It is widely used as a benchmark dataset for image classification. The low resolution of the images in the dataset allows for quick loading and testing models.
 >
-> For more information about this dataset and how it was collected you can check out 
+> For more information about this dataset and how it was collected you can check out
 > [Learning Multiple Layers of Features from Tiny Images by  Alex Krizhevsky, 2009](https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf).
 >
 {: .callout}
@@ -59,9 +59,15 @@ train_labels = train_labels[:n]
 > ## Explore the data
 >
 > Familiarize yourself with the CIFAR10 dataset. To start, consider the following questions:
-> - What is the dimension of a single data point? What do you think the dimensions mean?
-> - What is the range of values that your input data takes?
-> - What is the shape of the labels, and how many labels do we have?
+> 1. What is the dimension of a single data point? What do you think the dimensions mean?
+> 2. What is the range of values that your input data takes?
+> 3. What is the shape of the labels, and how many labels do we have?
+> 4. (Optional) Pre-trained models Step 4 of our 'deep learning workflow' is:
+>    'Choose a pre-trained model or build a new architecture from scratch'.
+>    We are going to build a new architecture from scratch to get you familiar with the convolutional neural network basics.
+>    But in the real world you wouldn't do that.
+>    So the challenge is: Browse the web for (more) existing architectures or pre-trained models that are likely to work
+>    well on this type of data. Try to understand why they work well for this type of data.
 >
 > > ## Solution
 > >
@@ -275,6 +281,7 @@ model.summary()
 > Inspect the network above:
 > * What do you think is the function of the `Flatten` layer?
 > * Which layer has the most parameters? Do you find this intuitive?
+> * (optional) Pick a model from https://paperswithcode.com/sota/image-classification-on-cifar-10 . Try to understand how it works.
 >
 > > ## Solution
 > >
@@ -332,7 +339,7 @@ model.summary()
 ~~~
 {: .output}
 
-We compile the model using the adam optimizer (other optimizers could also be used here!). Similar to the penguin classification task, we will use the crossentropy function to calculate the model's loss. This loss function is appropriate to use when the data has two or more label classes. 
+We compile the model using the adam optimizer (other optimizers could also be used here!). Similar to the penguin classification task, we will use the crossentropy function to calculate the model's loss. This loss function is appropriate to use when the data has two or more label classes.
 
 To calculate crossentropy loss for data that has its classes represented by integers (i.e., not one-hot encoded), we use the SparseCategoricalCrossentropy() function:
 ~~~
